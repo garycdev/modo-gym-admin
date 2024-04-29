@@ -41,10 +41,10 @@ Rutinas Page - Admin Panel
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title float-left">Rutina List</h4>
+                    <h4 class="header-title float-left">Rutinas Lista</h4>
                     <p class="float-right mb-2">
-                        @if (Auth::guard('admin')->user()->can('role.create'))
-                            <a class="btn btn-primary text-white" href="{{ route('admin.roles.create') }}">Create New Rutina</a>
+                        @if (Auth::guard('admin')->user()->can('rutina.create'))
+                            <a class="btn btn-primary text-white" href="{{ route('admin.rutinas.create') }}">Create New Rutina</a>
                         @endif
                     </p>
                     <div class="clearfix"></div>
@@ -60,29 +60,25 @@ Rutinas Page - Admin Panel
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($roles as $role)
+                               @foreach ($rutinas as $rutina)
                                <tr>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $rutina->rut_serie }}</td>
                                     <td>
-                                        @foreach ($role->permissions as $perm)
-                                            <span class="badge badge-info mr-1">
-                                                {{ $perm->name }}
-                                            </span>
-                                        @endforeach
+                                        {{ $rutina->rut_peso }}
                                     </td>
                                     <td>
                                         @if (Auth::guard('admin')->user()->can('admin.edit'))
-                                            <a class="btn btn-success text-white" href="{{ route('admin.roles.edit', $role->id) }}">Edit</a>
+                                            <a class="btn btn-success text-white" href="{{ route('admin.rutinas.edit', $rutina->rut_id) }}">Edit</a>
                                         @endif
 
                                         @if (Auth::guard('admin')->user()->can('admin.edit'))
-                                            <a class="btn btn-danger text-white" href="{{ route('admin.roles.destroy', $role->id) }}"
-                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $role->id }}').submit();">
+                                            <a class="btn btn-danger text-white" href="{{ route('admin.rutinas.destroy', $rutina->rut_id) }}"
+                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $rutina->rut_id }}').submit();">
                                                 Delete
                                             </a>
 
-                                            <form id="delete-form-{{ $role->id }}" action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display: none;">
+                                            <form id="delete-form-{{ $rutina->rut_id }}" action="{{ route('admin.rutinas.destroy', $rutina->rut_id) }}" method="POST" style="display: none;">
                                                 @method('DELETE')
                                                 @csrf
                                             </form>
