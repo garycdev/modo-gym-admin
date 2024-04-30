@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('horarios', function (Blueprint $table) {
             $table->id('horario_id');
             $table->unsignedBigInteger('admins_id');
-            $table->foreign('admins_id')->references('id')->on('admins');
+            $table->foreign('admins_id')->references('id')->on('admin_datos');
             $table->date('horario_fecha');
             $table->time('horario_hora_inicio');
             $table->time('horario_hora_fin');

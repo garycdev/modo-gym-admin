@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('citas_fecha');
             $table->time('citas_hora_inicio');
             $table->time('citas_hora_fin');
-            $table->foreign('admins_id')->references('id')->on('admins');
+            $table->foreign('admins_id')->references('id')->on('admin_datos');
             $table->foreign('usu_id')->references('usu_id')->on('usuarios');
         });
     }

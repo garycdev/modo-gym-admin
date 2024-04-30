@@ -77,7 +77,7 @@ Admins - Admin Panel
                                         @if (Auth::guard('admin')->user()->can('admin.edit'))
                                             <a class="btn btn-success text-white" href="{{ route('admin.admins.edit', $admin->id) }}">Edit</a>
                                         @endif
-                                        
+
                                         @if (Auth::guard('admin')->user()->can('admin.delete'))
                                         <a class="btn btn-danger text-white" href="{{ route('admin.admins.destroy', $admin->id) }}"
                                         onclick="event.preventDefault(); document.getElementById('delete-form-{{ $admin->id }}').submit();">
@@ -98,7 +98,7 @@ Admins - Admin Panel
             </div>
         </div>
         <!-- data table end -->
-        
+
     </div>
 </div>
 @endsection
@@ -111,7 +111,7 @@ Admins - Admin Panel
      <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
      <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
      <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-     
+
      <script>
          /*================================
         datatable active

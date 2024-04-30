@@ -30,7 +30,7 @@
     </div>
     <!-- error area end -->
 
-    @include('backend.layouts.partials.offsets')
+    {{-- @include('backend.layouts.partials.offsets') --}}
     @include('backend.layouts.partials.scripts')
     @yield('scripts')
 </body>

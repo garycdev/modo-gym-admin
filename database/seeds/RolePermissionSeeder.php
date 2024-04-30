@@ -52,7 +52,6 @@ class RolePermissionSeeder extends Seeder
                     'blog.view',
                     'blog.edit',
                     'blog.delete',
-                    'blog.approve',
                 ]
             ],
             [
@@ -78,13 +77,22 @@ class RolePermissionSeeder extends Seeder
                 ]
             ],
             [
-                'group_name' => 'profile',
+                'group_name' => 'perfil',
                 'permissions' => [
                     // profile Permissions
-                    'profile.view',
-                    'profile.edit',
-                    'profile.delete',
-                    'profile.update',
+                    'perfil.view',
+                    'perfil.edit',
+                    'perfil.update',
+                ]
+            ],
+            [
+                'group_name' => 'cliente',
+                'permissions' => [
+                    // profile Permissions
+                    'cliente.view',
+                    'cliente.edit',
+                    'cliente.delete',
+                    'cliente.update',
                 ]
             ],
             [
@@ -95,7 +103,6 @@ class RolePermissionSeeder extends Seeder
                     'asistencia.view',
                     'asistencia.edit',
                     'asistencia.delete',
-                    'asistencia.approve',
                 ]
             ],
             [
@@ -106,7 +113,6 @@ class RolePermissionSeeder extends Seeder
                     'cita.view',
                     'cita.edit',
                     'cita.delete',
-                    'cita.approve',
                 ]
             ],
             [
@@ -117,7 +123,6 @@ class RolePermissionSeeder extends Seeder
                     'contactar.view',
                     'contactar.edit',
                     'contactar.delete',
-                    'contactar.approve',
                 ]
             ],
             [
@@ -128,7 +133,6 @@ class RolePermissionSeeder extends Seeder
                     'costo.view',
                     'costo.edit',
                     'costo.delete',
-                    'costo.approve',
                 ]
             ],
             [
@@ -139,7 +143,6 @@ class RolePermissionSeeder extends Seeder
                     'ejercicio.view',
                     'ejercicio.edit',
                     'ejercicio.delete',
-                    'ejercicio.approve',
                 ]
             ],
             [
@@ -150,7 +153,6 @@ class RolePermissionSeeder extends Seeder
                     'equipo.view',
                     'equipo.edit',
                     'equipo.delete',
-                    'equipo.approve',
                 ]
             ],
             [
@@ -161,7 +163,6 @@ class RolePermissionSeeder extends Seeder
                     'galeria.view',
                     'galeria.edit',
                     'galeria.delete',
-                    'galeria.approve',
                 ]
             ],
             [
@@ -172,7 +173,6 @@ class RolePermissionSeeder extends Seeder
                     'horario.view',
                     'horario.edit',
                     'horario.delete',
-                    'horario.approve',
                 ]
             ],
             [
@@ -183,7 +183,6 @@ class RolePermissionSeeder extends Seeder
                     'imagen_galeria.view',
                     'imagen_galeria.edit',
                     'imagen_galeria.delete',
-                    'imagen_galeria.approve',
                 ]
             ],
             [
@@ -194,7 +193,6 @@ class RolePermissionSeeder extends Seeder
                     'informacion_empresa.view',
                     'informacion_empresa.edit',
                     'informacion_empresa.delete',
-                    'informacion_empresa.approve',
                 ]
             ],
             [
@@ -205,7 +203,6 @@ class RolePermissionSeeder extends Seeder
                     'medida.view',
                     'medida.edit',
                     'medida.delete',
-                    'medida.approve',
                 ]
             ],
             [
@@ -216,7 +213,6 @@ class RolePermissionSeeder extends Seeder
                     'musculo.view',
                     'musculo.edit',
                     'musculo.delete',
-                    'musculo.approve',
                 ]
             ],
             [
@@ -227,7 +223,6 @@ class RolePermissionSeeder extends Seeder
                     'pago.view',
                     'pago.edit',
                     'pago.delete',
-                    'pago.approve',
                 ]
             ],
             [
@@ -238,7 +233,6 @@ class RolePermissionSeeder extends Seeder
                     'producto.view',
                     'producto.edit',
                     'producto.delete',
-                    'producto.approve',
                 ]
             ],
             [
@@ -249,7 +243,6 @@ class RolePermissionSeeder extends Seeder
                     'rutina.view',
                     'rutina.edit',
                     'rutina.delete',
-                    'rutina.approve',
                 ]
             ],
             [
@@ -260,7 +253,6 @@ class RolePermissionSeeder extends Seeder
                     'test_seguimiento.view',
                     'test_seguimiento.edit',
                     'test_seguimiento.delete',
-                    'test_seguimiento.approve',
                 ]
             ],
             [
@@ -271,7 +263,6 @@ class RolePermissionSeeder extends Seeder
                     'tipo_medida.view',
                     'tipo_medida.edit',
                     'tipo_medida.delete',
-                    'tipo_medida.approve',
                 ]
             ],
             [
@@ -282,7 +273,6 @@ class RolePermissionSeeder extends Seeder
                     'tipo_test.view',
                     'tipo_test.edit',
                     'tipo_test.delete',
-                    'tipo_test.approve',
                 ]
             ],
             [
@@ -293,7 +283,6 @@ class RolePermissionSeeder extends Seeder
                     'video.view',
                     'video.edit',
                     'video.delete',
-                    'video.approve',
                 ]
             ],
         ];

@@ -1,16 +1,32 @@
-<link rel="shortcut icon" type="image/png" href="{{ asset('backend/assets/images/icon/favicon.ico') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/font-awesome.min.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/themify-icons.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/metisMenu.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/owl.carousel.min.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/slicknav.min.css') }}">
-<!-- amchart css -->
-<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-<!-- others css -->
-<link rel="stylesheet" href="{{ asset('backend/assets/css/typography.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/default-css.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/styles.css') }}">
-<link rel="stylesheet" href="{{ asset('backend/assets/css/responsive.css') }}">
-<!-- modernizr css -->
-<script src="{{ asset('backend/assets/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+
+<!--LOGIN---------------- --- -->
+
+<!--plugins-->
+<link href="{{ asset('admin-assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
+<link
+  href="{{ asset('admin-assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"
+  rel="stylesheet"
+/>
+<link
+  href="{{ asset('admin-assets/plugins/metismenu/css/metisMenu.min.css') }}"
+  rel="stylesheet"
+/>
+<!--plugins-->
+<link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
+<!-- loader-->
+<link href="{{ asset('admin-assets/css/pace.min.css') }}" rel="stylesheet" />
+<script src="{{ asset('admin-assets/js/pace.min.js') }}"></script>
+<!-- Bootstrap CSS -->
+<link href="{{ asset('admin-assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('admin-assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap"
+  rel="stylesheet"
+/>
+<link href="{{ asset('admin-assets/css/app.css') }}" rel="stylesheet" />
+<link href="{{ asset('admin-assets/css/icons.css') }}" rel="stylesheet" />
+
+<!-- Theme Style CSS -->
+<link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}"/>
+<link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}"/>
+<link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}"/>
