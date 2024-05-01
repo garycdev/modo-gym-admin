@@ -13,9 +13,6 @@ Crear Usuario Admin - Admin Panel
     }
 </style>
 @endsection
-@section('styles')
-
-@endsection
 
 @section('admin-content')
 
@@ -100,5 +97,6 @@ Crear Usuario Admin - Admin Panel
 @endsection
 
 @section('scripts')
-
+     @include('backend.pages.admins.partials.scripts')
 @endsection
+

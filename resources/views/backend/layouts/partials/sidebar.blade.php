@@ -39,7 +39,7 @@
             </li>
         @endif
         @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
-        <li class="{{ Route::is('admin.admins.index')  || Route::is('admin.admins.edit') ? 'mm-active' : '' }}">
+        <li class="{{ Route::is('admin.admins.index')  || Route::is('admin.admins.edit') || Route::is('admin.admins.create') ? 'mm-active' : '' }}">
             <a href="{{ route('admin.admins.index') }}">
                 <div class="parent-icon"><i class='bx bx-user-circle'></i>
                 </div>
@@ -48,13 +48,15 @@
         </li>
         @endif
         <li class="menu-label">MODO GYM</li>
-        <li>
-            <a href="widgets.html">
+        {{-- @if ($usr->can('informacion_empresa.create') || $usr->can('informacion_empresa.view') ||  $usr->can('informacion_empresa.edit') ||  $usr->can('informacion_empresa.delete'))
+        <li class="{{ Route::is('admin.informacion_empresa.index')  || Route::is('admin.informacion_empresa.edit') || Route::is('admin.informacion_empresa.create') || Route::is('admin.informacion_empresa.delete')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.informacion_empresa.index') }}">
                 <div class="parent-icon"><i class='lni lni-emoji-happy'></i>
                 </div>
                 <div class="menu-title">Informacion</div>
             </a>
         </li>
+        @endif --}}
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-dumbbell'></i>
