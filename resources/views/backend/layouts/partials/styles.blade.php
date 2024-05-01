@@ -25,8 +25,16 @@
 />
 <link href="{{ asset('admin-assets/css/app.css') }}" rel="stylesheet" />
 <link href="{{ asset('admin-assets/css/icons.css') }}" rel="stylesheet" />
+<!-- SELECT -->
+<link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2-bootstrap-5-theme.min.css') }}" />
+
 
 <!-- Theme Style CSS -->
 <link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}"/>
+
+
+<!-- NOTIFICACION -->
+<link rel="stylesheet" href="{{ asset('admin-assets/plugins/notifications/css/lobibox.min.css') }}" />

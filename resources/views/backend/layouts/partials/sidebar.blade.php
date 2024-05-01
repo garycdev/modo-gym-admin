@@ -7,10 +7,10 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div>
-            <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+            <img src="{{asset('modo-gym/logo_2.png')}}" class="logo-icon" alt="logo icon">
         </div>
         <div>
-            <h4 class="logo-text">Rocker</h4>
+            <h5 class="logo-text">Modo Gym</h5>
         </div>
         <div class="toggle-icon ms-auto"><i class='bx bx-arrow-back'></i>
         </div>

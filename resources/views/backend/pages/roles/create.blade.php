@@ -2,7 +2,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-Role Create - Admin Panel
+Crear Rol - Admin Panel
 @endsection
 
 @section('styles')
@@ -16,55 +16,53 @@ Role Create - Admin Panel
 
 @section('admin-content')
 
-<!-- page title area start -->
-<div class="page-title-area">
-    <div class="row align-items-center">
-        <div class="col-sm-6">
-            <div class="breadcrumbs-area clearfix">
-                <h4 class="page-title pull-left">Role Create</h4>
-                <ul class="breadcrumbs pull-left">
-                    <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ route('admin.roles.index') }}">All Roles</a></li>
-                    <li><span>Create Role</span></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-sm-6 clearfix">
-            @include('backend.layouts.partials.logout')
-        </div>
-    </div>
-</div>
-<!-- page title area end -->
 
-<div class="main-content-inner">
-    <div class="row">
-        <!-- data table start -->
-        <div class="col-12 mt-5">
+
+<!--start page wrapper -->
+<div class="page-wrapper">
+    <div class="page-content">
+        <!--breadcrumb-->
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3">Administrador </div>
+            <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 p-0">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">Crear Roles</li>
+                    </ol>
+                </nav>
+            </div>
+
+        </div>
+        <!--end breadcrumb-->
+        <div class="col-xl-8 mx-auto">
             <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title">Create New Role</h4>
+                <!-- data table start -->
+                <div class="card-body p-4">
+                    <h4 class="header-title">Crear Nuevo Rol</h4>
                     @include('backend.layouts.partials.messages')
-                    
+
                     <form action="{{ route('admin.roles.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label for="name">Role Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter a Role Name">
+                            <label for="name">Role Nombre</label>
+                            <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Enter a Role Name">
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Permissions</label>
+                            <h5 for="name" class="card-title text-muted">Permisos</h5>
 
-                            <div class="form-check">
+                            <div class="form-check form-switch form-check-success">
                                 <input type="checkbox" class="form-check-input" id="checkPermissionAll" value="1">
-                                <label class="form-check-label" for="checkPermissionAll">All</label>
+                                <label class="form-check-label" for="checkPermissionAll">Todos</label>
                             </div>
                             <hr>
                             @php $i = 1; @endphp
                             @foreach ($permission_groups as $group)
                                 <div class="row">
                                     <div class="col-3">
-                                        <div class="form-check">
+                                        <div class="form-check form-check-info">
                                             <input type="checkbox" class="form-check-input" id="{{ $i }}Management" value="{{ $group->name }}" onclick="checkPermissionByGroup('role-{{ $i }}-management-checkbox', this)">
                                             <label class="form-check-label" for="checkPermission">{{ $group->name }}</label>
                                         </div>
@@ -76,7 +74,7 @@ Role Create - Admin Panel
                                             $j = 1;
                                         @endphp
                                         @foreach ($permissions as $permission)
-                                            <div class="form-check">
+                                            <div class="form-check form-check-info">
                                                 <input type="checkbox" class="form-check-input" name="permissions[]" id="checkPermission{{ $permission->id }}" value="{{ $permission->name }}">
                                                 <label class="form-check-label" for="checkPermission{{ $permission->id }}">{{ $permission->name }}</label>
                                             </div>
@@ -89,17 +87,17 @@ Role Create - Admin Panel
                                 @php  $i++; @endphp
                             @endforeach
 
-                            
+
                         </div>
-                       
-                        
-                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Role</button>
+
+
+                        <button type="submit" class="btn btn-primary px-5 radius-30">Guardar Rol</button>
                     </form>
                 </div>
+                <!-- data table end -->
+
             </div>
         </div>
-        <!-- data table end -->
-        
     </div>
 </div>
 @endsection

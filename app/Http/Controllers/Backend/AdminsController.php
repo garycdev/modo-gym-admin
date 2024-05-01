@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\AdminDatos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -78,7 +79,13 @@ class AdminsController extends Controller
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
         $admin->save();
-
+        // Create new AdminDatos
+        AdminDatos::create([
+            'admin_id' => $admin->id,
+            'nombre' => $request->name,
+            'correo' => $request->email,
+            // Completa aquí los demás campos de admin_datos
+        ]);
         if ($request->roles) {
             $admin->assignRole($request->roles);
         }
@@ -154,7 +161,12 @@ class AdminsController extends Controller
             $admin->password = Hash::make($request->password);
         }
         $admin->save();
-
+        // Update AdminDatos if exists
+        AdminDatos::where('admin_id', $admin->id)->update([
+            'nombre' => $request->name,
+            'correo' => $request->email,
+            // Completa aquí los demás campos de admin_datos que deseas actualizar
+        ]);
         $admin->roles()->detach();
         if ($request->roles) {
             $admin->assignRole($request->roles);

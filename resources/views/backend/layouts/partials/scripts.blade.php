@@ -14,6 +14,15 @@
 <script src="{{ asset('admin-assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
 <script src="{{ asset('admin-assets/plugins/chartjs/js/chart.js') }}"></script>
 <script src="{{ asset('admin-assets/js/index.js') }}"></script>
+<!-- SELECT -->
+<script src="{{ asset('admin-assets/plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/select2/js/select2-custom.js') }}"></script>
+
+<!--notification js -->
+<script src="{{ asset('admin-assets/plugins/notifications/js/lobibox.min.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/notifications/js/notifications.min.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
+
 <!--Password show & hide js -->
 <script>
     $(document).ready(function () {

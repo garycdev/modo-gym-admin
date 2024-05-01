@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-namespace App\Models\Usuarios;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +11,6 @@ class AdminDatos extends Model
 
     protected $table = 'admin_datos';
     protected $fillable = [
+        'id', 'admin_id', 'imagen', 'nombre', 'apellidos', 'celular', 'direccion', 'rol_persona', 'correo', 'pagina_web', 'tiktok', 'instagram', 'twitter', 'facebook', 'github', 'linkedin'
     ];
-
-
-
 }

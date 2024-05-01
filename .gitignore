@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/admin-assets
+/public/modo-gym
 /storage/*.key
 /vendor
 .env

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('admin_id');
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
+            $table->string('imagen', 250)->default('');
             $table->string('nombre', 250);
             $table->string('apellidos', 250)->default('');
             $table->string('celular', 250)->default('');
