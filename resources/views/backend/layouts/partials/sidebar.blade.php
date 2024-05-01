@@ -48,13 +48,15 @@
         </li>
         @endif
         <li class="menu-label">MODO GYM</li>
-        <li>
-            <a href="widgets.html">
+        @if ($usr->can('informacion_empresa.create') || $usr->can('informacion_empresa.view') ||  $usr->can('informacion_empresa.edit') ||  $usr->can('informacion_empresa.delete'))
+        <li class="{{ Route::is('admin.informacion.create') || Route::is('admin.informacion.index') || Route::is('admin.informacion.edit') ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.informacion.index') }}">
                 <div class="parent-icon"><i class='lni lni-emoji-happy'></i>
                 </div>
                 <div class="menu-title">Informacion</div>
             </a>
         </li>
+        @endif
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-dumbbell'></i>
