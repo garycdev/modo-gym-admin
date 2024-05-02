@@ -16,7 +16,8 @@ class Asistencia extends Model
         'asistencia_id',
         'usu_id',
         'asistencia_fecha',
-        'asistencia_asistio',
+        'asistencia_hora',
+        'asistencia_tipo',
     ];
 
      // Relación con el modelo Usuario (asumiendo que 'usu_id' es la clave foránea)

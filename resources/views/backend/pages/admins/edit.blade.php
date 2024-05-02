@@ -82,7 +82,7 @@ Editar Usuario Admin - Admin Panel
                                 <span class="position-absolute top-50 translate-middle-y"><i class='bx bx-user'></i></span>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Admin</button>
+                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Guardar Admin</button>
                     </form>
                 </div>
             </div>

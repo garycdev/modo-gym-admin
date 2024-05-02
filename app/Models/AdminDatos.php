@@ -12,6 +12,9 @@ class AdminDatos extends Model
     protected $table = 'admin_datos';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id', 'admin_id', 'imagen', 'nombre', 'apellidos', 'celular', 'direccion', 'rol_persona', 'correo', 'pagina_web', 'tiktok', 'instagram', 'twitter', 'facebook', 'github', 'linkedin'
+        'id', 'admin_id', 'imagen', 'nombre', 'apellidos',
+         'celular', 'direccion', 'rol_persona', 'correo',
+          'pagina_web', 'tiktok', 'instagram', 'twitter',
+           'facebook', 'github', 'linkedin'
     ];
 }

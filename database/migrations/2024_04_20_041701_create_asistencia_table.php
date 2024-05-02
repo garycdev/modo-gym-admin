@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id('asistencia_id');
             $table->unsignedBigInteger('usu_id');
             $table->date('asistencia_fecha');
-            $table->boolean('asistencia_asistio')->default(false);
+            $table->time('asistencia_hora');
+            $table->enum('asistencia_tipo', ['ENTRADA', 'SALIDA']);
 
             // Definir la relación de clave foránea
             $table->foreign('usu_id')->references('usu_id')->on('usuarios');
