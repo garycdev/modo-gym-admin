@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Rutinas;
 use App\Models\InformacionEmpresa;
 use App\Models\Costos;
 
@@ -14,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-use Illuminate\Support\Facades\Storage;
 
 
 
@@ -36,7 +34,7 @@ class InformacionesController extends Controller
     public function index()
     {
         if (is_null($this->user) || !$this->user->can('informacion_empresa.view')) {
-            abort(403, 'Sorry !! You are Unauthorized to view any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún rol!');
         }
 
         $costos = Costos::all();
@@ -84,10 +82,10 @@ class InformacionesController extends Controller
         if (is_null($this->user) || !$this->user->can('informacion_empresa.edit')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningúna información!');
         }
-        if ($id === 1) {
-            session()->flash('error', 'Lo siento !! No está autorizado a actualizar este administrador ya que es el superadministrador. ¡Cree uno nuevo si necesita realizar una prueba!');
-            return back();
-        }
+        // if ($id === 1) {
+        //     session()->flash('error', 'Lo siento !! No está autorizado a actualizar este administrador ya que es el superadministrador. ¡Cree uno nuevo si necesita realizar una prueba!');
+        //     return back();
+        // }
         // Validación de los datos del formulario
         $request->validate([
             'info_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación de la imagen

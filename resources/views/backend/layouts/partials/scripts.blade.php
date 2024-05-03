@@ -23,6 +23,9 @@
 <script src="{{ asset('admin-assets/plugins/notifications/js/notifications.min.js') }}"></script>
 <script src="{{ asset('admin-assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
+<!-- TABLES-->
+<script src="{{ asset('admin-assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
 <!--Password show & hide js -->
 <script>
     $(document).ready(function () {
