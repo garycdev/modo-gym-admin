@@ -56,7 +56,6 @@ Musculo Editar - Admin Panel
                                     <option value="ACTIVO" {{ $musculo->mus_estado == 'ACTIVO' ? 'selected' : '' }}>ACTIVO</option>
                                     <option value="INACTIVO" {{ $musculo->mus_estado == 'INACTIVO' ? 'selected' : '' }}>INACTIVO</option>
                                 </select>
-
                             </div>
                             <div class="col-md-12">
                                 <label for="bsValidation4" class="form-label">Imagen</label>
