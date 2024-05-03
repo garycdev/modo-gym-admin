@@ -11,6 +11,7 @@
   href="{{ asset('admin-assets/plugins/metismenu/css/metisMenu.min.css') }}"
   rel="stylesheet"
 />
+
 <link
       href="{{ asset('admin-assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
       rel="stylesheet"
@@ -38,6 +39,7 @@
 <link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}"/>
+
 
 
 <!-- NOTIFICACION -->

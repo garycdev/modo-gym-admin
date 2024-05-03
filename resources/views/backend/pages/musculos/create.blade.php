@@ -44,11 +44,11 @@ Crear Musculo - Admin Panel
                             @csrf
 
                             <div class="col-md-12">
-                                <label for="bsValidation3" class="form-label">Nombre</label>
+                                <label for="mus_nombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="mus_nombre" name="mus_nombre" placeholder="Agregar nombre" required>
                             </div>
                             <div class="col-md-12">
-                                <label for="bsValidation4" class="form-label">Imagen</label>
+                                <label for="mus_imagen" class="form-label">Imagen</label>
                                 <input type="file" class="form-control" id="mus_imagen" name="mus_imagen" required>
                             </div>
                             <br>

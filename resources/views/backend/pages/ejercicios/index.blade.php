@@ -68,7 +68,7 @@ $usr = Auth::guard('admin')->user();
                                 <td>{{$ejercicio->ejer_nombre}}</td>
                                 <td>
                                     <div class="d-flex flex-column align-items-center text-center">
-                                        <img src="{{ asset($ejercicio->ejer_imagen )}}" alt="Admin"  width="120">
+                                        <img src="{{ asset($ejercicio->ejer_imagen )}}" class="product-img-2" alt="product img"  width="120">
                                     </div>
                                 </td>
                                 <td>{{$ejercicio->equi_nombre}}</td>
