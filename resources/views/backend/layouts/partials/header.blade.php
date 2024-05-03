@@ -271,38 +271,15 @@
               <a
                 class="dropdown-item d-flex align-items-center"
                 href="javascript:;"
-                ><i class="bx bx-user fs-5"></i><span>Profile</span></a
+                ><i class="bx bx-user fs-5"></i><span>Perfil</span></a
               >
             </li>
             <li>
               <a
                 class="dropdown-item d-flex align-items-center"
-                href="javascript:;"
-                ><i class="bx bx-cog fs-5"></i><span>Settings</span></a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center"
-                href="javascript:;"
+                href="{{route('admin.dashboard')}}"
                 ><i class="bx bx-home-circle fs-5"></i
                 ><span>Dashboard</span></a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center"
-                href="javascript:;"
-                ><i class="bx bx-dollar-circle fs-5"></i
-                ><span>Earnings</span></a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center"
-                href="javascript:;"
-                ><i class="bx bx-download fs-5"></i
-                ><span>Downloads</span></a
               >
             </li>
             <li>
