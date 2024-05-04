@@ -97,6 +97,5 @@ Crear Usuario Admin - Admin Panel
 @endsection
 
 @section('scripts')
-     @include('backend.pages.admins.partials.scripts')
 @endsection
 
