@@ -28,7 +28,21 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'Backend\DashboardController@index')->name('admin.dashboard');
     Route::resource('roles', 'Backend\RolesController', ['names' => 'admin.roles']);
-    Route::resource('rutinas', 'Backend\RutinasController', ['names' => 'admin.rutinas']);
+    // MODO GYM
+    Route::resource('informaciones', 'Backend\InformacionesController', ['names' => 'admin.informaciones']);
+    Route::put('informaciones/{informacion}/updatec', 'Backend\InformacionesController@updatec')->name('admin.informaciones.updatec');
+
+    Route::resource('ejercicios', 'Backend\EjerciciosController', ['names' => 'admin.ejercicios']);
+    Route::resource('equipos', 'Backend\EquiposController', ['names' => 'admin.equipos']);
+    Route::resource('musculos', 'Backend\MusculosController', ['names' => 'admin.musculos']);
+    Route::resource('blogs', 'Backend\BlogsController', ['names' => 'admin.blogs']);
+    Route::resource('productos', 'Backend\ProductosController', ['names' => 'admin.productos']);
+    Route::resource('galerias', 'Backend\GaleriasController', ['names' => 'admin.galerias']);
+    Route::resource('videos', 'Backend\VideosController', ['names' => 'admin.videos']);
+    Route::resource('clientes', 'Backend\ClientesController', ['names' => 'admin.clientes']);
+    Route::resource('citas', 'Backend\CitasController', ['names' => 'admin.citas']);
+    Route::resource('horarios', 'Backend\HorariosController', ['names' => 'admin.horarios']);
+    Route::resource('contactos', 'Backend\ContactosController', ['names' => 'admin.contactos']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
 

@@ -11,6 +11,11 @@
   href="{{ asset('admin-assets/plugins/metismenu/css/metisMenu.min.css') }}"
   rel="stylesheet"
 />
+
+<link
+      href="{{ asset('admin-assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
+      rel="stylesheet"
+    />
 <!--plugins-->
 <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
 <!-- loader-->
@@ -34,6 +39,7 @@
 <link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}"/>
 <link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}"/>
+
 
 
 <!-- NOTIFICACION -->

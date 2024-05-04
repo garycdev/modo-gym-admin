@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tipo_test', function (Blueprint $table) {
             $table->id('tipo_test_id');
-            $table->enum('tipo_test_titulo', ['MEDIDAS DE 1RM', 'FLEXIBILIDAD', 'REPETICIONES MAXIMAS']);
+            $table->string('tipo_test_titulo', 250);
             $table->enum('tipo_test_ejercicio', ['PIERNAS', 'TORSOS']);
             $table->string('tipo_test_nombre', 100);
             $table->dateTime('tipo_test_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

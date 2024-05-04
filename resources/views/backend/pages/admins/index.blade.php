@@ -30,7 +30,7 @@ Admins - Admin Panel
             <div class="card-body">
                 <h4 class="header-title float-left">Usuarios Admin Lista</h4>
                 <p class="float-right mb-2">
-                    @if (Auth::guard('admin')->user()->can('admin.edit'))
+                    @if (Auth::guard('admin')->user()->can('admin.create'))
                         <a class="btn btn-primary px-5 radius-30" href="{{ route('admin.admins.create') }}">Crear Nuevo Admin</a>
                     @endif
                 </p>

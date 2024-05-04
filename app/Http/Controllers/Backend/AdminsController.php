@@ -30,7 +30,7 @@ class AdminsController extends Controller
     public function index()
     {
         if (is_null($this->user) || !$this->user->can('admin.view')) {
-            abort(403, 'Sorry !! You are Unauthorized to view any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún administrador!');
         }
 
         $admins = Admin::all();
@@ -45,7 +45,7 @@ class AdminsController extends Controller
     public function create()
     {
         if (is_null($this->user) || !$this->user->can('admin.create')) {
-            abort(403, 'Sorry !! You are Unauthorized to create any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún administrador!');
         }
 
         $roles  = Role::all();
@@ -61,7 +61,7 @@ class AdminsController extends Controller
     public function store(Request $request)
     {
         if (is_null($this->user) || !$this->user->can('admin.create')) {
-            abort(403, 'Sorry !! You are Unauthorized to create any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún administrador!');
         }
 
         // Validation Data
@@ -90,7 +90,7 @@ class AdminsController extends Controller
             $admin->assignRole($request->roles);
         }
 
-        session()->flash('success', 'Admin has been created !!');
+        session()->flash('success', '¡¡Se ha creado el administrador!!');
         return redirect()->route('admin.admins.index');
     }
 
@@ -114,7 +114,7 @@ class AdminsController extends Controller
     public function edit(int $id)
     {
         if (is_null($this->user) || !$this->user->can('admin.edit')) {
-            abort(403, 'Sorry !! You are Unauthorized to edit any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún administrador!');
         }
 
         $admin = Admin::find($id);
@@ -132,14 +132,14 @@ class AdminsController extends Controller
     public function update(Request $request, int $id)
     {
         if (is_null($this->user) || !$this->user->can('admin.edit')) {
-            abort(403, 'Sorry !! You are Unauthorized to edit any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún administrador!');
         }
 
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin role,
         // so that no-one could delete or disable it by somehow.
         if ($id === 1) {
-            session()->flash('error', 'Sorry !! You are not authorized to update this Admin as this is the Super Admin. Please create new one if you need to test !');
+            session()->flash('error', 'Lo siento !! No está autorizado a actualizar este administrador ya que es el superadministrador. ¡Cree uno nuevo si necesita realizar una prueba!');
             return back();
         }
 
@@ -172,7 +172,7 @@ class AdminsController extends Controller
             $admin->assignRole($request->roles);
         }
 
-        session()->flash('success', 'Admin has been updated !!');
+        session()->flash('success', '¡¡El administrador ha sido actualizado!!');
         return back();
     }
 
@@ -185,7 +185,7 @@ class AdminsController extends Controller
     public function destroy(int $id)
     {
         if (is_null($this->user) || !$this->user->can('admin.delete')) {
-            abort(403, 'Sorry !! You are Unauthorized to delete any admin !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a eliminar ningún administrador!');
         }
 
         // TODO: You can delete this in your local. This is for heroku publish.
@@ -201,7 +201,7 @@ class AdminsController extends Controller
             $admin->delete();
         }
 
-        session()->flash('success', 'Admin has been deleted !!');
+        session()->flash('success', '¡¡El administrador ha sido eliminado!!');
         return back();
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('info_nombre', 250)->nullable();
             $table->string('info_logo', 250)->nullable();
             $table->text('info_descripcion')->nullable();
+            $table->text('info_sobre_nosotros')->nullable();
             $table->string('info_video_url', 250)->nullable();
             $table->string('info_telefono_1', 100)->nullable();
             $table->string('info_contacto_1', 100)->nullable();

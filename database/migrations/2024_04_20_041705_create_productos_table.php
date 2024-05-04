@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('producto_id');
             $table->string('producto_nombre', 250)->nullable();
             $table->string('producto_imagen', 250)->nullable();
+            $table->text('producto_descripcion')->nullable();
             $table->double('producto_precio', 4, 2);
             $table->integer('producto_cantidad')->nullable();
             $table->enum('producto_estado', ['ACTIVO', 'INACTIVO', 'DESACTIVADO', 'ELIMINADO'])->default('ACTIVO');

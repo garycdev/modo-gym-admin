@@ -119,9 +119,7 @@ class RolePermissionSeeder extends Seeder
                 'group_name' => 'contactar',
                 'permissions' => [
                     // Contactar Permissions
-                    'contactar.create',
                     'contactar.view',
-                    'contactar.edit',
                     'contactar.delete',
                 ]
             ],
@@ -129,10 +127,8 @@ class RolePermissionSeeder extends Seeder
                 'group_name' => 'costo',
                 'permissions' => [
                     // Costos Permissions
-                    'costo.create',
                     'costo.view',
                     'costo.edit',
-                    'costo.delete',
                 ]
             ],
             [
@@ -189,10 +185,8 @@ class RolePermissionSeeder extends Seeder
                 'group_name' => 'informacion_empresa',
                 'permissions' => [
                     // Informacion Empresa Permissions
-                    'informacion_empresa.create',
                     'informacion_empresa.view',
                     'informacion_empresa.edit',
-                    'informacion_empresa.delete',
                 ]
             ],
             [

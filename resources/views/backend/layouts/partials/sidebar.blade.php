@@ -47,16 +47,23 @@
             </a>
         </li>
         @endif
+        @if ($usr->can('informacion_empresa.view') || $usr->can('equipo.view')
+            || $usr->can('ejercicio.view') || $usr->can('musculo.view'))
         <li class="menu-label">MODO GYM</li>
-        {{-- @if ($usr->can('informacion_empresa.create') || $usr->can('informacion_empresa.view') ||  $usr->can('informacion_empresa.edit') ||  $usr->can('informacion_empresa.delete'))
-        <li class="{{ Route::is('admin.informacion_empresa.index')  || Route::is('admin.informacion_empresa.edit') || Route::is('admin.informacion_empresa.create') || Route::is('admin.informacion_empresa.delete')  ? 'mm-active' : '' }}">
-            <a href="{{ route('admin.informacion_empresa.index') }}">
+        @endif
+
+        @if ($usr->can('informacion_empresa.view') )
+        <li class="{{  Route::is('admin.informaciones.index') ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.informaciones.index') }}">
                 <div class="parent-icon"><i class='lni lni-emoji-happy'></i>
                 </div>
                 <div class="menu-title">Informacion</div>
             </a>
         </li>
-        @endif --}}
+        @endif
+        @if ($usr->can('equipo.view') || $usr->can('ejercicio.view')
+            ||  $usr->can('musculo.view') )
+
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-dumbbell'></i>
@@ -64,73 +71,105 @@
                 <div class="menu-title">Ejercicios</div>
             </a>
             <ul>
-                <li> <a href="ecommerce-products.html"><i class='bx bx-radio-circle'></i>Ejercicios</a>
+                @if ($usr->can('ejercicio.view'))
+                <li class="{{ Route::is('admin.ejercicios.index') ? 'mm-active' : '' }}">
+                    <a href="{{ route('admin.ejercicios.index') }}"><i class='bx bx-radio-circle'></i>Ejercicios</a>
                 </li>
-                <li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>Equipos</a>
+                @endif
+                @if ($usr->can('equipo.view'))
+                <li class="{{Route::is('admin.equipos.index')  ? 'mm-active' : '' }}">
+                    <a href="{{ route('admin.equipos.index') }}"><i class='bx bx-radio-circle'></i>Equipos</a>
                 </li>
-                <li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>Musculos</a>
+                @endif
+                @if ($usr->can('musculo.view'))
+                <li class="{{Route::is('admin.musculos.index')  ? 'mm-active' : '' }}">
+                    <a href="{{ route('admin.musculos.index') }}"><i class='bx bx-radio-circle'></i>Musculos</a>
                 </li>
+                @endif
+
             </ul>
         </li>
+        @endif
+        @if ($usr->can('blog.view') || $usr->can('producto.view')
+            || $usr->can('galeria.view') || $usr->can('video.view'))
         <li class="menu-label">Publicidad</li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('blog.view'))
+        <li class="{{ Route::is('admin.blogs.index') ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.blogs.index') }}">
                 <div class="parent-icon"><i class='bx bx-book-alt'></i>
                 </div>
                 <div class="menu-title">Blog</div>
             </a>
         </li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('producto.view'))
+        <li class="{{ Route::is('admin.productos.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.productos.index') }}">
                 <div class="parent-icon"><i class='bx bx-shopping-bag'></i>
                 </div>
                 <div class="menu-title">Productos</div>
             </a>
         </li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('galeria.view'))
+        <li class="{{ Route::is('admin.galerias.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.galerias.index') }}">
                 <div class="parent-icon"><i class='bx bx-camera'></i>
                 </div>
                 <div class="menu-title">Galerias</div>
             </a>
         </li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('video.view'))
+        <li class="{{ Route::is('admin.videos.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.videos.index') }}">
                 <div class="parent-icon"><i class='bx bx-video-recording'></i>
                 </div>
                 <div class="menu-title">Videos</div>
             </a>
         </li>
+        @endif
+        @if ($usr->can('cliente.view'))
         <li class="menu-label">Clientes</li>
-        <li>
-            <a href="javascript:;">
+        <li class="{{ Route::is('admin.clientes.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.clientes.index') }}">
                 <div class="parent-icon"><i class="lni lni-users"></i>
                 </div>
                 <div class="menu-title">Usuario</div>
             </a>
         </li>
+        @endif
+        @if ($usr->can('cita.view')||$usr->can('horario.view'))
         <li class="menu-label">Citas & Horarios</li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('cita.view'))
+        <li class="{{ Route::is('admin.citas.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.citas.index') }}">
                 <div class="parent-icon"><i class='bx bx-calendar-heart'></i>
                 </div>
                 <div class="menu-title">Citas</div>
             </a>
         </li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('horario.view'))
+        <li class="{{ Route::is('admin.horarios.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.horarios.index') }}">
                 <div class="parent-icon"><i class='bx bx-stopwatch'></i>
                 </div>
                 <div class="menu-title">Horarios</div>
             </a>
         </li>
-        <li>
-            <a href="javascript:;">
+        @endif
+        @if ($usr->can('contactar.view'))
+        <li class="{{ Route::is('admin.contactos.index')  ? 'mm-active' : '' }}">
+            <a href="{{ route('admin.contactos.index') }}">
                 <div class="parent-icon"><i class="bx bx-phone"></i>
                 </div>
                 <div class="menu-title">Contactos</div>
             </a>
         </li>
+        @endif
     </ul>
     <!--end navigation-->
 </div>

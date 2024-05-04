@@ -30,7 +30,7 @@ class RolesController extends Controller
     public function index()
     {
         if (is_null($this->user) || !$this->user->can('role.view')) {
-            abort(403, 'Sorry !! You are Unauthorized to view any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún rol!');
         }
 
         $roles = Role::all();
@@ -45,7 +45,7 @@ class RolesController extends Controller
     public function create()
     {
         if (is_null($this->user) || !$this->user->can('role.create')) {
-            abort(403, 'Sorry !! You are Unauthorized to create any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rol!');
         }
 
         $all_permissions  = Permission::all();
@@ -62,14 +62,14 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         if (is_null($this->user) || !$this->user->can('role.create')) {
-            abort(403, 'Sorry !! You are Unauthorized to create any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rol!');
         }
 
         // Validation Data
         $request->validate([
             'name' => 'required|max:100|unique:roles'
         ], [
-            'name.requried' => 'Please give a role name'
+            'name.requried' => 'Por favor proporcione un nombre de rol'
         ]);
 
         // Process Data
@@ -82,7 +82,7 @@ class RolesController extends Controller
             $role->syncPermissions($permissions);
         }
 
-        session()->flash('success', 'Role has been created !!');
+        session()->flash('success', '¡¡El rol ha sido creado!!');
         return back();
     }
 
@@ -106,7 +106,7 @@ class RolesController extends Controller
     public function edit(int $id)
     {
         if (is_null($this->user) || !$this->user->can('role.edit')) {
-            abort(403, 'Sorry !! You are Unauthorized to edit any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún rol!');
         }
 
         $role = Role::findById($id, 'admin');
@@ -125,14 +125,14 @@ class RolesController extends Controller
     public function update(Request $request, int $id)
     {
         if (is_null($this->user) || !$this->user->can('role.edit')) {
-            abort(403, 'Sorry !! You are Unauthorized to edit any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún rol!');
         }
 
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin role,
         // so that no-one could delete or disable it by somehow.
         if ($id === 1) {
-            session()->flash('error', 'Sorry !! You are not authorized to edit this role !');
+            session()->flash('error', 'Lo siento !! ¡No estás autorizado a editar este rol!');
             return back();
         }
 
@@ -140,7 +140,7 @@ class RolesController extends Controller
         $request->validate([
             'name' => 'required|max:100|unique:roles,name,' . $id
         ], [
-            'name.requried' => 'Please give a role name'
+            'name.requried' => 'Por favor proporcione un nombre de rol'
         ]);
 
         $role = Role::findById($id, 'admin');
@@ -152,7 +152,7 @@ class RolesController extends Controller
             $role->syncPermissions($permissions);
         }
 
-        session()->flash('success', 'Role has been updated !!');
+        session()->flash('success', '¡¡El rol ha sido actualizado!!');
         return back();
     }
 
@@ -165,14 +165,14 @@ class RolesController extends Controller
     public function destroy(int $id)
     {
         if (is_null($this->user) || !$this->user->can('role.delete')) {
-            abort(403, 'Sorry !! You are Unauthorized to delete any role !');
+            abort(403, 'Lo siento !! ¡No estás autorizado a eliminar ningún rol!');
         }
 
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin role,
         // so that no-one could delete or disable it by somehow.
         if ($id === 1) {
-            session()->flash('error', 'Sorry !! You are not authorized to delete this role !');
+            session()->flash('error', 'Lo siento !! ¡No estás autorizado a eliminar este rol!');
             return back();
         }
 
@@ -181,7 +181,7 @@ class RolesController extends Controller
             $role->delete();
         }
 
-        session()->flash('success', 'Role has been deleted !!');
+        session()->flash('success', '¡¡El rol ha sido eliminado!!');
         return back();
     }
 }

@@ -27,7 +27,6 @@ Role Edit - Admin Panel
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt"></i></a>
                         <li class="breadcrumb-item"><a href="{{ route('admin.roles.index') }}"><i class="bx bx-category">Roles</i></a>
-                        </li>
                         <li class="breadcrumb-item active" aria-current="page">Editar Roles</li>
                     </ol>
                 </nav>
