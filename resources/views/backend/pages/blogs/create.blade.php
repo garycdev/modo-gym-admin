@@ -36,6 +36,7 @@ Crear Blogs - Admin Panel
                 <div class="card">
                     <div class="card-header px-4 py-3">
                         <h5 class="mb-0">Crear Blog</h5>
+                        @include('backend.layouts.partials.messages')
                     </div>
                     <div class="card-body p-4">
                         <form action="{{ route('admin.blogs.store') }}" method="POST" enctype="multipart/form-data">

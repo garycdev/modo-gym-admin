@@ -25,7 +25,8 @@ Editar Blogs - Admin Panel
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.ejercicios.index') }}"><i class="bx bx-dumbbell">Blogs</i></a>
+                        <li class="breadcrumb-item active" aria-current="page">Editar</li>
                     </ol>
                 </nav>
             </div>
@@ -36,9 +37,11 @@ Editar Blogs - Admin Panel
                 <div class="card">
                     <div class="card-header px-4 py-3">
                         <h5 class="mb-0">Editar Blog</h5>
+                        @include('backend.layouts.partials.messages')
                     </div>
                     <div class="card-body p-4">
-                        <form action="{{ route('admin.blogs.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.blogs.update', $blog->blog_id) }}" method="POST" enctype="multipart/form-data">
+                            @method('PUT')
                             @csrf
                             <div class="col-md-12">
                                 <label for="blog_titulo" class="form-label">Titulo</label>
@@ -53,6 +56,15 @@ Editar Blogs - Admin Panel
                             <div class="col-md-12">
                                 <label for="blog_descripcion" class="form-label">Descripcion</label>
                                 <textarea class="form-control" id="blog_descripcion" name="blog_descripcion" rows="6" value="{{$blog->blog_descripcion}}">{{$blog->blog_descripcion}}</textarea>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="blog_estado" class="form-label">Estado</label>
+                                <select id="blog_estado" name="blog_estado" class="form-select">
+                                    <option value="ACTIVO" {{ $blog->blog_estado == 'ACTIVO' ? 'selected' : '' }}>ACTIVO</option>
+                                    <option value="INACTIVO" {{ $blog->blog_estado == 'INACTIVO' ? 'selected' : '' }}>INACTIVO</option>
+                                </select>
+
                             </div>
                             <br>
                             <div class="col-md-12">
