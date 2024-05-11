@@ -16,8 +16,8 @@ class UsuarioController extends Controller
 
     public function registrar_asistencia(Request $request)
     {
-        $ciUsuario = $request->input('ci_usuario');
-        $user = Usuarios::where('ci_usuario', $ciUsuario)->first();
+        $ciUsuario = $request->input('usu_ci');
+        $user = Usuarios::where('usu_ci', $ciUsuario)->first();
         if($user) {
             // Buscamos si ya existe una asistencia para el usuario en la fecha actual.
             $asistencia = Asistencia::where('asistencia_fecha', date('Y-m-d'))
@@ -72,7 +72,7 @@ class UsuarioController extends Controller
         }
     }
     public function usuario($ci){
-        $user = Usuarios::where('ci_usuario', $ci)->first();
+        $user = Usuarios::where('usu_ci', $ci)->first();
         if($user){
             return response()->json([
                'success' => true,
@@ -92,8 +92,8 @@ class UsuarioController extends Controller
     }
 
     public function huella(Request $request){
-        $ciUsuario = $request->input('ci_usuario');
-        $user = Usuarios::where('ci_usuario', $ciUsuario)->first();
+        $ciUsuario = $request->input('usu_ci');
+        $user = Usuarios::where('usu_ci', $ciUsuario)->first();
         if($user){
             $user->usu_huella = true; // Asigna el nuevo valor al campo usu_huella
             $user->save(); // Guarda los cambios en la base de datos
