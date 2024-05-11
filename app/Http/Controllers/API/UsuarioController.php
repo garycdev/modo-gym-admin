@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Usuarios;
 use App\Models\Asistencia;
 
@@ -18,31 +20,39 @@ class UsuarioController extends Controller
     {
         $ciUsuario = $request->input('usu_ci');
         $user = Usuarios::where('usu_ci', $ciUsuario)->first();
-        if($user) {
-            // Buscamos si ya existe una asistencia para el usuario en la fecha actual.
-            $asistencia = Asistencia::where('asistencia_fecha', date('Y-m-d'))
-                                     ->where('usu_id', $user->usu_id)
-                                     ->first();
-            if($asistencia) {
-                // Si ya hay una asistencia para el usuario en la fecha actual...
+
+        if ($user && $user->usu_huella == true) {
+            $asistencia = DB::table('asistencia')
+                            ->where('asistencia_fecha', date('Y-m-d'))
+                            ->where('usu_id', $user->usu_id)
+                            ->orderBy('asistencia_id', 'desc')
+                            ->first();
+
+            if ($asistencia) {
                 if ($asistencia->asistencia_tipo === 'SALIDA') {
-                    // Si la asistencia es una salida, significa que el usuario está marcando una entrada nuevamente.
-                    $asistencia = new Asistencia();
-                    $asistencia->usu_id = $user->usu_id;
-                    $asistencia->asistencia_fecha = date('Y-m-d');
-                    $asistencia->asistencia_hora = date('H:i:s');
-                    $asistencia->asistencia_tipo = 'ENTRADA';
+                    $nuevaAsistencia = [
+                        'usu_id' => $user->usu_id,
+                        'asistencia_fecha' => date('Y-m-d'),
+                        'asistencia_hora' => date('H:i:s'),
+                        'asistencia_tipo' => 'ENTRADA'
+                    ];
+
+                    DB::table('asistencia')->insert($nuevaAsistencia);
                 } else {
-                    // Si la asistencia es una entrada, comprobamos si han pasado al menos una hora desde la entrada.
                     $horaEntrada = strtotime($asistencia->asistencia_hora);
                     $horaActual = time();
-                    $diferenciaHoras = ($horaActual - $horaEntrada) / 3600; // Convertir diferencia de segundos a horas
+                    $diferenciaHoras = ($horaActual - $horaEntrada) / 3600;
 
                     if ($diferenciaHoras >= 1) {
-                        // Si han pasado al menos una hora desde la entrada, el usuario puede registrar la salida.
-                        $asistencia->asistencia_tipo = 'SALIDA';
+                        $nuevaAsistencia = [
+                            'usu_id' => $user->usu_id,
+                            'asistencia_fecha' => date('Y-m-d'),
+                            'asistencia_hora' => date('H:i:s'),
+                            'asistencia_tipo' => 'SALIDA'
+                        ];
+
+                        DB::table('asistencia')->insert($nuevaAsistencia);
                     } else {
-                        // Si no ha pasado suficiente tiempo desde la entrada, no se puede registrar la salida.
                         return response()->json([
                             'success' => false,
                             'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada.'
@@ -50,19 +60,19 @@ class UsuarioController extends Controller
                     }
                 }
             } else {
-                // Si no hay asistencia para el usuario en la fecha actual, esto significa que está marcando la entrada.
-                $asistencia = new Asistencia();
-                $asistencia->usu_id = $user->usu_id;
-                $asistencia->asistencia_fecha = date('Y-m-d');
-                $asistencia->asistencia_hora = date('H:i:s');
-                $asistencia->asistencia_tipo = 'ENTRADA';
-            }
+                $nuevaAsistencia = [
+                    'usu_id' => $user->usu_id,
+                    'asistencia_fecha' => date('Y-m-d'),
+                    'asistencia_hora' => date('H:i:s'),
+                    'asistencia_tipo' => 'ENTRADA'
+                ];
 
-            $asistencia->save();
+                DB::table('asistencia')->insert($nuevaAsistencia);
+            }
 
             return response()->json([
                 'success' => true,
-                'data' => ($asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia ENTRADA' : 'Asistencia SALIDA'
+                'data' => ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA'
             ], 200);
         } else {
             return response()->json([
@@ -71,6 +81,7 @@ class UsuarioController extends Controller
             ], 404);
         }
     }
+
     public function usuario($ci){
         $user = Usuarios::where('usu_ci', $ci)->first();
         if($user){
