@@ -19,7 +19,7 @@ class CredencialAuthMiddleware
         $providedSecret = $request->header('Api-Secret');
 
         if ($providedSecret !== $apiSecret) {
-            return response()->json(['message' => $apiSecret], 401);
+            return response()->json(['message' => "Credencial Invalido"], 401);
         }
 
         return $next($request);
