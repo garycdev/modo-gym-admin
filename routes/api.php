@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\UsuarioController;
 // });
 
 Route::middleware('apiCredential')->group(function () {
-    Route::post('/registra-asistencia', [UsuarioController::class, 'registrar_asistencia']);
-    Route::get('/usuario/{ci}', [UsuarioController::class, 'usuario']);
-    Route::post('/registra-huella', [UsuarioController::class, 'huella']);
+    Route::post('/api/registra-asistencia', [UsuarioController::class, 'registrar_asistencia']);
+    Route::get('/api/usuario/{ci}', [UsuarioController::class, 'usuario']);
+    Route::post('/api/registra-huella', [UsuarioController::class, 'huella']);
 });
