@@ -2,7 +2,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-Admin Edit - Admin Panel
+Editar Admin - Admin Panel
 @endsection
 
 @section('styles')
@@ -22,7 +22,7 @@ Admin Edit - Admin Panel
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Crear Usuario Admin</li>
+                        <li class="breadcrumb-item active" aria-current="page">Editar Usuario {{ $admin->name }}</li>
                     </ol>
                 </nav>
             </div>

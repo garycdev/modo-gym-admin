@@ -16,4 +16,8 @@ class TipoTest extends Model
         'tipo_test_nombre', 'tipo_test_created_at',
         'tipo_test_updated_at'
     ];
+    // Especifica el nombre de la columna para updated_at
+    const UPDATED_AT = 'tipo_test_updated_at';
+
+    const CREATED_AT = 'tipo_test_created_at';
 }

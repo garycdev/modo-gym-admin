@@ -15,4 +15,7 @@ class ImagenesGalerias extends Model
         'imagen_id', 'galeria_id', 'imagen_url', 'imagen_created_at',
         'imagen_updated_at'
     ];
+    // Especifica el nombre de la columna para updated_at
+    const UPDATED_AT = 'imagen_updated_at';
+    const CREATED_AT = 'imagen_created_at';
 }

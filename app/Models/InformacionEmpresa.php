@@ -21,4 +21,6 @@ class InformacionEmpresa extends Model
 
     // Especifica el nombre de la columna para updated_at
     const UPDATED_AT = 'info_updated_at';
+
+    const CREATED_AT = 'info_created_at';
 }

@@ -16,4 +16,8 @@ class Pagos extends Model
         'pago_id', 'usu_id', 'pago_monto', 'costo_id', 'pago_fecha', 'pago_metodo',
         'pago_estado', 'pago_observaciones', 'creado_en', 'actualizado_en'
     ];
+    // Especifica el nombre de la columna para updated_at
+    const UPDATED_AT = 'actualizado_en';
+
+    const CREATED_AT = 'creado_en';
 }

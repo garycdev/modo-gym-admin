@@ -13,6 +13,10 @@ class Galerias extends Model
     protected $primaryKey = 'galeria_id';
     protected $fillable = [
         'galeria_id', 'galeria_nombre', 'galeria_descripcion',
-        'created_at', 'updated_at'
+        'galeria_created_at', 'galeria_updated_at'
     ];
+     // Especifica el nombre de la columna para updated_at
+     const UPDATED_AT = 'galeria_updated_at';
+
+     const CREATED_AT = 'galeria_created_at';
 }

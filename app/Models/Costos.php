@@ -15,4 +15,5 @@ class Costos extends Model
         'costo_id', 'periodo', 'monto', 'created_at',
         'updated_at'
     ];
+
 }

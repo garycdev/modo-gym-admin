@@ -15,4 +15,6 @@ class Contactar extends Model
         'contactar_id', 'contactar_nombre', 'contactar_correo', 'contactar_celular',
         'contactar_descripcion', 'contactar_created_at'
     ];
+    // Especifica el nombre de la columna para updated_at
+    const CREATED_AT = 'contactar_created_at';
 }
