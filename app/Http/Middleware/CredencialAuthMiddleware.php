@@ -13,13 +13,13 @@ class CredencialAuthMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $apiSecret = env('API_SECRET');
+        $apiSecret = env('APP_CREDENCIAL');
         $providedSecret = $request->header('Api-Secret');
 
         if ($providedSecret !== $apiSecret) {
-            return response()->json(['message' => 'Credencial inválida'], 401);
+            return response()->json(['message' => $apiSecret], 401);
         }
 
         return $next($request);
