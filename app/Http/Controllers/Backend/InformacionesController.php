@@ -136,7 +136,7 @@ class InformacionesController extends Controller
         // Procesamiento de la imagen
         if ($request->hasFile('info_logo')) {
             // Eliminar la imagen existente
-            if (file_exists(public_path($informacionempresa->info_logo))) {
+            if ($informacionempresa->info_logo && file_exists(public_path($informacionempresa->info_logo))) {
                 unlink(public_path($informacionempresa->info_logo));
             }
             $image = $request->file('info_logo');

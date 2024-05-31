@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Models\Costos;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CostosController extends Controller
+class PagosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class CostosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Costos $costos)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class CostosController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Costos $costos)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class CostosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Costos $costos)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class CostosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Costos $costos)
+    public function destroy(string $id)
     {
         //
     }

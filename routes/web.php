@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -40,12 +41,13 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('galerias', 'Backend\GaleriasController', ['names' => 'admin.galerias']);
     Route::resource('videos', 'Backend\VideosController', ['names' => 'admin.videos']);
     Route::resource('clientes', 'Backend\ClientesController', ['names' => 'admin.clientes']);
+    Route::resource('costos', 'Backend\CostosController', ['names' => 'admin.costos']);
+    Route::resource('pagos', 'Backend\PagosController', ['names' => 'admin.pagos']);
     Route::resource('citas', 'Backend\CitasController', ['names' => 'admin.citas']);
     Route::resource('horarios', 'Backend\HorariosController', ['names' => 'admin.horarios']);
     Route::resource('contactos', 'Backend\ContactosController', ['names' => 'admin.contactos']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
-
 
     // Login Routes
     Route::get('/login', 'Backend\Auth\LoginController@showLoginForm')->name('admin.login');

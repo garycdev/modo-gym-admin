@@ -1,7 +1,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-    Clientes - Admin Panel
+    Costos - Admin Panel
 @endsection
 
 @section('styles')
@@ -13,20 +13,20 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Clientes</div>
+                <div class="breadcrumb-title pe-3">Costos</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+                            <li class="breadcrumb-item active" aria-current="page">Costos</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
                         @if (Auth::guard('admin')->user()->can('cliente.view'))
-                            <a href="{{ route('admin.clientes.create') }}" class="btn btn-primary">Nuevo cliente</a>
+                            <a href="{{ route('admin.costos.create') }}" class="btn btn-primary">Nuevo costo</a>
                         @endif
                         {{-- <button type="button"
                             class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
@@ -43,29 +43,18 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 class="mb-0 text-uppercase">Lista de clientes</h6>
+            <h6 class="mb-0 text-uppercase">Lista de costos</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table id="tabla_clientes" class="table table-bordered table-hover">
+                        <table id="tabla_costos" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Edad</th>
-                                    <th>Genero</th>
-                                    <th>Nivel</th>
-                                    <th>Antecedentes medicos</th>
-                                    <th>Lesiones</th>
-                                    <th>Objetivo</th>
-                                    <th>Frecuencia</th>
-                                    <th>Hora</th>
-                                    <th>Deportes</th>
-                                    <th>Estado</th>
+                                    <th>Periodo</th>
+                                    <th>Monto</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -73,43 +62,27 @@
                                 @php
                                     $i = 1;
                                 @endphp
-                                @foreach ($clientes as $cliente)
+                                @foreach ($costos as $costo)
                                     <tr>
                                         <td>{{ $i }}</td>
+                                        <td>{{ $costo->periodo }}</td>
+                                        <td>{{ $costo->monto }}&nbsp;bs.</td>
                                         <td>
-                                            <img src="{{ asset($cliente->usu_imagen) }}" alt="" width="50">
-                                        </td>
-                                        <td>{{ $cliente->usu_nombre }}</td>
-                                        <td>{{ $cliente->usu_apellidos }}</td>
-                                        <td>{{ $cliente->usu_edad }}</td>
-                                        <td>{{ $cliente->usu_genero }}</td>
-                                        <td>{{ $cliente->usu_nivel }}</td>
-                                        <td>{{ $cliente->usu_ante_medicos }}</td>
-                                        <td>{{ $cliente->usu_lesiones }}</td>
-                                        <td>{{ $cliente->usu_objetivo }}</td>
-                                        <td>{{ $cliente->usu_frecuencia }}</td>
-                                        <td>{{ $cliente->usu_hora }}</td>
-                                        <td>{{ $cliente->usu_deportes }}</td>
-                                        <td>
-                                            <span
-                                                class="badge bg-{{ $cliente->usu_estado == 'ACTIVO' ? 'success' : ($cliente->usu_estado == 'ELIMINADO' ? 'dark' : ($cliente->usu_estado == 'INACTIVO' ? 'warning' : 'danger')) }}">{{ $cliente->usu_estado }}</span>
-                                        </td>
-                                        <td>
-                                            @if (Auth::guard('admin')->user()->can('cliente.edit'))
+                                            @if (Auth::guard('admin')->user()->can('costo.edit'))
                                                 <a class="btn btn-sm btn-warning"
-                                                    href="{{ route('admin.clientes.edit', $cliente->usu_id) }}">
+                                                    href="{{ route('admin.costos.edit', $costo->costo_id) }}">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                             @endif
 
-                                            @if (Auth::guard('admin')->user()->can('cliente.delete'))
+                                            @if (Auth::guard('admin')->user()->can('costo.view'))
                                                 <a class="btn btn-danger text-white"
-                                                    href="{{ route('admin.clientes.destroy', $cliente->usu_id) }}"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $cliente->usu_id }}').submit();">
+                                                    href="{{ route('admin.costos.destroy', $costo->costo_id) }}"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $costo->costo_id }}').submit();">
                                                     <i class='bx bxs-trash'></i>
                                                 </a>
-                                                <form id="delete-form-{{ $cliente->usu_id }}"
-                                                    action="{{ route('admin.clientes.destroy', $cliente->usu_id) }}"
+                                                <form id="delete-form-{{ $costo->costo_id }}"
+                                                    action="{{ route('admin.costos.destroy', $costo->costo_id) }}"
                                                     method="POST" style="display: none;">
                                                     @method('DELETE')
                                                     @csrf
@@ -125,19 +98,8 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Edad</th>
-                                    <th>Genero</th>
-                                    <th>Nivel</th>
-                                    <th>Antecedentes medicos</th>
-                                    <th>Lesiones</th>
-                                    <th>Objetivo</th>
-                                    <th>Frecuencia</th>
-                                    <th>Hora</th>
-                                    <th>Deportes</th>
-                                    <th>Estado</th>
+                                    <th>Periodo</th>
+                                    <th>Monto</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
@@ -214,7 +176,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            var table = $("#tabla_clientes").DataTable({
+            var table = $("#tabla_costos").DataTable({
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
