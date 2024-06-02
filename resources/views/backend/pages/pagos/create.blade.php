@@ -1,7 +1,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-    Costos nuevo - Admin Panel
+    Registro pago - Admin Panel
 @endsection
 
 @section('styles')
@@ -24,13 +24,13 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Create Costos</div>
+                <div class="breadcrumb-title pe-3">Registro pago</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Nuevo costo</li>
+                            <li class="breadcrumb-item active" aria-current="page">Resgitro pago</li>
                         </ol>
                     </nav>
                 </div>
@@ -52,30 +52,71 @@
                 <div class="col-xl-6 mx-auto">
                     <div class="card">
                         <div class="card-header px-4 py-3">
-                            <h5 class="mb-0">Registrar costo</h5>
+                            <h5 class="mb-0">Registrar pago</h5>
                         </div>
                         <div class="card-body p-4">
-                            <form class="row g-3 needs-validation" method="POST"
-                                action="{{ route('admin.costos.store') }}">
+                            <form class="row g-3 needs-validation" method="POST" action="{{ route('admin.pagos.store') }}">
                                 @csrf
-                                <div class="col-md-6">
-                                    <label for="bsValidation9" class="form-label required_value">Periodo </label>
-                                    <select id="periodo" name="periodo" class="form-select">
-                                        <option selected disabled value>[PERIODO]</option>
-                                        <option value="MENSUAL">MENSUAL</option>
-                                        <option value="ANUAL">ANUAL</option>
-                                        <option value="SEMESTRAL">SEMESTRAL</option>
-                                        <option value="PRODUCTO">PRODUCTO</option>
+                                <div class="col-md-12">
+                                    <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                                    <select id="usu_id" name="usu_id" class="form-select usu_id"
+                                        onchange="setUsuario(this)">
+                                        <option selected disabled value>[CLIENTE]</option>
+                                        @foreach ($clientes as $cliente)
+                                            <option value="{{ $cliente->usu_id }}">{{ $cliente->usu_nombre }}
+                                                {{ $cliente->usu_apellidos }}</option>
+                                        @endforeach
                                     </select>
-                                    @error('periodo')
+                                    @error('usu_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="bsValidation9" class="form-label">Monto </label>
+                                    <label for="bsValidation9" class="form-label required_value">Costo </label>
+                                    <select id="costo_id" name="costo_id" class="form-select" onchange="setMonto()">
+                                        <option selected disabled value>[COSTO]</option>
+                                        @foreach ($costos as $costo)
+                                            <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}">
+                                                {{ $costo->monto }}
+                                                [{{ $costo->periodo }}]</option>
+                                        @endforeach
+                                    </select>
+                                    @error('costo_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bsValidation9" class="form-label required_value">Monto </label>
                                     <input type="number" class="form-control" id="monto" name="monto"
-                                        placeholder="Monto" step="any">
+                                        placeholder="Monto">
                                     @error('monto')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="bsValidation9" class="form-label required_value">Fecha pago </label>
+                                    <input type="date" class="form-control" id="fecha" name="fecha">
+                                    @error('fecha')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bsValidation9" class="form-label required_value">Metodo </label>
+                                    <select id="metodo" name="metodo" class="form-select">
+                                        <option selected disabled value>[METODO]</option>
+                                        <option value="EFECTIVO">EFECTIVO</option>
+                                        <option value="TARJETA_CREDITO">TARJETA_CREDITO</option>
+                                        <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                    </select>
+                                    @error('metodo')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="bsValidation9" class="form-label">Observaciones </label>
+                                    <textarea name="observaciones" id="observaciones" rows="3" placeholder="Observaciones" class="form-control"></textarea>
+                                    @error('observaciones')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -161,4 +202,16 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.usu_id').select2();
+        });
+
+        function setMonto() {
+            var monto = $('#costo_id option:selected').attr('data-monto');
+            $('#monto').val(monto);
+            $('#monto').attr('step', monto);
+        }
+    </script>
 @endsection

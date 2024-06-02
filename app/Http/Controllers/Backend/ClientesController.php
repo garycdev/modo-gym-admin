@@ -23,7 +23,7 @@ class ClientesController extends Controller
 
     public function index()
     {
-        $clientes = Usuarios::all();
+        $clientes = Usuarios::where('usu_estado', '<>', 'ELIMINADO')->get();
         return view('backend.pages.clientes.index', compact('clientes'));
     }
 

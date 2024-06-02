@@ -156,6 +156,15 @@
                  </a>
              </li>
          @endif
+         @if ($usr->can('pago.view'))
+             <li class="{{ Route::is('admin.pagos.index') ? 'mm-active' : '' }}">
+                 <a href="{{ route('admin.pagos.index') }}">
+                     <div class="parent-icon"><i class="lni lni-dollar"></i>
+                     </div>
+                     <div class="menu-title">Pagos</div>
+                 </a>
+             </li>
+         @endif
 
          @if ($usr->can('cita.view') || $usr->can('horario.view'))
              <li class="menu-label">Citas & Horarios</li>

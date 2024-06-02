@@ -1,7 +1,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-    Costos - Admin Panel
+    Pagos - Admin Panel
 @endsection
 
 @section('styles')
@@ -13,20 +13,20 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Costos</div>
+                <div class="breadcrumb-title pe-3">Pagos</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Costos</li>
+                            <li class="breadcrumb-item active" aria-current="page">Pagos</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
-                        @if (Auth::guard('admin')->user()->can('cliente.view'))
-                            <a href="{{ route('admin.costos.create') }}" class="btn btn-primary">Nuevo costo</a>
+                        @if (Auth::guard('admin')->user()->can('pago.create'))
+                            <a href="{{ route('admin.pagos.create') }}" class="btn btn-primary">Registrar pago</a>
                         @endif
                         {{-- <button type="button"
                             class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
@@ -43,18 +43,23 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <h6 class="mb-0 text-uppercase">Lista de costos</h6>
+            <h6 class="mb-0 text-uppercase">Lista de pagos</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table id="tabla_costos" class="table table-bordered table-hover">
+                        <table id="tabla_pagos" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Periodo</th>
-                                    <th>Monto</th>
+                                    <th>Cliente</th>
+                                    <th>Pago</th>
+                                    <th>Costo</th>
+                                    <th>Fecha</th>
+                                    <th>Metodo</th>
+                                    <th>Estado</th>
+                                    <th>Observacion</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -62,27 +67,35 @@
                                 @php
                                     $i = 1;
                                 @endphp
-                                @foreach ($costos as $costo)
+                                @foreach ($pagos as $pago)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ $costo->periodo }}</td>
-                                        <td>{{ $costo->monto }}&nbsp;bs.</td>
+                                        <td>{{ $pago->cliente->usu_nombre }}</td>
+                                        <td>{{ $pago->pago_monto }}</td>
+                                        <td>{{ $pago->costo->monto }} [{{ $pago->costo->periodo }}]</td>
+                                        <td>{{ $pago->pago_fecha }}</td>
+                                        <td>{{ $pago->pago_metodo }}</td>
                                         <td>
-                                            @if (Auth::guard('admin')->user()->can('costo.edit'))
+                                            <span
+                                                class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
+                                        </td>
+                                        <td>{{ $pago->pago_observaciones }}</td>
+                                        <td>
+                                            @if (Auth::guard('admin')->user()->can('pago.edit'))
                                                 <a class="btn btn-sm btn-warning"
-                                                    href="{{ route('admin.costos.edit', $costo->costo_id) }}">
+                                                    href="{{ route('admin.pagos.edit', $pago->pago_id) }}">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                             @endif
 
-                                            @if (Auth::guard('admin')->user()->can('costo.view'))
+                                            @if (Auth::guard('admin')->user()->can('pago.delete'))
                                                 <a class="btn btn-danger text-white"
-                                                    href="{{ route('admin.costos.destroy', $costo->costo_id) }}"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $costo->costo_id }}').submit();">
+                                                    href="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pago->pago_id }}').submit();">
                                                     <i class='bx bxs-trash'></i>
                                                 </a>
-                                                <form id="delete-form-{{ $costo->costo_id }}"
-                                                    action="{{ route('admin.costos.destroy', $costo->costo_id) }}"
+                                                <form id="delete-form-{{ $pago->pago_id }}"
+                                                    action="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
                                                     method="POST" style="display: none;">
                                                     @method('DELETE')
                                                     @csrf
@@ -98,8 +111,13 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Periodo</th>
-                                    <th>Monto</th>
+                                    <th>Cliente</th>
+                                    <th>Pago</th>
+                                    <th>Costo</th>
+                                    <th>Fecha</th>
+                                    <th>Metodo</th>
+                                    <th>Estado</th>
+                                    <th>Observacion</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
@@ -176,7 +194,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            var table = $("#tabla_costos").DataTable({
+            var table = $("#tabla_pagos").DataTable({
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",

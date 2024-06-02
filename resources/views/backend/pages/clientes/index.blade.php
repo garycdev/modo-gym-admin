@@ -92,7 +92,7 @@
                                         <td>{{ $cliente->usu_deportes }}</td>
                                         <td>
                                             <span
-                                                class="badge bg-{{ $cliente->usu_estado == 'ACTIVO' ? 'success' : ($cliente->usu_estado == 'ELIMINADO' ? 'dark' : ($cliente->usu_estado == 'INACTIVO' ? 'warning' : 'danger')) }}">{{ $cliente->usu_estado }}</span>
+                                                class="badge bg-{{ $cliente->usu_estado == 'ACTIVO' ? 'success' : ($cliente->usu_estado == 'INACTIVO' ? 'danger' : 'dark') }}">{{ $cliente->usu_estado }}</span>
                                         </td>
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('cliente.edit'))
