@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Contrutinalers\Backend;
+namespace App\Http\Controllers\Backend;
 
-use App\Http\Contrutinalers\Contrutinaler;
-use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
+use App\Models\Ejercicios;
 use App\Models\Rutinas;
-use App\Models\Costos;
+use App\Models\Usuarios;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
-
-class RutinasContrutinaler extends Contrutinaler
+class RutinasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,7 +35,7 @@ class RutinasContrutinaler extends Contrutinaler
         }
 
         $rutinas = Rutinas::all();
-        return view('backend.pages.rutina.index', compact('rutinas'));
+        return view('backend.pages.rutinas.index', compact('rutinas'));
     }
 
     /**
@@ -53,8 +49,9 @@ class RutinasContrutinaler extends Contrutinaler
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rutina!');
         }
 
-        $costos  = Costos::all();
-        return view('backend.pages.rutinas.create', compact('costos'));
+        $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
+        $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
+        return view('backend.pages.rutinas.create', compact('clientes', 'ejercicios'));
     }
 
     /**
@@ -66,26 +63,33 @@ class RutinasContrutinaler extends Contrutinaler
     public function store(Request $request)
     {
         if (is_null($this->user) || !$this->user->can('rutina.create')) {
-            abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rutina!');
+            abort(403, 'Lo siento !! ¡No estás autorizado a crear ninguna rutina!');
         }
-
-        // Validation Data
+        // dd($request);
+        // die();
         $request->validate([
-            'name' => 'required|max:100|unique:rutinas'
-        ], [
-            'name.requried' => 'Por favor proporcione un nombre de rutina'
+            'usu_id' => 'required',
+            'ejer_id' => 'required',
+            'dia' => 'required',
+            'date_ini' => 'required',
+            'date_fin' => 'required',
         ]);
 
-        // Process Data
-        $rutina = Rutinas::create([
-            'name' => $request->name,
-            'guard_name' => 'admin'
-        ]);
+        $newRutina = new Rutinas();
+        $newRutina->usu_id = $request->usu_id;
+        $newRutina->ejer_id = $request->ejer_id;
+        $newRutina->rut_serie = $request->serie == null ? 0 : $request->serie;
+        $newRutina->rut_repeticiones = $request->repeticiones == null ? 0 : $request->repeticiones;
+        $newRutina->rut_peso = $request->peso == null ? 0 : $request->peso;
+        $newRutina->rut_rid = $request->rid == null ? 0 : $request->rid;
+        $newRutina->rut_tiempo = $request->tiempo == null ? 0 : $request->tiempo;
+        $newRutina->rut_dia = $request->dia;
+        $newRutina->rut_date_ini = $request->date_ini;
+        $newRutina->rut_date_fin = $request->date_fin;
+        $newRutina->save();
 
-        // $rutinae = DB::table('rutinaes')->where('name', $request->name)->first();
-
-        session()->flash('success', '¡¡El rutina ha sido creado!!');
-        return back();
+        session()->flash('success', '¡¡Se ha creado la rutina!!');
+        return redirect()->route('admin.rutinas.index');
     }
 
     /**
@@ -108,11 +112,13 @@ class RutinasContrutinaler extends Contrutinaler
     public function edit(int $id)
     {
         if (is_null($this->user) || !$this->user->can('rutina.edit')) {
-            abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún rutina!');
+            abort(403, 'Lo siento !! ¡No estás autorizado a editar ninguna rutina!');
         }
 
         $rutina = Rutinas::find($id);
-        return view('backend.pages.rutinas.edit', compact('rutina'));
+        $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
+        $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
+        return view('backend.pages.rutinas.edit', compact('rutina', 'clientes', 'ejercicios'));
     }
 
     /**
@@ -135,32 +141,29 @@ class RutinasContrutinaler extends Contrutinaler
             session()->flash('error', 'Lo siento !! ¡No estás autorizado a editar este rutina!');
             return back();
         }
-
-        // Validation Data
         $request->validate([
-            'name' => 'required|max:100|unique:rutinaes,name,' . $id
-        ], [
-            'name.requried' => 'Por favor proporcione un nombre de rutina'
+            'usu_id' => 'required',
+            'ejer_id' => 'required',
+            'dia' => 'required',
+            'date_ini' => 'required',
+            'date_fin' => 'required',
         ]);
 
-        // Create New Admin
-        $rutina = Rutinas::find($id);
+        $editRutina = Rutinas::find($id);
+        $editRutina->usu_id = $request->usu_id;
+        $editRutina->ejer_id = $request->ejer_id;
+        $editRutina->rut_serie = $request->serie == null ? 0 : $request->serie;
+        $editRutina->rut_repeticiones = $request->repeticiones == null ? 0 : $request->repeticiones;
+        $editRutina->rut_peso = $request->peso == null ? 0 : $request->peso;
+        $editRutina->rut_rid = $request->rid == null ? 0 : $request->rid;
+        $editRutina->rut_tiempo = $request->tiempo == null ? 0 : $request->tiempo;
+        $editRutina->rut_dia = $request->dia;
+        $editRutina->rut_date_ini = $request->date_ini;
+        $editRutina->rut_date_fin = $request->date_fin;
+        $editRutina->save();
 
-        // Validation Data
-        $request->validate([
-            'name' => 'required|max:50',
-            'email' => 'required|max:100|email|unique:admins,email,' . $id,
-            'password' => 'nullable|min:6|confirmed',
-        ]);
-
-        $admin->name = $request->name;
-        $admin->email = $request->email;
-        $admin->username = $request->username;
-
-        $admin->save();
-
-        session()->flash('success', '¡¡El rutina ha sido actualizado!!');
-        return back();
+        session()->flash('success', '¡¡La rutina ha sido actualizada!!');
+        return redirect()->route('admin.rutinas.index');
     }
 
     /**
@@ -178,17 +181,17 @@ class RutinasContrutinaler extends Contrutinaler
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin rutinae,
         // so that no-one could delete or disable it by somehow.
-        if ($id === 1) {
-            session()->flash('error', 'Lo siento !! ¡No estás autorizado a eliminar este rutina!');
-            return back();
-        }
+        // if ($id === 1) {
+        //     session()->flash('error', 'Lo siento !! ¡No estás autorizado a eliminar este rutina!');
+        //     return back();
+        // }
 
         $rutina = Rutinas::find($id);
         if (!is_null($rutina)) {
             $rutina->delete();
         }
 
-        session()->flash('success', '¡¡El rutina ha sido eliminado!!');
+        session()->flash('success', '¡¡La rutina ha sido eliminada!!');
         return back();
     }
 }

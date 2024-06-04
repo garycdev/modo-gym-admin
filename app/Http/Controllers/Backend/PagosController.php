@@ -139,9 +139,11 @@ class PagosController extends Controller
         }
 
         $pago = Pagos::find($id);
-        $pago->pago_estado = 'CANCELADO';
+        // $pago->pago_estado = 'CANCELADO';
         // Guardar los cambios en la base de datos
-        $pago->save();
+        if (!is_null($pago)) {
+            $pago->delete();
+        }
 
         session()->flash('success', '¡¡El registro ha sido eliminado!!');
         return back();

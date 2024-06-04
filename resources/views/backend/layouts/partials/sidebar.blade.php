@@ -53,7 +53,8 @@
              $usr->can('informacion_empresa.view') ||
                  $usr->can('equipo.view') ||
                  $usr->can('ejercicio.view') ||
-                 $usr->can('musculo.view'))
+                 $usr->can('musculo.view') ||
+                 $usr->can('rutina.view'))
              <li class="menu-label">MODO GYM</li>
          @endif
 
@@ -66,7 +67,12 @@
                  </a>
              </li>
          @endif
-         @if ($usr->can('equipo.view') || $usr->can('ejercicio.view') || $usr->can('musculo.view'))
+         @if (
+             $usr->can('equipo.view') ||
+                 $usr->can('ejercicio.view') ||
+                 $usr->can('equipo.view') ||
+                 $usr->can('musculo.view') ||
+                 $usr->can('musculo.view'))
 
              <li>
                  <a href="javascript:;" class="has-arrow">
@@ -94,6 +100,15 @@
                      @endif
 
                  </ul>
+             </li>
+         @endif
+         @if ($usr->can('rutina.view'))
+             <li class="{{ Route::is('admin.rutinas.index') ? 'mm-active' : '' }}">
+                 <a href="{{ route('admin.rutinas.index') }}">
+                     <div class="parent-icon"><i class='bx bx-reset'></i>
+                     </div>
+                     <div class="menu-title">Rutinas</div>
+                 </a>
              </li>
          @endif
          @if ($usr->can('blog.view') || $usr->can('producto.view') || $usr->can('galeria.view') || $usr->can('video.view'))

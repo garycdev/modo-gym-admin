@@ -17,4 +17,8 @@ class Usuarios extends Model
         'usu_frecuencia', 'usu_hora', 'usu_deportes','usu_estado', 'created_at',
         'updated_at'
     ];
+    // public function validos()
+    // {
+    //     return $this->belongsToMany()
+    // }
 }
