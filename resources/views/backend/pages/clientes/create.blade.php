@@ -58,18 +58,13 @@
                             <form class="row g-3 needs-validation" method="POST"
                                 action="{{ route('admin.clientes.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <div class="col-md-12">
-                                    <label for="bsValidation1" class="form-label required_value">Nombres </label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre"
-                                        placeholder="Nombres">
-                                    @error('nombre')
+                                <div class="col-md-3">
+                                    <label for="bsValidation2" class="form-label">CI</label>
+                                    <input type="number" class="form-control" id="ci" name="ci"
+                                        placeholder="CI">
+                                    @error('ci')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="bsValidation2" class="form-label">Apellidos</label>
-                                    <input type="text" class="form-control" id="apellidos" name="apellidos"
-                                        placeholder="Apellidos">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="bsValidation10" class="form-label required_value">Edad </label>
@@ -79,6 +74,29 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="bsValidation10" class="form-label required_value">Huella </label>
+                                    <input type="number" class="form-control" id="huella" name="huella"
+                                        placeholder="Huella">
+                                    @error('huella')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bsValidation1" class="form-label required_value">Nombres </label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                        placeholder="Nombres">
+                                    @error('nombre')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bsValidation2" class="form-label">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos"
+                                        placeholder="Apellidos">
+                                </div>
+
+
                                 <div class="col-md-5">
                                     <label for="bsValidation9" class="form-label required_value">Genero </label>
                                     <select id="genero" name="genero" class="form-select">

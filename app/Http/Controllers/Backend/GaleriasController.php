@@ -67,7 +67,7 @@ class GaleriasController extends Controller
         // Validation Data
         $request->validate([
             'galeria_nombre' => 'nullable|string|max:150',
-            'imagen_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:100',
+            'imagen_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:300',
         ]);
         // Obtener el ID de la galería
         $galeriaId = $request->galeria_id;
@@ -139,7 +139,7 @@ class GaleriasController extends Controller
         }
         // Validación de los datos del formulario
         $request->validate([
-            'galeria_nombre' => 'required|string|max:150',
+            'galeria_nombre' => 'required|string|max:300',
         ]);
         // Obtener el registro de la base de datos
         $galeria = Galerias::find($id);

@@ -17,49 +17,49 @@ class UsuarioController extends Controller
     }
 
     public function registrar_asistencia(Request $request)
-    {
-        $ciUsuario = $request->input('usu_ci');
-        $user = Usuarios::where('usu_ci', $ciUsuario)->first();
+{
+    $ciUsuario = $request->input('usu_ci');
+    $user = Usuarios::where('usu_ci', $ciUsuario)->first();
 
-        if ($user && $user->usu_huella == true) {
-            $asistencia = DB::table('asistencia')
-                            ->where('asistencia_fecha', date('Y-m-d'))
-                            ->where('usu_id', $user->usu_id)
-                            ->orderBy('asistencia_id', 'desc')
-                            ->first();
+    if ($user && $user->usu_huella == true) {
+        $asistencia = DB::table('asistencia')
+            ->where('asistencia.asistencia_fecha', date('Y-m-d'))
+            ->where('asistencia.usu_id', $user->usu_id)
+            ->orderBy('asistencia.asistencia_id', 'desc')
+            ->select('asistencia.*') // Selecciona las columnas que necesites
+            ->first();
 
-            if ($asistencia) {
-                if ($asistencia->asistencia_tipo === 'SALIDA') {
-                    $nuevaAsistencia = [
-                        'usu_id' => $user->usu_id,
-                        'asistencia_fecha' => date('Y-m-d'),
-                        'asistencia_hora' => date('H:i:s'),
-                        'asistencia_tipo' => 'ENTRADA'
-                    ];
+        $pagos = DB::table('usuarios')
+            ->join('pagos', 'usuarios.usu_id', '=', 'pagos.usu_id')
+            ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
+            ->where('usuarios.usu_id', $user->usu_id)
+            ->orderBy('pagos.actualizado_en', 'desc')
+            ->select('costos.*', 'pagos.pago_fecha') // Selecciona las columnas que necesites
+            ->first();
 
-                    DB::table('asistencia')->insert($nuevaAsistencia);
-                } else {
-                    $horaEntrada = strtotime($asistencia->asistencia_hora);
-                    $horaActual = time();
-                    $diferenciaHoras = ($horaActual - $horaEntrada) / 3600;
+        // Verificar si se encontró algún pago para el usuario
+        if (!$pagos) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron pagos para este usuario.'
+            ], 404);
+        }
 
-                    if ($diferenciaHoras >= 1) {
-                        $nuevaAsistencia = [
-                            'usu_id' => $user->usu_id,
-                            'asistencia_fecha' => date('Y-m-d'),
-                            'asistencia_hora' => date('H:i:s'),
-                            'asistencia_tipo' => 'SALIDA'
-                        ];
+        // Convertir la fecha de pago a objeto DateTime para asegurar el formato
+        $fechaPago = new \DateTime($pagos->pago_fecha);
 
-                        DB::table('asistencia')->insert($nuevaAsistencia);
-                    } else {
-                        return response()->json([
-                            'success' => false,
-                            'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada.'
-                        ], 400);
-                    }
-                }
-            } else {
+        // Calcular la fecha límite para completar el mes
+        $fechaLimite = clone $fechaPago;
+        $fechaLimite->modify('+' . $pagos->mes . ' month'); // Sumar el número de meses especificado
+
+        // Calcular la diferencia en días entre la fecha límite y la fecha actual
+        $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
+        $diff = $fechaActual->diff($fechaLimite);
+        $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
+
+        // Determinar el tipo de asistencia
+        if ($asistencia) {
+            if ($asistencia->asistencia_tipo === 'SALIDA') {
                 $nuevaAsistencia = [
                     'usu_id' => $user->usu_id,
                     'asistencia_fecha' => date('Y-m-d'),
@@ -68,19 +68,53 @@ class UsuarioController extends Controller
                 ];
 
                 DB::table('asistencia')->insert($nuevaAsistencia);
-            }
+            } else {
+                $horaEntrada = strtotime($asistencia->asistencia_hora);
+                $horaActual = time();
+                $diferenciaHoras = ($horaActual - $horaEntrada) / 3600;
 
-            return response()->json([
-                'success' => true,
-                'data' => ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA'
-            ], 200);
+                if ($diferenciaHoras >= 1) {
+                    $nuevaAsistencia = [
+                        'usu_id' => $user->usu_id,
+                        'asistencia_fecha' => date('Y-m-d'),
+                        'asistencia_hora' => date('H:i:s'),
+                        'asistencia_tipo' => 'SALIDA'
+                    ];
+
+                    DB::table('asistencia')->insert($nuevaAsistencia);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada.'." ".$textoDiasFaltantes
+                    ], 400);
+                }
+            }
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Usuario no encontrado'
-            ], 404);
+            $nuevaAsistencia = [
+                'usu_id' => $user->usu_id,
+                'asistencia_fecha' => date('Y-m-d'),
+                'asistencia_hora' => date('H:i:s'),
+                'asistencia_tipo' => 'ENTRADA'
+            ];
+
+            DB::table('asistencia')->insert($nuevaAsistencia);
         }
+
+        // Construir el mensaje de respuesta
+        $mensajeAsistencia = ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA';
+        $textoDiasFaltantes = "Faltan $diferenciaDias días.";
+        return response()->json([
+            'success' => true,
+            'data' => $mensajeAsistencia." ".$textoDiasFaltantes
+        ], 200);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Usuario no encontrado'
+        ], 404);
     }
+}
+
 
     public function usuario($ci){
         $user = Usuarios::where('usu_ci', $ci)->first();

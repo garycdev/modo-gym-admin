@@ -56,7 +56,9 @@
                                     <th>Image</th>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>Edad</th>
+                                    <th>CI</th>
+                                    <th>Edad</th>}
+                                    <th>Huella</th>
                                     <th>Genero</th>
                                     <th>Nivel</th>
                                     <th>Antecedentes medicos</th>
@@ -81,7 +83,12 @@
                                         </td>
                                         <td>{{ $cliente->usu_nombre }}</td>
                                         <td>{{ $cliente->usu_apellidos }}</td>
+                                        <td>{{ $cliente->usu_ci }}</td>
                                         <td>{{ $cliente->usu_edad }}</td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $cliente->usu_huella == '1' ? 'success' : ($cliente->usu_huella == '0' ? 'danger' : 'dark') }}">{{ $cliente->usu_huella }}</span>
+                                        </td>
                                         <td>{{ $cliente->usu_genero }}</td>
                                         <td>{{ $cliente->usu_nivel }}</td>
                                         <td>{{ $cliente->usu_ante_medicos }}</td>

@@ -74,7 +74,7 @@ class EjerciciosController extends Controller
         // Validation Data
         $request->validate([
             'ejer_nombre' => 'required|string|max:150',
-            'ejer_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:100',
+            'ejer_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:300',
             'ejer_descripcion' => 'required|string|max:50000',
             'ejer_nivel' => 'required|numeric|max:127',
         ]);
@@ -150,7 +150,7 @@ class EjerciciosController extends Controller
         // Validación de los datos del formulario
         $request->validate([
             'ejer_nombre' => 'required|string|max:150',
-            'ejer_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:100',
+            'ejer_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
             'ejer_descripcion' => 'required|string|max:50000',
             'ejer_nivel' => 'required|numeric|max:127',
             'ejer_estado' => 'required|string|max:150',

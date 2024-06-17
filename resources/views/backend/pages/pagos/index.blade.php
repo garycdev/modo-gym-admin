@@ -58,6 +58,7 @@
                                     <th>Costo</th>
                                     <th>Fecha</th>
                                     <th>Metodo</th>
+                                    <th>Dias</th>
                                     <th>Estado</th>
                                     <th>Observacion</th>
                                     <th>Acciones</th>
@@ -75,6 +76,41 @@
                                         <td>{{ $pago->costo->monto }} [{{ $pago->costo->periodo }}]</td>
                                         <td>{{ $pago->pago_fecha }}</td>
                                         <td>{{ $pago->pago_metodo }}</td>
+                                        <td>
+                                            @php
+                                                // Fecha de pago obtenida del modelo $pago
+                                                $fechaPago = new DateTime($pago->pago_fecha); // Convertir a objeto DateTime para asegurar formato
+
+                                                // Calcular la fecha límite para completar el mes
+                                                $fechaLimite = clone $fechaPago;
+                                                $fechaLimite->modify('+' . $pago->costo->mes . ' month'); // Sumar el número de meses correspondiente
+
+                                                // Fecha actual sin la hora (00:00:00)
+                                                $fechaActual = today(); // Se usa today() en lugar de now()
+
+                                                // Calcular la diferencia en días
+                                                $diff = $fechaActual->diff($fechaLimite);
+                                                $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
+
+                                                // Determinar el estilo del badge basado en los días restantes
+                                                $badgeClass = $diferenciaDias > 0 ? 'bg-warning' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
+
+                                                // Texto de días restantes para completar el mes
+                                                if ($diferenciaDias > 0) {
+                                                    $textoFaltante = "$diferenciaDias días";
+                                                } elseif ($diferenciaDias == 0) {
+                                                    $textoFaltante = "Hoy es el último día";
+                                                } else {
+                                                    $textoFaltante = "Se pasaron " . abs($diferenciaDias) . " días";
+                                                }
+                                            @endphp
+
+                                            <span class="badge {{ $badgeClass }}">
+                                                {{ $textoFaltante }}
+                                            </span>
+                                        </td>
+
+
                                         <td>
                                             <span
                                                 class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
@@ -116,6 +152,7 @@
                                     <th>Costo</th>
                                     <th>Fecha</th>
                                     <th>Metodo</th>
+                                    <th>Dias</th>
                                     <th>Estado</th>
                                     <th>Observacion</th>
                                     <th>Acciones</th>

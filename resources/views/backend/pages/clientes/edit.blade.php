@@ -60,6 +60,30 @@
                                 enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
+                                <div class="col-md-3">
+                                    <label for="bsValidation10" class="form-label required_value">Edad </label>
+                                    <input type="number" class="form-control" id="ci" name="ci"
+                                        placeholder="CI" value="{{ $cliente->usu_ci }}">
+                                    @error('ci')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="bsValidation10" class="form-label required_value">Edad </label>
+                                    <input type="number" class="form-control" id="edad" name="edad"
+                                        placeholder="Edad" value="{{ $cliente->usu_edad }}">
+                                    @error('edad')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="bsValidation10" class="form-label required_value">Huella </label>
+                                    <input type="number" class="form-control" id="huella" name="huella"
+                                        placeholder="Huella" value="{{ $cliente->usu_huella }}">
+                                    @error('huella')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 <div class="col-md-12">
                                     <label for="bsValidation1" class="form-label required_value">Nombres </label>
                                     <input type="text" class="form-control" id="nombre" name="nombre"
@@ -72,14 +96,6 @@
                                     <label for="bsValidation2" class="form-label">Apellidos</label>
                                     <input type="text" class="form-control" id="apellidos" name="apellidos"
                                         placeholder="Apellidos" value="{{ $cliente->usu_apellidos }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="bsValidation10" class="form-label required_value">Edad </label>
-                                    <input type="number" class="form-control" id="edad" name="edad"
-                                        placeholder="Edad" value="{{ $cliente->usu_edad }}">
-                                    @error('edad')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
                                 <div class="col-md-5">
                                     <label for="bsValidation9" class="form-label required_value">Genero </label>

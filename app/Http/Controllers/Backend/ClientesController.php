@@ -48,9 +48,11 @@ class ClientesController extends Controller
         $request->validate([
             'nombre' => 'required',
             'edad' => 'required|numeric',
+            'huella' => 'required|numeric',
+            'ci' => 'required|numeric',
             'genero' => 'required',
             'nivel' => 'required',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:100',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
             'frecuencia' => 'nullable|numeric',
             'hora' => 'nullable|numeric',
         ]);
@@ -58,6 +60,8 @@ class ClientesController extends Controller
         $newCliente = new Usuarios();
         $newCliente->usu_nombre = $request->nombre;
         $newCliente->usu_apellidos = $request->apellidos;
+        $newCliente->usu_ci = $request->ci;
+        $newCliente->usu_huella = $request->huella;
         $newCliente->usu_edad = $request->edad;
         $newCliente->usu_genero = $request->genero;
         $newCliente->usu_nivel = $request->nivel;
@@ -110,11 +114,13 @@ class ClientesController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún usuario!');
         }
         $request->validate([
+            'ci' => 'required|numeric',
             'nombre' => 'required',
             'edad' => 'required|numeric',
+            'huella' => 'required|numeric',
             'genero' => 'required',
             'nivel' => 'required',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:100',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
             'frecuencia' => 'nullable|numeric',
             'hora' => 'nullable|numeric',
             'estado' => 'required',
@@ -123,6 +129,8 @@ class ClientesController extends Controller
         $editCliente = Usuarios::find($id);
         $editCliente->usu_nombre = $request->nombre;
         $editCliente->usu_apellidos = $request->apellidos;
+        $editCliente->usu_ci = $request->ci;
+        $editCliente->usu_huella = $request->huella;
         $editCliente->usu_edad = $request->edad;
         $editCliente->usu_genero = $request->genero;
         $editCliente->usu_nivel = $request->nivel;
