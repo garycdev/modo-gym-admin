@@ -63,7 +63,8 @@
                                         onchange="setUsuario(this)">
                                         <option selected disabled value>[CLIENTE]</option>
                                         @foreach ($clientes as $cliente)
-                                            <option value="{{ $cliente->usu_id }}">{{ $cliente->usu_nombre }}
+                                            <option value="{{ $cliente->usu_id }}">[{{ $cliente->usu_ci }}]
+                                                {{ $cliente->usu_nombre }}
                                                 {{ $cliente->usu_apellidos }}</option>
                                         @endforeach
                                     </select>
@@ -78,7 +79,7 @@
                                         @foreach ($costos as $costo)
                                             <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}">
                                                 {{ $costo->monto }}
-                                                [{{ $costo->periodo }}]</option>
+                                                [{{ $costo->nombre }} - {{ $costo->periodo }}]</option>
                                         @endforeach
                                     </select>
                                     @error('costo_id')
@@ -117,6 +118,21 @@
                                     <label for="bsValidation9" class="form-label">Observaciones </label>
                                     <textarea name="observaciones" id="observaciones" rows="3" placeholder="Observaciones" class="form-control"></textarea>
                                     @error('observaciones')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="bsValidation9" class="form-label required_value">Estado </label>
+                                    <select id="estado" name="estado" class="form-select">
+                                        <option selected disabled value>[ESTADO]</option>
+                                        <option value="PENDIENTE">
+                                            PENDIENTE</option>
+                                        <option value="COMPLETADO">
+                                            COMPLETADO</option>
+                                        <option value="CANCELADO">
+                                            CANCELADO</option>
+                                    </select>
+                                    @error('estado')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>

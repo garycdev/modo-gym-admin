@@ -56,7 +56,7 @@ $usr = Auth::guard('admin')->user();
                                         @csrf
                                         <div class="row mb-3">
                                             <div class="col-sm-4">
-                                                <h6 class="mb-0">{{$costo->periodo}}</h6>
+                                                <h6 class="mb-0">{{$costo->nombre}}</h6>
                                             </div>
                                             <div class="col-sm-5 text-secondary">
                                                 <input type="number" class="form-control" id="monto" name="monto" value="{{$costo->monto}}" />

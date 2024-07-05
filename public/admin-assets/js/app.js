@@ -18,18 +18,23 @@ $(function() {
 		}),
 		
 
-
+		$("html").attr("class", localStorage.getItem("theme"))
+		if (localStorage.getItem("theme") == "dark-theme") {
+			$(".dark-mode-icon i").attr("class", "bx bx-sun");
+		} else {
+			$(".dark-mode-icon i").attr("class", "bx bx-moon");
+		}
 
 		$(".dark-mode").on("click", function() {
-
 			if($(".dark-mode-icon i").attr("class") == 'bx bx-sun') {
 				$(".dark-mode-icon i").attr("class", "bx bx-moon");
 				$("html").attr("class", "light-theme")
+				localStorage.setItem("theme", "light-theme")
 			} else {
 				$(".dark-mode-icon i").attr("class", "bx bx-sun");
 				$("html").attr("class", "dark-theme")
+				localStorage.setItem("theme", "dark-theme")
 			}
-
 		}), 
 
 		

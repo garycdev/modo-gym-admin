@@ -23,7 +23,7 @@ class ClientesController extends Controller
 
     public function index()
     {
-        $clientes = Usuarios::where('usu_estado', '<>', 'ELIMINADO')->get();
+        $clientes = Usuarios::where('usu_estado', '<>', 'ELIMINADO')->orderBy('usu_id', 'DESC')->get();
         return view('backend.pages.clientes.index', compact('clientes'));
     }
 
@@ -49,12 +49,21 @@ class ClientesController extends Controller
             'nombre' => 'required',
             'edad' => 'required|numeric',
             'huella' => 'required|numeric',
-            'ci' => 'required|numeric',
+            'ci' => 'required|numeric|unique:usuarios,usu_ci',
             'genero' => 'required',
             'nivel' => 'required',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
             'frecuencia' => 'nullable|numeric',
             'hora' => 'nullable|numeric',
+        ], [
+            'nombre.required' => 'El nombre es obligatorio.',
+            'edad.required' => 'La edad es requerida',
+            'edad.numeric' => 'La edad debe ser numérica',
+            'huella.required' => 'La huella es requerida',
+            'ci.required' => 'El CI es obligatorio',
+            'ci.unique' => 'El CI ya existe',
+            'genero.required' => 'El genero es obligatorio',
+            'nivel.required' => 'El nivel es obligatorio',
         ]);
 
         $newCliente = new Usuarios();

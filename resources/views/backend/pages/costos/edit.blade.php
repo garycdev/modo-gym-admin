@@ -61,20 +61,23 @@
                                 @csrf
                                 <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label required_value">Periodo </label>
-                                    <select id="periodo" name="periodo" class="form-select">
+                                    <select id="periodo" name="periodo" class="form-select" onchange="setPeriodo(this)">
                                         <option selected disabled value>[PERIODO]</option>
-                                        <option value="ANUAL"{{ $costo->periodo == 'ANUAL' ? 'selected' : '' }}>
-                                            ANUAL</option>
-                                        <option value="MENSUAL" {{ $costo->periodo == 'MENSUAL' ? 'selected' : '' }}>
-                                            MENSUAL</option>
-                                        <option value="SEMESTRAL" {{ $costo->periodo == 'SEMESTRAL' ? 'selected' : '' }}>
-                                            SEMESTRAL</option>
-                                        <option value="PRODUCTO" {{ $costo->periodo == 'PRODUCTO' ? 'selected' : '' }}>
-                                            PRODUCTO</option>
+                                        <option value="ANUAL" {{ $costo->periodo == 'ANUAL' ? 'selected' : '' }}
+                                            data-periodo="true" data-mes="12">ANUAL</option>
+                                        <option value="MENSUAL" {{ $costo->periodo == 'MENSUAL' ? 'selected' : '' }}
+                                            data-periodo="true" data-mes="1">MENSUAL</option>
+                                        <option value="TRIMESTRAL" {{ $costo->periodo == 'TRIMESTRAL' ? 'selected' : '' }}
+                                            data-periodo="true" data-mes="3">TRIMESTRAL</option>
+                                        <option value="SEMESTRAL" {{ $costo->periodo == 'SEMESTRAL' ? 'selected' : '' }}
+                                            data-periodo="true" data-mes="6">SEMESTRAL</option>
+                                        <option value="PRODUCTO" {{ $costo->periodo == 'PRODUCTO' ? 'selected' : '' }}
+                                            data-periodo="false">PRODUCTO</option>
                                     </select>
                                     @error('periodo')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                    <input type="hidden" name="meses" id="meses" value="{{ $costo->mes }}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label">Monto </label>
@@ -83,6 +86,48 @@
                                     @error('monto')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="bsValidation9" class="form-label">Nombre </label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control"
+                                        placeholder="Nombre" value="{{ $costo->nombre }}">
+                                    @error('nombre')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div id="form-periodo" class="col-12 g-3 row"
+                                    {{ $costo->periodo == 'PRODUCTO' ? 'style=display:none' : '' }}>
+                                    <div class="col-md-6">
+                                        <label for="bsValidation9" class="form-label">Tipo </label>
+                                        <select id="tipo" name="tipo" class="form-select">
+                                            <option selected disabled value>[TIPO]</option>
+                                            <option value="TODO" {{ $costo->tipo == 'TODO' ? 'selected' : '' }}>TODO
+                                                INCLUIDO</option>
+                                            <option value="MAQUINAS" {{ $costo->tipo == 'MAQUINAS' ? 'selected' : '' }}>
+                                                SOLO MAQUINAS</option>
+                                        </select>
+                                        @error('tipo')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="bsValidation9" class="form-label">Ingresos por dia </label>
+                                        <input type="number" placeholder="..." id="ingreso_dia" name="ingreso_dia"
+                                            class="form-control" value="{{ $costo->ingreso_dia }}">
+                                        <span class="text-primary">Dias hábiles</span>
+                                        @error('ingreso_dia')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="bsValidation9" class="form-label">Ingresos por semana </label>
+                                        <input type="number" placeholder="..." id="ingreso_semana" name="ingreso_semana"
+                                            class="form-control" value="{{ $costo->ingreso_semana }}">
+                                        <span class="text-primary">Dias hábiles</span>
+                                        @error('ingreso_semana')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
@@ -166,4 +211,23 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function setPeriodo(select) {
+            const periodo = $('#periodo option:selected').data('periodo')
+            console.log(periodo);
+            if (periodo) {
+                $('#form-periodo').removeAttr('style')
+                const meses = $('#periodo option:selected').data('mes')
+                $('#meses').val(meses)
+                $('#ingreso_dia').attr('value', 1)
+                $('#ingreso_semana').attr('value', 6)
+            } else {
+                $('#form-periodo').attr('style', 'display:none;')
+                $('#meses').val(0)
+                $('#ingreso_dia').attr('value', 0)
+                $('#ingreso_semana').attr('value', 0)
+                $('#tipo').val('')
+            }
+        }
+    </script>
 @endsection

@@ -26,7 +26,7 @@ class PagosController extends Controller
     {
         $costos = Costos::all();
         $usuarios = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $pagos = Pagos::all();
+        $pagos = Pagos::orderBy('costo_id', 'DESC')->get();
         return view('backend.pages.pagos.index', compact('costos', 'pagos'));
     }
 
@@ -56,6 +56,7 @@ class PagosController extends Controller
             'costo_id' => 'required',
             'fecha' => 'required',
             'metodo' => 'required',
+            'estado' => 'required',
         ]);
 
         $newPago = new Pagos();
@@ -65,6 +66,7 @@ class PagosController extends Controller
         $newPago->pago_fecha = $request->fecha;
         $newPago->pago_metodo = $request->metodo;
         $newPago->pago_observaciones = $request->observaciones;
+        $newPago->pago_estado = $request->estado;
         $newPago->save();
 
         session()->flash('success', '¡¡Se ha creado el registro!!');

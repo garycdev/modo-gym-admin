@@ -53,8 +53,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
                                     <th>Periodo</th>
                                     <th>Monto</th>
+                                    <th>Ingreso x dia</th>
+                                    <th>Ingreso x semana</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -65,8 +69,24 @@
                                 @foreach ($costos as $costo)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>{{ $costo->periodo }}</td>
+                                        <td>{{ $costo->nombre }}</td>
+                                        <td>
+                                            @switch($costo->tipo)
+                                                @case('TODO')
+                                                    TODO INCLUIDO
+                                                @break
+
+                                                @case('MAQUINAS')
+                                                    SOLO MAQUINAS
+                                                @break
+
+                                                @default
+                                            @endswitch
+                                        </td>
+                                        <td><span class="badge bg-dark">{{ $costo->periodo }}</span></td>
                                         <td>{{ $costo->monto }}&nbsp;bs.</td>
+                                        <td><span class="badge bg-primary">{{ $costo->ingreso_dia }}</span></td>
+                                        <td><span class="badge bg-success">{{ $costo->ingreso_semana }}</span></td>
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('costo.edit'))
                                                 <a class="btn btn-sm btn-warning"
@@ -98,8 +118,12 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
                                     <th>Periodo</th>
                                     <th>Monto</th>
+                                    <th>Ingreso x dia</th>
+                                    <th>Ingreso x semana</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

@@ -1,5 +1,6 @@
 <!doctype html>
-<html class="no-js" lang="en">
+{{-- <html class="no-js" lang="es"> --}}
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -7,7 +8,7 @@
     <title>@yield('title', 'Modo GYM Admin')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-	<link rel="icon" href="{{ asset('modo-gym/logo_2.png')}}" type="image/png" />
+    <link rel="icon" href="{{ asset('modo-gym/logo_2.png') }}" type="image/png" />
     @include('backend.layouts.partials.styles')
     @yield('styles')
 </head>
@@ -20,17 +21,15 @@
     <!-- page container area start -->
     <div class="wrapper">
 
-       @include('backend.layouts.partials.sidebar')
+        @include('backend.layouts.partials.sidebar')
 
         <!-- main content area start -->
 
-            @include('backend.layouts.partials.header')
-            @yield('admin-content')
+        @include('backend.layouts.partials.header')
+        @yield('admin-content')
 
         <!-- main content area end -->
-        <a href="javaScript:;" class="back-to-top"
-            ><i class="bx bxs-up-arrow-alt"></i
-        ></a>
+        <a href="javaScript:;" class="back-to-top"><i class="bx bxs-up-arrow-alt"></i></a>
         @include('backend.layouts.partials.footer')
     </div>
     <!-- page container area end -->
@@ -39,6 +38,7 @@
     @include('backend.layouts.partials.switcher')
     @include('backend.layouts.partials.scripts')
     @yield('scripts')
+    <script></script>
 </body>
 
 </html>

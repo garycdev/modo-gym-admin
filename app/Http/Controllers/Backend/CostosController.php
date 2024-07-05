@@ -50,8 +50,13 @@ class CostosController extends Controller
         ]);
 
         $newCosto = new Costos();
+        $newCosto->nombre = $request->nombre;
+        $newCosto->tipo = $request->tipo;
         $newCosto->periodo = $request->periodo;
         $newCosto->monto = $request->monto;
+        $newCosto->mes = $request->meses;
+        $newCosto->ingreso_dia = $request->ingreso_dia;
+        $newCosto->ingreso_semana = $request->ingreso_semana;
         $newCosto->save();
 
         session()->flash('success', '¡¡Se ha creado el costo!!');
@@ -93,8 +98,13 @@ class CostosController extends Controller
         ]);
 
         $editCosto = Costos::find($id);
+        $editCosto->nombre = $request->nombre;
+        $editCosto->tipo = $request->tipo;
         $editCosto->periodo = $request->periodo;
         $editCosto->monto = $request->monto;
+        $editCosto->mes = $request->meses;
+        $editCosto->ingreso_dia = $request->ingreso_dia;
+        $editCosto->ingreso_semana = $request->ingreso_semana;
         $editCosto->save();
 
         session()->flash('success', '¡¡Se ha modificado el costo!!');

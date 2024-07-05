@@ -12,8 +12,16 @@ class Costos extends Model
     protected $table = 'costos';
     protected $primaryKey = 'costo_id';
     protected $fillable = [
-        'costo_id', 'periodo', 'monto', 'created_at',
-        'updated_at'
+        'costo_id',
+        'nombre',
+        'tipo',
+        'periodo',
+        'monto',
+        'mes',
+        'ingreso_dia',
+        'ingreso_semana',
+        'created_at',
+        'updated_at',
     ];
 
 }

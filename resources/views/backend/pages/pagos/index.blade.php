@@ -54,6 +54,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Cliente</th>
+                                    <th>CI</th>
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>
@@ -72,8 +73,11 @@
                                     <tr>
                                         <td>{{ $i }}</td>
                                         <td>{{ $pago->cliente->usu_nombre }}</td>
+                                        <td>{{ $pago->cliente->usu_ci }}</td>
                                         <td>{{ $pago->pago_monto }}</td>
-                                        <td>{{ $pago->costo->monto }} [{{ $pago->costo->periodo }}]</td>
+                                        <td>
+                                            {{ $pago->costo->monto }} [{{ $pago->costo->nombre }}]</span>
+                                        </td>
                                         <td>{{ $pago->pago_fecha }}</td>
                                         <td>{{ $pago->pago_metodo }}</td>
                                         <td>
@@ -99,9 +103,9 @@
                                                 if ($diferenciaDias > 0) {
                                                     $textoFaltante = "$diferenciaDias días";
                                                 } elseif ($diferenciaDias == 0) {
-                                                    $textoFaltante = "Hoy es el último día";
+                                                    $textoFaltante = 'Hoy es el último día';
                                                 } else {
-                                                    $textoFaltante = "Se pasaron " . abs($diferenciaDias) . " días";
+                                                    $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
                                                 }
                                             @endphp
 
@@ -148,6 +152,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Cliente</th>
+                                    <th>CI</th>
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>

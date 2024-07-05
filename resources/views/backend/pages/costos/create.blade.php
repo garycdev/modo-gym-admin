@@ -60,24 +60,65 @@
                                 @csrf
                                 <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label required_value">Periodo </label>
-                                    <select id="periodo" name="periodo" class="form-select">
+                                    <select id="periodo" name="periodo" class="form-select" onchange="setPeriodo(this)">
                                         <option selected disabled value>[PERIODO]</option>
-                                        <option value="MENSUAL">MENSUAL</option>
-                                        <option value="ANUAL">ANUAL</option>
-                                        <option value="SEMESTRAL">SEMESTRAL</option>
-                                        <option value="PRODUCTO">PRODUCTO</option>
+                                        <option value="ANUAL" data-periodo="true" data-mes="12">ANUAL</option>
+                                        <option value="MENSUAL" data-periodo="true" data-mes="1">MENSUAL</option>
+                                        <option value="TRIMESTRAL" data-periodo="true" data-mes="3">TRIMESTRAL</option>
+                                        <option value="SEMESTRAL" data-periodo="true" data-mes="6">SEMESTRAL</option>
+                                        <option value="PRODUCTO" data-periodo="false">PRODUCTO</option>
                                     </select>
                                     @error('periodo')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                    <input type="hidden" name="meses" id="meses">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="bsValidation9" class="form-label">Monto </label>
+                                    <label for="bsValidation9" class="form-label required_value">Monto </label>
                                     <input type="number" class="form-control" id="monto" name="monto"
                                         placeholder="Monto" step="any">
                                     @error('monto')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="bsValidation9" class="form-label">Nombre </label>
+                                    <input type="text" id="nombre" name="nombre" class="form-control"
+                                        placeholder="Nombre">
+                                    @error('nombre')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div id="form-periodo" style="display:none" class="col-12 g-3 row">
+                                    <div class="col-md-6">
+                                        <label for="bsValidation9" class="form-label">Tipo </label>
+                                        <select id="tipo" name="tipo" class="form-select">
+                                            <option selected disabled value>[TIPO]</option>
+                                            <option value="TODO">TODO INCLUIDO</option>
+                                            <option value="MAQUINAS">SOLO MAQUINAS</option>
+                                        </select>
+                                        @error('tipo')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="bsValidation9" class="form-label">Ingresos por dia </label>
+                                        <input type="number" placeholder="..." id="ingreso_dia" name="ingreso_dia"
+                                            class="form-control">
+                                        <span class="text-primary">Dias hábiles</span>
+                                        @error('ingreso_dia')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="bsValidation9" class="form-label">Ingresos por semana </label>
+                                        <input type="number" placeholder="..." id="ingreso_semana" name="ingreso_semana"
+                                            class="form-control">
+                                        <span class="text-primary">Dias hábiles</span>
+                                        @error('ingreso_semana')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
@@ -161,4 +202,23 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function setPeriodo(select) {
+            const periodo = $('#periodo option:selected').data('periodo')
+            console.log(periodo);
+            if (periodo) {
+                $('#form-periodo').removeAttr('style')
+                const meses = $('#periodo option:selected').data('mes')
+                $('#meses').val(meses)
+                $('#ingreso_dia').attr('value', 1)
+                $('#ingreso_semana').attr('value', 6)
+            } else {
+                $('#form-periodo').attr('style', 'display:none;')
+                $('#meses').val(0)
+                $('#ingreso_dia').attr('value', 0)
+                $('#ingreso_semana').attr('value', 0)
+                $('#tipo').val('')
+            }
+        }
+    </script>
 @endsection

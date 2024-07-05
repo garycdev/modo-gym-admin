@@ -57,7 +57,7 @@
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>CI</th>
-                                    <th>Edad</th>}
+                                    <th>Edad</th>
                                     <th>Huella</th>
                                     <th>Genero</th>
                                     <th>Nivel</th>
@@ -154,7 +154,7 @@
             </div>
         </div>
     </div>
-    {{-- <div class="main-content-inner">
+{{-- <div class="main-content-inner">
     <div class="row">
         <!-- data table start -->
         <div class="col-12 mt-5">
