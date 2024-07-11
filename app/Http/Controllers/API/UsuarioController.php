@@ -77,6 +77,13 @@ class UsuarioController extends Controller
             $diff = $fechaActual->diff($fechaLimite);
             $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 
+            if ($diferenciaDias < 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "No hay fecha de pago o no cumple con el plazo para completar el mes.",
+                ], 400);
+            }
+
             // Construir el mensaje de respuesta
             $mensajeAsistencia = ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA';
             $textoDiasFaltantes = "Faltan $diferenciaDias días.";

@@ -26,7 +26,7 @@ class PagosController extends Controller
     {
         $costos = Costos::all();
         $usuarios = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $pagos = Pagos::orderBy('costo_id', 'DESC')->get();
+        $pagos = Pagos::orderBy('pago_id', 'DESC')->get();
         return view('backend.pages.pagos.index', compact('costos', 'pagos'));
     }
 
