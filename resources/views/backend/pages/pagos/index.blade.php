@@ -97,7 +97,8 @@
                                                 $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 
                                                 // Determinar el estilo del badge basado en los días restantes
-                                                $badgeClass = $diferenciaDias > 0 ? 'bg-warning' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
+                                                $badgeClass =
+                                                    $diferenciaDias > 0 ? 'bg-warning text-black' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
 
                                                 // Texto de días restantes para completar el mes
                                                 if ($diferenciaDias > 0) {
@@ -105,7 +106,8 @@
                                                 } elseif ($diferenciaDias == 0) {
                                                     $textoFaltante = 'Hoy es el último día';
                                                 } else {
-                                                    $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
+                                                    // $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
+                                                    $textoFaltante = 0;
                                                 }
                                             @endphp
 

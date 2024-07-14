@@ -211,7 +211,7 @@
                 const meses = $('#periodo option:selected').data('mes')
                 $('#meses').val(meses)
                 $('#ingreso_dia').attr('value', 1)
-                $('#ingreso_semana').attr('value', 6)
+                $('#ingreso_semana').attr('value', 7)
             } else {
                 $('#form-periodo').attr('style', 'display:none;')
                 $('#meses').val(0)

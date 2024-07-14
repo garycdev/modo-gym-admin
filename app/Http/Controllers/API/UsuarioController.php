@@ -57,7 +57,6 @@ class UsuarioController extends Controller
             // ]);
             // die();
 
-            // Verificar si se encontró algún pago para el usuario
             if (!$pagos) {
                 return response()->json([
                     'success' => false,
@@ -76,6 +75,14 @@ class UsuarioController extends Controller
             $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
             $diff = $fechaActual->diff($fechaLimite);
             $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
+
+            // Verificar si se encontró algún pago actual para el usuario
+            if (intval($diferenciaDias) <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró un pago actual para este usuario.',
+                ], 404);
+            }
 
             // Construir el mensaje de respuesta
             $mensajeAsistencia = ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA';
@@ -116,7 +123,7 @@ class UsuarioController extends Controller
                     } else {
                         return response()->json([
                             'success' => false,
-                            'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada.' . " " . $textoDiasFaltantes,
+                            'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada. ' . $textoDiasFaltantes,
                         ], 400);
                     }
                 }
