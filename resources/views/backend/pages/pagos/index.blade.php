@@ -70,81 +70,79 @@
                                     $i = 1;
                                 @endphp
                                 @foreach ($pagos as $pago)
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $pago->cliente->usu_nombre }}</td>
-                                        <td>{{ $pago->cliente->usu_ci }}</td>
-                                        <td>{{ $pago->pago_monto }}</td>
-                                        <td>
-                                            {{ $pago->costo->monto }} [{{ $pago->costo->nombre }}]</span>
-                                        </td>
-                                        <td>{{ $pago->pago_fecha }}</td>
-                                        <td>{{ $pago->pago_metodo }}</td>
-                                        <td>
-                                            @php
-                                                // Fecha de pago obtenida del modelo $pago
-                                                $fechaPago = new DateTime($pago->pago_fecha); // Convertir a objeto DateTime para asegurar formato
+                                    @php
+                                        // Fecha de pago obtenida del modelo $pago
+                                        $fechaPago = new DateTime($pago->pago_fecha); // Convertir a objeto DateTime para asegurar formato
 
-                                                // Calcular la fecha límite para completar el mes
-                                                $fechaLimite = clone $fechaPago;
-                                                $fechaLimite->modify('+' . $pago->costo->mes . ' month'); // Sumar el número de meses correspondiente
+                                        // Calcular la fecha límite para completar el mes
+                                        $fechaLimite = clone $fechaPago;
+                                        $fechaLimite->modify('+' . $pago->costo->mes . ' month'); // Sumar el número de meses correspondiente
 
-                                                // Fecha actual sin la hora (00:00:00)
-                                                $fechaActual = today(); // Se usa today() en lugar de now()
+                                        // Fecha actual sin la hora (00:00:00)
+                                        $fechaActual = today(); // Se usa today() en lugar de now()
 
-                                                // Calcular la diferencia en días
-                                                $diff = $fechaActual->diff($fechaLimite);
-                                                $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
+                                        // Calcular la diferencia en días
+                                        $diff = $fechaActual->diff($fechaLimite);
+                                        $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 
-                                                // Determinar el estilo del badge basado en los días restantes
-                                                $badgeClass =
-                                                    $diferenciaDias > 0 ? 'bg-warning text-black' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
+                                        // Determinar el estilo del badge basado en los días restantes
+                                        $badgeClass = $diferenciaDias > 0 ? 'bg-warning text-black' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
 
-                                                // Texto de días restantes para completar el mes
-                                                if ($diferenciaDias > 0) {
-                                                    $textoFaltante = "$diferenciaDias días";
-                                                } elseif ($diferenciaDias == 0) {
-                                                    $textoFaltante = 'Hoy es el último día';
-                                                } else {
-                                                    // $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
-                                                    $textoFaltante = 0;
-                                                }
-                                            @endphp
+                                        // Texto de días restantes para completar el mes
+                                        if ($diferenciaDias > 0) {
+                                            $textoFaltante = "$diferenciaDias días";
+                                        } elseif ($diferenciaDias == 0) {
+                                            $textoFaltante = 'Hoy es el último día';
+                                        } else {
+                                            // $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
+                                            $textoFaltante = 0;
+                                        }
+                                    @endphp
+                                    @if ($diferenciaDias >= 0)
+                                        <tr>
+                                            <td>{{ $i }}</td>
+                                            <td>{{ $pago->cliente->usu_nombre }}</td>
+                                            <td>{{ $pago->cliente->usu_ci }}</td>
+                                            <td>{{ $pago->pago_monto }}</td>
+                                            <td>
+                                                {{ $pago->costo->monto }} [{{ $pago->costo->nombre }}]</span>
+                                            </td>
+                                            <td>{{ $pago->pago_fecha }}</td>
+                                            <td>{{ $pago->pago_metodo }}</td>
+                                            <td>
+                                                <span class="badge {{ $badgeClass }}">
+                                                    {{ $textoFaltante }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
+                                            </td>
+                                            <td>{{ $pago->pago_observaciones }}</td>
+                                            <td>
+                                                @if (Auth::guard('admin')->user()->can('pago.edit'))
+                                                    <a class="btn btn-sm btn-warning"
+                                                        href="{{ route('admin.pagos.edit', $pago->pago_id) }}">
+                                                        <i class="bx bxs-edit"></i>
+                                                    </a>
+                                                @endif
 
-                                            <span class="badge {{ $badgeClass }}">
-                                                {{ $textoFaltante }}
-                                            </span>
-                                        </td>
-
-
-                                        <td>
-                                            <span
-                                                class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
-                                        </td>
-                                        <td>{{ $pago->pago_observaciones }}</td>
-                                        <td>
-                                            @if (Auth::guard('admin')->user()->can('pago.edit'))
-                                                <a class="btn btn-sm btn-warning"
-                                                    href="{{ route('admin.pagos.edit', $pago->pago_id) }}">
-                                                    <i class="bx bxs-edit"></i>
-                                                </a>
-                                            @endif
-
-                                            @if (Auth::guard('admin')->user()->can('pago.delete'))
-                                                <a class="btn btn-danger text-white"
-                                                    href="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pago->pago_id }}').submit();">
-                                                    <i class='bx bxs-trash'></i>
-                                                </a>
-                                                <form id="delete-form-{{ $pago->pago_id }}"
-                                                    action="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
-                                                    method="POST" style="display: none;">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                </form>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                                @if (Auth::guard('admin')->user()->can('pago.delete'))
+                                                    <a class="btn btn-danger text-white"
+                                                        href="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
+                                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pago->pago_id }}').submit();">
+                                                        <i class='bx bxs-trash'></i>
+                                                    </a>
+                                                    <form id="delete-form-{{ $pago->pago_id }}"
+                                                        action="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
+                                                        method="POST" style="display: none;">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endif
                                     @php
                                         $i++;
                                     @endphp
