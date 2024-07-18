@@ -56,7 +56,7 @@ class MusculosController extends Controller
         // Validation Data
         $request->validate([
             'mus_nombre' => 'required|string|max:150',
-            'mus_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:300',
+            'mus_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         // Create New Musculo
         $musculo = new Musculo();
@@ -117,7 +117,7 @@ class MusculosController extends Controller
         }
         // Validación de los datos del formulario
         $request->validate([
-            'mus_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300', // Validación de la imagen
+            'mus_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Validación de la imagen
             'mus_nombre' => 'required|max:255',
             'mus_estado' => 'required|string|max:20'
         ]);

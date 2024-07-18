@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers\Backend;
 
-
+use App\Http\Controllers\Controller;
 use App\Models\Galerias;
 use App\Models\ImagenesGalerias;
-
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class GaleriasController extends Controller
 {
     public $user;
-
 
     public function __construct()
     {
@@ -35,9 +28,10 @@ class GaleriasController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún galerias!');
         }
 
-        $galerias = Galerias::select('galerias.*', 'imagenes_galerias.*')
-                        ->join('imagenes_galerias', 'imagenes_galerias.galeria_id', '=', 'galerias.galeria_id')
-                        ->get();
+        // $galerias = Galerias::select('galerias.*', 'imagenes_galerias.*')
+        //                 ->join('imagenes_galerias', 'imagenes_galerias.galeria_id', '=', 'galerias.galeria_id')
+        //                 ->get();
+        $galerias = Galerias::all();
 
         return view('backend.pages.galerias.index', compact('galerias'));
     }
@@ -67,7 +61,7 @@ class GaleriasController extends Controller
         // Validation Data
         $request->validate([
             'galeria_nombre' => 'nullable|string|max:150',
-            'imagen_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:300',
+            'imagen_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         // Obtener el ID de la galería
         $galeriaId = $request->galeria_id;
@@ -76,8 +70,8 @@ class GaleriasController extends Controller
             $galeria->galeria_nombre = $request->galeria_nombre;
             $galerias = $galeria->save();
             // Obtener el ID de la galería guardada
-            $idgaleria = $galerias->galeria_id;
-        }else{
+            $idgaleria = $galeria->galeria_id;
+        } else {
             $idgaleria = $request->galeria_id;
         }
 
@@ -87,18 +81,17 @@ class GaleriasController extends Controller
         // Procesamiento de la imagen
         if ($request->hasFile('imagen_url')) {
             $image = $request->file('imagen_url');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/publicidad');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo info_logo con el nombre de la nueva imagen
-            $galeriaimagen->imagen_url = 'image/publicidad'.'/'.$imageName;
-        }else {
+            $galeriaimagen->imagen_url = 'image/publicidad' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $galeriaimagen->imagen_url = $galeriaimagen->imagen_url; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
 
         $galeriaimagen->save();
-
 
         session()->flash('success', '¡¡Se ha creado los galerias!!');
         return redirect()->route('admin.galerias.index');
@@ -122,8 +115,8 @@ class GaleriasController extends Controller
         }
 
         $galerias = Galerias::select('galerias.*')
-                        ->where('galerias.galerias_id', '=', $id)
-                        ->first();
+            ->where('galerias.galerias_id', '=', $id)
+            ->first();
 
         return view('backend.pages.galerias.edit', compact('galerias'));
 
@@ -139,7 +132,7 @@ class GaleriasController extends Controller
         }
         // Validación de los datos del formulario
         $request->validate([
-            'galeria_nombre' => 'required|string|max:300',
+            'galeria_nombre' => 'required|string|max:5120',
         ]);
         // Obtener el registro de la base de datos
         $galeria = Galerias::find($id);

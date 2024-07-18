@@ -101,7 +101,7 @@
                                     @if ($diferenciaDias >= 0)
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td>{{ $pago->cliente->usu_nombre }}</td>
+                                            <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
                                             <td>{{ $pago->cliente->usu_ci }}</td>
                                             <td>{{ $pago->pago_monto }}</td>
                                             <td>
@@ -118,7 +118,7 @@
                                                 <span
                                                     class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
                                             </td>
-                                            <td>{{ $pago->pago_observaciones }}</td>
+                                            <td style="font-size:12px">{{ $pago->pago_observaciones }}</td>
                                             <td>
                                                 @if (Auth::guard('admin')->user()->can('pago.edit'))
                                                     <a class="btn btn-sm btn-warning"

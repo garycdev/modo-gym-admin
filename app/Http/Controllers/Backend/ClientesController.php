@@ -52,7 +52,7 @@ class ClientesController extends Controller
             'ci' => 'required|numeric|unique:usuarios,usu_ci',
             'genero' => 'required',
             'nivel' => 'required',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'frecuencia' => 'nullable|numeric',
             'hora' => 'nullable|numeric',
         ], [
@@ -129,7 +129,7 @@ class ClientesController extends Controller
             'huella' => 'required|numeric',
             'genero' => 'required',
             'nivel' => 'required',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'frecuencia' => 'nullable|numeric',
             'hora' => 'nullable|numeric',
             'estado' => 'required',

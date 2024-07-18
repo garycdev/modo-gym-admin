@@ -62,7 +62,7 @@ class EquiposController extends Controller
         // Validation Data
         $request->validate([
             'equi_nombre' => 'required|string|max:150',
-            'equi_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:300',
+            'equi_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         // Create New Equipo
         $equipo = new Equipos();
@@ -123,7 +123,7 @@ class EquiposController extends Controller
         }
         // Validación de los datos del formulario
         $request->validate([
-            'equi_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:300', // Validación de la imagen
+            'equi_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Validación de la imagen
             'equi_nombre' => 'required|max:255',
             'equi_estado' => 'required|string|max:20'
         ]);
