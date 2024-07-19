@@ -91,7 +91,11 @@
 
                                         // Texto de días restantes para completar el mes
                                         if ($diferenciaDias > 0) {
-                                            $textoFaltante = "$diferenciaDias días";
+                                            if ($diferenciaDias >= 30) {
+                                                $textoFaltante = '30 días';
+                                            } else {
+                                                $textoFaltante = "$diferenciaDias días";
+                                            }
                                         } elseif ($diferenciaDias == 0) {
                                             $textoFaltante = 'Hoy es el último día';
                                         } else {

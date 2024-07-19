@@ -84,6 +84,11 @@ class UsuarioController extends Controller
                     'success' => false,
                     'message' => 'No se encontró un pago actual para este usuario.',
                 ], 404);
+            } elseif (intval($diferenciaDias) > 30) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Aun no inicia su mensualidad. Comienza en fecha ' . $pagos->pago_fecha,
+                ], 403);
             }
 
             // Construir el mensaje de respuesta
