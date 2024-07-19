@@ -72,7 +72,9 @@ class UsuarioController extends Controller
             $fechaLimite->modify('+' . ($pagos->mes * 30) . ' days'); // Sumar el número de meses especificado
 
             // Calcular la diferencia en días entre la fecha límite y la fecha actual
-            $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
+            // $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
+            $fechaActual = today(); // Se usa today() en lugar de now()
+
             $diff = $fechaActual->diff($fechaLimite);
             $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 

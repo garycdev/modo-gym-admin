@@ -79,8 +79,8 @@
                                         $fechaLimite->modify('+' . $pago->costo->mes * 30 . ' days'); // Sumar el número de meses correspondiente
 
                                         // Fecha actual sin la hora (00:00:00)
-                                        $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
-                                        // $fechaActual = today(); // Se usa today() en lugar de now()
+                                        // $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
+                                        $fechaActual = today(); // Se usa today() en lugar de now()
 
                                         // Calcular la diferencia en días
                                         $diff = $fechaActual->diff($fechaLimite);
@@ -143,10 +143,10 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        @php
+                                            $i++;
+                                        @endphp
                                     @endif
-                                    @php
-                                        $i++;
-                                    @endphp
                                 @endforeach
                             </tbody>
                             <tfoot>
