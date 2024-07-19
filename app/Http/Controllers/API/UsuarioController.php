@@ -69,7 +69,7 @@ class UsuarioController extends Controller
 
             // Calcular la fecha límite para completar el mes
             $fechaLimite = clone $fechaPago;
-            $fechaLimite->modify('+' . $pagos->mes . ' month'); // Sumar el número de meses especificado
+            $fechaLimite->modify('+' . ($pagos->mes * 30) . ' days'); // Sumar el número de meses especificado
 
             // Calcular la diferencia en días entre la fecha límite y la fecha actual
             $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
