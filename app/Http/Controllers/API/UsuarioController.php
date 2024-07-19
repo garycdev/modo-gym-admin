@@ -53,7 +53,7 @@ class UsuarioController extends Controller
                 ->first();
 
             // return response()->json([
-            //     'message' => $asistenciasDia,
+            //     'message' => $pagos,
             // ]);
             // die();
 
@@ -123,7 +123,7 @@ class UsuarioController extends Controller
                     } else {
                         return response()->json([
                             'success' => false,
-                            'message' => 'No se puede registrar la salida. No han pasado suficientes horas desde la entrada. ' . $textoDiasFaltantes,
+                            'message' => 'No se puede registrar la salida, no han pasado suficientes horas desde la entrada. ' . $textoDiasFaltantes,
                         ], 400);
                     }
                 }
