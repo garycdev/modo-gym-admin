@@ -2,22 +2,14 @@
 
 namespace App\Http\Controllers\Backend;
 
-
-use App\Models\Equipos;
-
-
 use App\Http\Controllers\Controller;
+use App\Models\Equipos;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class EquiposController extends Controller
 {
     public $user;
-
 
     public function __construct()
     {
@@ -58,6 +50,8 @@ class EquiposController extends Controller
         if (is_null($this->user) || !$this->user->can('equipo.create')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún equipo!');
         }
+        dd($request);
+        die();
 
         // Validation Data
         $request->validate([
@@ -74,18 +68,18 @@ class EquiposController extends Controller
             //     unlink(public_path($equipo->equi_imagen));
             // }
             $image = $request->file('equi_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo info_logo con el nombre de la nueva imagen
-            $equipo->equi_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $equipo->equi_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $equipo->equi_imagen = $equipo->equi_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
+        $equipo->tipo = $request->tipo;
 
         $equipo->save();
-
 
         session()->flash('success', '¡¡Se ha creado los Equipos!!');
         return redirect()->route('admin.equipos.index');
@@ -125,7 +119,7 @@ class EquiposController extends Controller
         $request->validate([
             'equi_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Validación de la imagen
             'equi_nombre' => 'required|max:255',
-            'equi_estado' => 'required|string|max:20'
+            'equi_estado' => 'required|string|max:20',
         ]);
         // Obtener el registro de la base de datos
         $equipos = Equipos::find($id);
@@ -140,23 +134,23 @@ class EquiposController extends Controller
                 unlink(public_path($equipos->equi_imagen));
             }
             $image = $request->file('equi_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo equi_imagen con el nombre de la nueva imagen
-            $equipos->equi_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $equipos->equi_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $equipos->equi_imagen = $equipos->equi_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
+        $equipos->tipo = $request->tipo;
 
         // Guardar los cambios en la base de datos
         $equipos->save();
 
         // Redireccionar de vuelta con un mensaje de éxito
         session()->flash('success', '¡¡La información ha sido actualizada con éxito!!');
-        return back();
-
+        return redirect()->route('admin.equipos.index');
     }
 
     /**

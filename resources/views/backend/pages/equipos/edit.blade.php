@@ -64,6 +64,24 @@ Equipos Editar - Admin Panel
                             </div>
                             <br>
                             <div class="col-md-12">
+                                <label for="bsValidation4" class="form-label">Tipo</label>
+                                {{-- <select class="form-control" id="tipo" name="tipo" required>
+                                    <option selected>[Ninguno]</option>
+                                    <option value="peso">Peso</option>
+                                    <option value="rid">RID</option>
+                                </select> --}}
+                                <br>
+                                <input type="radio" id="none" value="" name="tipo" {{ $equipo->tipo == null ? 'checked' : '' }}>
+                                <label for="none">Ninguno</label>
+                                <br>
+                                <input type="radio" id="peso" value="peso" name="tipo" {{ $equipo->tipo == 'peso' ? 'checked' : '' }}>
+                                <label for="peso">Peso</label>
+                                <br>
+                                <input type="radio" id="rid" value="rid" name="tipo" {{ $equipo->tipo == 'rid' ? 'checked' : '' }}>
+                                <label for="rid">RID</label>
+                            </div>
+                            <br>
+                            <div class="col-md-12">
                                 <div class="d-md-flex d-grid align-items-center gap-3">
                                     <button type="submit" class="btn btn-primary px-4">Submit</button>
                                 </div>

@@ -12,7 +12,7 @@ class Rutinas extends Model
     protected $table = 'rutinas';
     protected $primaryKey = 'rut_id';
     protected $fillable = [
-        'rut_id', 'usu_id', 'ejer_id', 'rut_serie', 'rut_repeticiones', 'rut_peso',
+        'rut_id', 'usu_id', 'rut_grupo', 'ejer_id', 'rut_serie', 'rut_repeticiones', 'rut_peso',
         'rut_rid', 'rut_tiempo', 'rut_dia', 'rut_date_ini', 'rut_date_fin',
         'rut_estado', 'created_at', 'updated_at',
     ];

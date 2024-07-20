@@ -5,6 +5,19 @@
 @endsection
 
 @section('styles')
+    <style>
+        td,
+        th {
+            vertical-align: top;
+            border: 1px solid #ddd;
+        }
+
+        ul,
+        li {
+            padding-left: 5px;
+            margin-left: 5px;
+        }
+    </style>
 @endsection
 
 
@@ -49,20 +62,19 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table id="tabla_pagos" class="table table-bordered table-hover">
+                        <table id="tabla_pagos" class="table table-bordered table-hover datatable-multi-row">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Cliente</th>
+                                    <th># Rutina</th>
+                                    <th>Dia</th>
                                     <th>Ejercicio</th>
                                     <th>Serie</th>
                                     <th>Repeticion</th>
                                     <th>Peso</th>
                                     <th>RID</th>
                                     <th>Tiempo</th>
-                                    <th>Dia</th>
-                                    <th>Fecha inicio</th>
-                                    <th>Fecha fin</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -70,23 +82,89 @@
                             <tbody>
                                 @php
                                     $i = 1;
+                                    $userAnterior = '';
+                                    $diaAnterior = '';
+                                    $grupoAnterior = '';
+                                    $userCount = [];
+                                    $diaCount = [];
+                                    $grupoCount = [];
                                 @endphp
+
                                 @foreach ($rutinas as $rut)
+                                    @php
+                                        $nombreCompleto =
+                                            $rut->usuario->usu_nombre . ' ' . $rut->usuario->usu_apellidos;
+                                        $dia = $rut->rut_dia;
+                                        $grupo = $rut->rut_grupo;
+
+                                        if (!isset($userCount[$nombreCompleto])) {
+                                            $userCount[$nombreCompleto] = 0;
+                                        }
+                                        $userCount[$nombreCompleto]++;
+
+                                        if (!isset($grupoCount[$grupo])) {
+                                            $grupoCount[$grupo] = 0;
+                                        }
+                                        $grupoCount[$grupo]++;
+
+                                        if (!isset($diaCount[$grupo][$dia])) {
+                                            $diaCount[$grupo][$dia] = 0;
+                                        }
+                                        $diaCount[$grupo][$dia]++;
+                                    @endphp
+                                @endforeach
+
+                                @foreach ($rutinas as $index => $rut)
+                                    @php
+                                        $nombreCompleto =
+                                            $rut->usuario->usu_nombre . ' ' . $rut->usuario->usu_apellidos;
+                                        $dia = $rut->rut_dia;
+                                        $grupo = $rut->rut_grupo;
+                                        $userCount[$nombreCompleto]--;
+                                        $grupoCount[$grupo]--;
+                                        $diaCount[$grupo][$dia]--;
+                                    @endphp
                                     <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $rut->usuario->usu_nombre }}</td>
+                                        @if ($grupo !== $grupoAnterior)
+                                            <td rowspan="{{ $grupoCount[$grupo] + 1 }}">
+                                                {{ $i }}</td>
+                                            <td rowspan="{{ $grupoCount[$grupo] + 1 }}">
+                                                {{ $nombreCompleto }}</td>
+                                            <td rowspan="{{ $grupoCount[$grupo] + 1 }}">
+                                                {{ $rut->rut_grupo }}</td>
+                                            @php
+                                                $grupoAnterior = $grupo;
+                                            @endphp
+                                        @endif
+
+                                        @if ($dia !== $diaAnterior)
+                                            <td rowspan="{{ $diaCount[$grupo][$dia] + 1 }}">
+                                                {{ dias($dia) }}</td>
+                                            @php
+                                                $diaAnterior = $dia;
+                                            @endphp
+                                        @endif
+
                                         <td>{{ $rut->ejercicio->ejer_nombre }}</td>
                                         <td>{{ $rut->rut_serie }}</td>
-                                        <td>{{ $rut->rut_repeticiones }}</td>
-                                        <td>{{ $rut->rut_peso }}</td>
-                                        <td>{{ $rut->rut_rid }}</td>
-                                        <td>{{ $rut->rut_tiempo }}</td>
-                                        <td>{{ $rut->rut_dia }}</td>
-                                        <td>{{ $rut->rut_date_ini }}</td>
-                                        <td>{{ $rut->rut_date_fin }}</td>
+                                        <td>{{ $rut->rut_repeticiones > 1 ? $rut->rut_repeticiones . ' veces' : $rut->rut_repeticiones . ' vez' }}
+                                        </td>
+                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : 'No' }}</td>
+                                        <td>
+                                            <span class="badge {{ $rut->rut_rid == 0 ? 'bg-dark' : 'bg-success' }}">
+                                                {{ $rut->rut_rid == 0 ? 'No medido aun' : $rut->rut_rid }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge {{ $rut->rut_tiempo == 0 ? 'bg-dark' : 'bg-success' }}">
+                                                {{ $rut->rut_tiempo == 0 ? 'No medido aun' : segundosTiempo($rut->rut_tiempo) }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <span
-                                                class="badge bg-{{ $rut->rut_estado == 'COMPLETADO' ? 'success' : ($rut->rut_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $rut->rut_estado }}</span>
+                                                class="badge bg-{{ $rut->rut_estado == 'COMPLETADO' ? 'success' : ($rut->rut_estado == 'CANCELADO' ? 'info' : 'warning') }}">
+                                                {{ $rut->rut_estado }}
+                                            </span>
                                         </td>
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('rutina.edit'))
@@ -95,7 +173,6 @@
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                             @endif
-
                                             @if (Auth::guard('admin')->user()->can('rutina.delete'))
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.rutinas.destroy', $rut->rut_id) }}"
@@ -120,86 +197,113 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Cliente</th>
+                                    <th>#Rutina</th>
+                                    <th>Dia</th>
                                     <th>Ejercicio</th>
                                     <th>Serie</th>
                                     <th>Repeticion</th>
                                     <th>Peso</th>
                                     <th>RID</th>
                                     <th>Tiempo</th>
-                                    <th>Dia</th>
-                                    <th>Fecha inicio</th>
-                                    <th>Fecha fin</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- <div class="main-content-inner">
-    <div class="row">
-        <!-- data table start -->
-        <div class="col-12 mt-5">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="header-title float-left">Rutinas Lista</h4>
-                    <p class="float-right mb-2">
-                        @if (Auth::guard('admin')->user()->can('rutina.create'))
-                            <a class="btn btn-primary text-white" href="{{ route('admin.rutinas.create') }}">Create New Rutina</a>
-                        @endif
-                    </p>
-                    <div class="clearfix"></div>
-                    <div class="data-tables">
-                        @include('backend.layouts.partials.messages')
-                        <table id="dataTable" class="text-center">
-                            <thead class="bg-light text-capitalize">
+
+                        {{-- <table id="tabla_pagos" class="table table-bordered table-hover">
+                            <thead>
                                 <tr>
-                                    <th width="5%">Sl</th>
-                                    <th width="10%">Name</th>
-                                    <th width="60%">Permissions</th>
-                                    <th width="15%">Action</th>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th># Rutina</th>
+                                    <th>Dia</th>
+                                    <th>Ejercicio</th>
+                                    <th>Serie</th>
+                                    <th>Repeticion</th>
+                                    <th>Peso</th>
+                                    <th>RID</th>
+                                    <th>Tiempo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($rutinas as $rutina)
-                               <tr>
-                                    <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $rutina->rut_serie }}</td>
-                                    <td>
-                                        {{ $rutina->rut_peso }}
-                                    </td>
-                                    <td>
-                                        @if (Auth::guard('admin')->user()->can('admin.edit'))
-                                            <a class="btn btn-success text-white" href="{{ route('admin.rutinas.edit', $rutina->rut_id) }}">Edit</a>
-                                        @endif
-
-                                        @if (Auth::guard('admin')->user()->can('admin.edit'))
-                                            <a class="btn btn-danger text-white" href="{{ route('admin.rutinas.destroy', $rutina->rut_id) }}"
-                                            onclick="event.preventDefault(); document.getElementById('delete-form-{{ $rutina->rut_id }}').submit();">
-                                                Delete
-                                            </a>
-
-                                            <form id="delete-form-{{ $rutina->rut_id }}" action="{{ route('admin.rutinas.destroy', $rutina->rut_id) }}" method="POST" style="display: none;">
-                                                @method('DELETE')
-                                                @csrf
-                                            </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                               @endforeach
+                                @php $i = 1; @endphp
+                                @foreach ($rutinas as $rut)
+                                    <tr>
+                                        <td>{{ $i }}</td>
+                                        <td>{{ $rut->usuario->usu_nombre }} {{ $rut->usuario->usu_apellidos }}</td>
+                                        <td>{{ $rut->rut_grupo }}</td>
+                                        <td>{{ dias($rut->rut_dia) }}</td>
+                                        <td>{{ $rut->ejercicio->ejer_nombre }}</td>
+                                        <td>{{ $rut->rut_serie }}</td>
+                                        <td>{{ $rut->rut_repeticiones > 1 ? $rut->rut_repeticiones . ' veces' : $rut->rut_repeticiones . ' vez' }}
+                                        </td>
+                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : 'No' }}</td>
+                                        <td>
+                                            <span class="badge {{ $rut->rut_rid == 0 ? 'bg-dark' : 'bg-success' }}">
+                                                {{ $rut->rut_rid == 0 ? 'No medido aun' : $rut->rut_rid }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge {{ $rut->rut_tiempo == 0 ? 'bg-dark' : 'bg-success' }}">
+                                                {{ $rut->rut_tiempo == 0 ? 'No medido aun' : segundosTiempo($rut->rut_tiempo) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $rut->rut_estado == 'COMPLETADO' ? 'success' : ($rut->rut_estado == 'CANCELADO' ? 'info' : 'warning') }}">
+                                                {{ $rut->rut_estado }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (Auth::guard('admin')->user()->can('rutina.edit'))
+                                                <a class="btn btn-sm btn-warning"
+                                                    href="{{ route('admin.rutinas.edit', $rut->rut_id) }}">
+                                                    <i class="bx bxs-edit"></i>
+                                                </a>
+                                            @endif
+                                            @if (Auth::guard('admin')->user()->can('rutina.delete'))
+                                                <a class="btn btn-danger text-white"
+                                                    href="{{ route('admin.rutinas.destroy', $rut->rut_id) }}"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $rut->rut_id }}').submit();">
+                                                    <i class='bx bxs-trash'></i>
+                                                </a>
+                                                <form id="delete-form-{{ $rut->rut_id }}"
+                                                    action="{{ route('admin.rutinas.destroy', $rut->rut_id) }}"
+                                                    method="POST" style="display: none;">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @php $i++; @endphp
+                                @endforeach
                             </tbody>
-                        </table>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th>#Rutina</th>
+                                    <th>Dia</th>
+                                    <th>Ejercicio</th>
+                                    <th>Serie</th>
+                                    <th>Repeticion</th>
+                                    <th>Peso</th>
+                                    <th>RID</th>
+                                    <th>Tiempo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </tfoot>
+                        </table> --}}
                     </div>
                 </div>
             </div>
         </div>
-        <!-- data table end -->
-
     </div>
-</div> --}}
 @endsection
 
 
@@ -211,7 +315,7 @@
                     "decimal": "",
                     "emptyTable": "No hay información",
                     "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
                     "infoFiltered": "(Filtrado de _MAX_ total entradas)",
                     "infoPostFix": "",
                     "thousands": ",",
@@ -229,12 +333,45 @@
                 },
                 lengthChange: false,
                 buttons: ["copy", "excel", "pdf", "print"],
+                // fnDrawCallback: () => {
+
+                //     $table = $(this);
+
+                //     // only apply this to specific tables
+                //     if ($table.closest(".datatable-multi-row").length) {
+
+                //         // for each row in the table body...
+                //         $table.find("tbody>tr").each(function() {
+                //             var $tr = $(this);
+
+                //             // get the "extra row" content from the <script> tag.
+                //             // note, this could be any DOM object in the row.
+                //             var extra_row = $tr.find(".extra-row-content").html();
+
+                //             // in case draw() fires multiple times, 
+                //             // we only want to add new rows once.
+                //             if (!$tr.next().hasClass('dt-added')) {
+                //                 $tr.after(extra_row);
+                //                 $tr.find("td").each(function() {
+
+                //                     // for each cell in the top row,
+                //                     // set the "rowspan" according to the data value.
+                //                     var $td = $(this);
+                //                     var rowspan = parseInt($td.data(
+                //                         "datatable-multi-row-rowspan"), 10);
+                //                     if (rowspan) {
+                //                         $td.attr('rowspan', rowspan);
+                //                     }
+                //                 });
+                //             }
+
+                //         });
+
+                //     } // end if the table has the proper class
+                // }
             });
 
-            table
-                .buttons()
-                .container()
-                .appendTo("#example2_wrapper .col-md-6:eq(0)");
+            // table.buttons().container().appendTo('#tabla_pagos_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

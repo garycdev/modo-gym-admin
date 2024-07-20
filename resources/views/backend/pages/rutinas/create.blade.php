@@ -52,7 +52,7 @@
                 <div class="col-xl-6 mx-auto">
                     <div class="card">
                         <div class="card-header px-4 py-3">
-                            <h5 class="mb-0">Registrar rutina</h5>
+                            <h5 class="mb-0">Registrar rutinas</h5>
                         </div>
                         <div class="card-body p-4">
                             <form class="row g-3 needs-validation" method="POST"
@@ -61,10 +61,12 @@
                                 <div class="col-md-12">
                                     <label for="bsValidation9" class="form-label required_value">Usuario </label>
                                     <select id="usu_id" name="usu_id" class="form-select usu_id"
-                                        onchange="setUsuario(this)">
-                                        <option selected disabled value>[CLIENTE]</option>
+                                        onchange="selectUser()">
+                                        <option selected disabled value>[USUARIO]</option>
                                         @foreach ($clientes as $cliente)
-                                            <option value="{{ $cliente->usu_id }}">{{ $cliente->usu_nombre }}
+                                            <option value="{{ $cliente->usu_id }}" data-fecha="{{ $cliente->pago_fecha }}"
+                                                data-mes="{{ $cliente->mes }}">
+                                                {{ $cliente->usu_nombre }}
                                                 {{ $cliente->usu_apellidos }}</option>
                                         @endforeach
                                     </select>
@@ -72,80 +74,427 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-8">
-                                    <label for="bsValidation9" class="form-label required_value">Ejercicio </label>
-                                    <select id="ejer_id" name="ejer_id" class="form-select ejer_id">
-                                        <option selected disabled value>[EJERCICIO]</option>
-                                        @foreach ($ejercicios as $ejer)
-                                            <option value="{{ $ejer->ejer_id }}">{{ $ejer->ejer_nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('ejer_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <div class="col-md-6 fechas" style="display: none">
+                                    <label for="bsValidation9" class="form-label">Fecha inicio </label>
+                                    <input type="date" class="form-control" id="fecha_ini" name="fecha_ini" readonly>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="bsValidation9" class="form-label required_value">Dia </label>
-                                    <input type="number" class="form-control" id="dia" name="dia"
-                                        placeholder="Dia" step="1" min="0">
-                                    @error('dia')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <div class="col-md-6 fechas" style="display: none">
+                                    <label for="bsValidation9" class="form-label">Fecha fin </label>
+                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" readonly>
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="bsValidation9" class="form-label required_value">Serie </label>
-                                    <input type="number" class="form-control" id="serie" name="serie"
-                                        placeholder="Serie" step="1" min="0">
-                                    @error('serie')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <hr>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#lunes" aria-expanded="true" aria-controls="lunes">
+                                                Lunes
+                                            </button>
+                                        </h2>
+                                        <div id="lunes" class="accordion-collapse collapse show"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_1">
+                                                    <input type="hidden" name="rut_1" id="rut_1" value="0">
+                                                    <div id="rutina_1_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-1_0" class="form-label">Ejercicio </label>
+                                                            <select id="ejer_id-1_0" name="ejer_id-1_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(1, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-1_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-1_0"
+                                                                name="serie-1_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-1_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control" id="repeticiones-1_0"
+                                                                name="repeticiones-1_0" placeholder="Repeticiones"
+                                                                step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-1_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-1_0"
+                                                                name="peso-1_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('1')" id="btn_1"
+                                                                disabled>+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#martes" aria-expanded="false"
+                                                aria-controls="martes">
+                                                Martes
+                                            </button>
+                                        </h2>
+                                        <div id="martes" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_2">
+                                                    <input type="hidden" name="rut_2" id="rut_2" value="0">
+                                                    <div id="rutina_2_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-2_0" class="form-label">Ejercicio </label>
+                                                            <select id="ejer_id-2_0" name="ejer_id-2_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(2, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-2_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-2_0"
+                                                                name="serie-2_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-2_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-2_0" name="repeticiones-2_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-2_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-2_0"
+                                                                name="peso-2_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('2')" disabled>+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#miercoles"
+                                                aria-expanded="false" aria-controls="miercoles">
+                                                Miercoles
+                                            </button>
+                                        </h2>
+                                        <div id="miercoles" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_3">
+                                                    <input type="hidden" name="rut_3" id="rut_3" value="0">
+                                                    <div id="rutina_3_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-3_0" class="form-label">Ejercicio
+                                                            </label>
+                                                            <select id="ejer_id-3_0" name="ejer_id-3_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(3, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-3_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-3_0"
+                                                                name="serie-3_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-3_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-3_0" name="repeticiones-3_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-3_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-3_0"
+                                                                name="peso-3_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('3')">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#jueves" aria-expanded="false"
+                                                aria-controls="jueves">
+                                                Jueves
+                                            </button>
+                                        </h2>
+                                        <div id="jueves" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_4">
+                                                    <input type="hidden" name="rut_4" id="rut_4" value="0">
+                                                    <div id="rutina_4_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-4_0" class="form-label">Ejercicio
+                                                            </label>
+                                                            <select id="ejer_id-4_0" name="ejer_id-4_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(4, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-4_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-4_0"
+                                                                name="serie-4_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-4_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-4_0" name="repeticiones-4_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-4_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-4_0"
+                                                                name="peso-4_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('4')">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#viernes" aria-expanded="false"
+                                                aria-controls="viernes">
+                                                Viernes
+                                            </button>
+                                        </h2>
+                                        <div id="viernes" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_5">
+                                                    <input type="hidden" name="rut_5" id="rut_5" value="0">
+                                                    <div id="rutina_5_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-5_0" class="form-label">Ejercicio </label>
+                                                            <select id="ejer_id-5_0" name="ejer_id-5_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(5, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-5_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-5_0"
+                                                                name="serie-5_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-5_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-5_0" name="repeticiones-5_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-5_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-5_0"
+                                                                name="peso-5_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('5')">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#sabado" aria-expanded="false"
+                                                aria-controls="sabado">
+                                                Sabado
+                                            </button>
+                                        </h2>
+                                        <div id="sabado" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_6">
+                                                    <input type="hidden" name="rut_6" id="rut_6" value="0">
+                                                    <div id="rutina_6_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-6_0" class="form-label">Ejercicio </label>
+                                                            <select id="ejer_id-6_0" name="ejer_id-6_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(6, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-6_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-6_0"
+                                                                name="serie-6_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-6_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-6_0" name="repeticiones-6_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-6_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-6_0"
+                                                                name="peso-6_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('6')">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#domingo" aria-expanded="false"
+                                                aria-controls="domingo">
+                                                Domingo
+                                            </button>
+                                        </h2>
+                                        <div id="domingo" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="rutinas_7">
+                                                    <input type="hidden" name="rut_7" id="rut_7" value="0">
+                                                    <div id="rutina_7_0" class="row">
+                                                        <div class="col-md-4">
+                                                            <label for="ejer_id-7_0" class="form-label">Ejercicio </label>
+                                                            <select id="ejer_id-7_0" name="ejer_id-7_0"
+                                                                class="form-select ejer_id" onchange="setEjercicio(7, 0)">
+                                                                <option selected disabled value>[EJERCICIO]
+                                                                </option>
+                                                                @foreach ($ejercicios as $ejer)
+                                                                    <option value="{{ $ejer->ejer_id }}"
+                                                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                                                        {{ $ejer->ejer_nombre }}
+                                                                        [{{ $ejer->equipo->equi_nombre }} -
+                                                                        {{ $ejer->musculo->mus_nombre }}]</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="serie-7_0" class="form-label">Serie </label>
+                                                            <input type="number" class="form-control" id="serie-7_0"
+                                                                name="serie-7_0" placeholder="Serie" step="1"
+                                                                min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="repeticiones-7_0" class="form-label">Repeticiones
+                                                            </label>
+                                                            <input type="number" class="form-control"
+                                                                id="repeticiones-7_0" name="repeticiones-7_0"
+                                                                placeholder="Repeticiones" step="1" min="1">
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="peso-7_0" class="form-label">Peso </label>
+                                                            <input type="number" class="form-control" id="peso-7_0"
+                                                                name="peso-7_0" placeholder="Peso" step="1"
+                                                                min="0" disabled="disabled">
+                                                        </div>
+                                                        <div
+                                                            class="col-md-2 d-flex align-items-center justify-content-around">
+                                                            <button type="button" class="btn btn-success"
+                                                                onclick="addEjercicio('7')">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="bsValidation9" class="form-label required_value">Repeticiones </label>
-                                    <input type="number" class="form-control" id="repeticiones" name="repeticiones"
-                                        placeholder="Repeticiones" step="1" min="0">
-                                    @error('repeticiones')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="bsValidation9" class="form-label required_value">Peso </label>
-                                    <input type="number" class="form-control" id="peso" name="peso"
-                                        placeholder="Peso" step="1" min="0">
-                                    @error('peso')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="bsValidation9" class="form-label required_value">RID </label>
-                                    <input type="number" class="form-control" id="rid" name="rid"
-                                        placeholder="RID" step="1" min="0">
-                                    @error('rid')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="bsValidation9" class="form-label required_value">Tiempo </label>
-                                    <input type="number" class="form-control" id="tiempo" name="tiempo"
-                                        placeholder="Tiempo" step="1" min="0">
-                                    @error('tiempo')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="bsValidation9" class="form-label required_value">Fecha inicial </label>
-                                    <input type="date" class="form-control" id="date_ini" name="date_ini">
-                                    @error('date_ini')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="bsValidation9" class="form-label required_value">Fecha final </label>
-                                    <input type="date" class="form-control" id="date_fin" name="date_fin">
-                                    @error('date_fin')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+
+                                <hr>
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
                                         <button type="submit" class="btn btn-primary px-4">Submit</button>
@@ -230,8 +579,110 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        let rutina_1 = 1;
+        let rutina_2 = 1;
+        let rutina_3 = 1;
+        let rutina_4 = 1;
+        let rutina_5 = 1;
+        let rutina_6 = 1;
+        let rutina_7 = 1;
+
         $(document).ready(function() {
             $('.usu_id').select2();
         });
+
+        function selectUser() {
+            const fecha_ini = $('#usu_id option:selected').data('fecha');
+            const meses = parseInt($('#usu_id option:selected').data('mes'), 10);
+
+            $('#fecha_ini').val(fecha_ini);
+
+            const fecha = new Date(fecha_ini);
+            // fecha.setHours(0, 0, 0, 0);
+            fecha.setDate(fecha.getDate() + (meses * 31));
+
+            const anio = fecha.getFullYear();
+            const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            const dia = ('0' + fecha.getDate()).slice(-2);
+            const fecha_fin = `${anio}-${mes}-${dia}`;
+
+            $('#fecha_fin').val(fecha_fin);
+
+            $('.fechas').css('display', 'block');
+        }
+
+        function setEjercicio(dia, ejer) {
+            const tipo = $('#ejer_id-' + dia + '_' + ejer + ' option:selected').data('tipo');
+            if (tipo == 'peso') {
+                $('#peso-' + dia + '_' + ejer).removeAttr('disabled');
+            } else {
+                $('#peso-' + dia + '_' + ejer).attr('disabled', 'disabled');
+            }
+            console.log(eval('rutina_' + dia));
+            $('#serie-' + dia + '_' + ejer).val(eval('rutina_' + dia))
+            $('#btn_' + dia).removeAttr('disabled')
+            $('#ejer_id' + dia + '_' + ejer).css('readonly', true);
+            // addEjercicio(dia)
+        }
+
+        function addEjercicio(dia) {
+            const rutina_index = 'rutina_' + dia;
+            $('#rut_' + dia).val(eval(rutina_index));
+            $('#btnRemove_' + (rutina_index - 1)).css('display', 'none');
+            const template = `<div id="rutina_${dia}_${eval(rutina_index)}" class="row">
+                                <div class="col-md-4">
+                                    <label for="ejer_id-${dia}_${eval(rutina_index)}" class="form-label">Ejercicio </label>
+                                    <select id="ejer_id-${dia}_${eval(rutina_index)}" name="ejer_id-${dia}_${eval(rutina_index)}"
+                                        class="form-select ejer_id" onchange="setEjercicio(${dia}, ${eval(rutina_index)})">
+                                        <option selected disabled value>[EJERCICIO]
+                                        </option>
+                                        @foreach ($ejercicios as $ejer)
+                                            <option value="{{ $ejer->ejer_id }}"
+                                                data-tipo="{{ $ejer->equipo->tipo }}">
+                                                {{ $ejer->ejer_nombre }}
+                                                [{{ $ejer->equipo->equi_nombre }} -
+                                                {{ $ejer->musculo->mus_nombre }}]</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="serie-${dia}_${eval(rutina_index)}" class="form-label">Serie </label>
+                                    <input type="number" class="form-control" id="serie-${dia}_${eval(rutina_index)}"
+                                        name="serie-${dia}_${eval(rutina_index)}" placeholder="Serie" step="1"
+                                        min="1" >
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="repeticiones-${dia}_${eval(rutina_index)}" class="form-label">Repeticiones
+                                    </label>
+                                    <input type="number" class="form-control"
+                                        id="repeticiones-${dia}_${eval(rutina_index)}" name="repeticiones-${dia}_${eval(rutina_index)}"
+                                        placeholder="Repeticiones" step="1" min="1"
+                                        >
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="peso-${dia}_${eval(rutina_index)}" class="form-label">Peso </label>
+                                    <input type="number" class="form-control" id="peso-${dia}_${eval(rutina_index)}"
+                                        name="peso-${dia}_${eval(rutina_index)}" placeholder="Peso" step="1"
+                                        min="0" disabled="disabled" >
+                                </div>
+                                <div
+                                    class="col-md-2 d-flex align-items-center justify-content-around">
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="removeEjercicio(${dia}, ${eval(rutina_index)})" id="btnRemove_${dia}_${eval(rutina_index)}">-</button>
+                                </div>
+                            </div>`
+            $('#btnRemove_' + dia + '_' + (eval(rutina_index) - 1)).css('display', 'none')
+            eval('rutina_' + dia + ' += 1')
+
+            $('#rutinas_' + dia).append(template)
+            $('#btn_' + dia).attr('disabled', 'disabled')
+        }
+
+        function removeEjercicio(dia, ejer) {
+            $('#rutina_' + dia + '_' + ejer).remove();
+            $('#btnRemove_' + dia + '_' + (ejer - 1)).css('display', 'block');
+            eval('rutina_' + dia + ' -= 1')
+            $('#btn_' + dia).removeAttr('disabled')
+        }
     </script>
 @endsection

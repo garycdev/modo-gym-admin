@@ -34,7 +34,11 @@ class RutinasController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún rutina!');
         }
 
-        $rutinas = Rutinas::all();
+        $rutinas = Rutinas::orderBy('rut_id', 'DESC')
+            ->orderBy('rut_grupo', 'ASC')
+            ->orderBy('usu_id', 'ASC')
+            ->orderBy('rut_dia', 'ASC')
+            ->get();
         return view('backend.pages.rutinas.index', compact('rutinas'));
     }
 
@@ -49,7 +53,13 @@ class RutinasController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rutina!');
         }
 
-        $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
+        $clientes = Usuarios::select('usuarios.*', 'pagos.pago_fecha', 'costos.mes')
+            ->join('pagos', 'usuarios.usu_id', '=', 'pagos.usu_id')
+            ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
+            ->whereRaw('pagos.pago_fecha >= DATE_SUB(CURDATE(), INTERVAL (costos.mes * 30) DAY)')
+            ->where('usuarios.usu_estado', 'ACTIVO')
+            ->orderBy('usuarios.usu_id', 'DESC')
+            ->get();
         $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
         return view('backend.pages.rutinas.create', compact('clientes', 'ejercicios'));
     }
@@ -69,26 +79,53 @@ class RutinasController extends Controller
         // die();
         $request->validate([
             'usu_id' => 'required',
-            'ejer_id' => 'required',
-            'dia' => 'required',
-            'date_ini' => 'required',
-            'date_fin' => 'required',
+            'fecha_ini' => 'required',
+            'fecha_fin' => 'required',
         ]);
 
-        $newRutina = new Rutinas();
-        $newRutina->usu_id = $request->usu_id;
-        $newRutina->ejer_id = $request->ejer_id;
-        $newRutina->rut_serie = $request->serie == null ? 0 : $request->serie;
-        $newRutina->rut_repeticiones = $request->repeticiones == null ? 0 : $request->repeticiones;
-        $newRutina->rut_peso = $request->peso == null ? 0 : $request->peso;
-        $newRutina->rut_rid = $request->rid == null ? 0 : $request->rid;
-        $newRutina->rut_tiempo = $request->tiempo == null ? 0 : $request->tiempo;
-        $newRutina->rut_dia = $request->dia;
-        $newRutina->rut_date_ini = $request->date_ini;
-        $newRutina->rut_date_fin = $request->date_fin;
-        $newRutina->save();
+        // $newRutina = new Rutinas();
+        // $newRutina->usu_id = $request->usu_id;
+        // $newRutina->ejer_id = $request->ejer_id;
+        // $newRutina->rut_serie = $request->serie == null ? 0 : $request->serie;
+        // $newRutina->rut_repeticiones = $request->repeticiones == null ? 0 : $request->repeticiones;
+        // $newRutina->rut_peso = $request->peso == null ? 0 : $request->peso;
+        // $newRutina->rut_rid = $request->rid == null ? 0 : $request->rid;
+        // $newRutina->rut_tiempo = $request->tiempo == null ? 0 : $request->tiempo;
+        // $newRutina->rut_dia = $request->dia;
+        // $newRutina->rut_date_ini = $request->date_ini;
+        // $newRutina->rut_date_fin = $request->date_fin;
+        // $newRutina->save();
 
-        session()->flash('success', '¡¡Se ha creado la rutina!!');
+        $latestRutina = Rutinas::select('rut_grupo')->where('usu_id', $request->usu_id)->orderBy('rut_grupo', 'DESC')->first();
+        if ($latestRutina) {
+            $rut_grupo = $latestRutina->rut_grupo + 1;
+        } else {
+            $rut_grupo = 1;
+        }
+        // Recorrer por dias lunes a domingo (1 - 7)
+        for ($dia = 1; $dia <= 7; $dia++) {
+            // Recorrer por cantidad de rutinas por dia
+            $rutinas_dia = intval($request->input('rut_' . $dia));
+            for ($i = 0; $i <= $rutinas_dia; $i++) {
+                if ($request->has('ejer_id-' . $dia . '_' . $i) && $request->has('serie-' . $dia . '_' . $i) && $request->has('repeticiones-' . $dia . '_' . $i)) {
+                    $newRutina = new Rutinas();
+                    $newRutina->usu_id = $request->usu_id;
+                    $newRutina->rut_grupo = $rut_grupo;
+                    $newRutina->ejer_id = $request->input('ejer_id-' . $dia . '_' . $i);
+                    $newRutina->rut_serie = $request->input('serie-' . $dia . '_' . $i);
+                    $newRutina->rut_repeticiones = $request->input('repeticiones-' . $dia . '_' . $i);
+                    $newRutina->rut_peso = $request->has('peso-' . $dia . '_' . $i) ? $request->input('peso-' . $dia . '_' . $i) : null;
+                    $newRutina->rut_rid = 0;
+                    $newRutina->rut_tiempo = 0;
+                    $newRutina->rut_dia = $dia;
+                    $newRutina->rut_date_ini = $request->fecha_ini;
+                    $newRutina->rut_date_fin = $request->fecha_fin;
+                    $newRutina->save();
+                }
+            }
+        }
+
+        session()->flash('success', '¡¡Se han creado las rutina!!');
         return redirect()->route('admin.rutinas.index');
     }
 
