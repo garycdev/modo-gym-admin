@@ -115,7 +115,7 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-1_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-1_0"
-                                                                name="serie-1_0" placeholder="Serie" step="1"
+                                                                name="serie-1_0" placeholder="Serie" readonly step="1"
                                                                 min="1">
                                                         </div>
                                                         <div class="col-md-2">
@@ -134,8 +134,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('1')" id="btn_1"
-                                                                disabled>+</button>
+                                                                onclick="addEjercicio('1')" id="btn_1" disabled
+                                                                id="btn_1">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,8 +174,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-2_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-2_0"
-                                                                name="serie-2_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-2_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-2_0" class="form-label">Repeticiones
@@ -193,7 +193,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('2')" disabled>+</button>
+                                                                onclick="addEjercicio('2')" disabled
+                                                                id="btn_2">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -233,8 +234,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-3_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-3_0"
-                                                                name="serie-3_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-3_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-3_0" class="form-label">Repeticiones
@@ -252,7 +253,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('3')">+</button>
+                                                                onclick="addEjercicio('3')" disabled
+                                                                id="btn_3">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -292,8 +294,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-4_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-4_0"
-                                                                name="serie-4_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-4_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-4_0" class="form-label">Repeticiones
@@ -311,7 +313,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('4')">+</button>
+                                                                onclick="addEjercicio('4')" disabled
+                                                                id="btn_4">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -350,8 +353,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-5_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-5_0"
-                                                                name="serie-5_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-5_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-5_0" class="form-label">Repeticiones
@@ -369,7 +372,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('5')">+</button>
+                                                                onclick="addEjercicio('5')" disabled
+                                                                id="btn_5">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -408,8 +412,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-6_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-6_0"
-                                                                name="serie-6_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-6_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-6_0" class="form-label">Repeticiones
@@ -427,7 +431,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('6')">+</button>
+                                                                onclick="addEjercicio('6')" disabled
+                                                                id="btn_6">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -466,8 +471,8 @@
                                                         <div class="col-md-2">
                                                             <label for="serie-7_0" class="form-label">Serie </label>
                                                             <input type="number" class="form-control" id="serie-7_0"
-                                                                name="serie-7_0" placeholder="Serie" step="1"
-                                                                min="1">
+                                                                name="serie-7_0" placeholder="Serie" readonly
+                                                                step="1" min="1">
                                                         </div>
                                                         <div class="col-md-2">
                                                             <label for="repeticiones-7_0" class="form-label">Repeticiones
@@ -485,7 +490,8 @@
                                                         <div
                                                             class="col-md-2 d-flex align-items-center justify-content-around">
                                                             <button type="button" class="btn btn-success"
-                                                                onclick="addEjercicio('7')">+</button>
+                                                                onclick="addEjercicio('7')" disabled
+                                                                id="btn_7">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -648,7 +654,7 @@
                                 <div class="col-md-2">
                                     <label for="serie-${dia}_${eval(rutina_index)}" class="form-label">Serie </label>
                                     <input type="number" class="form-control" id="serie-${dia}_${eval(rutina_index)}"
-                                        name="serie-${dia}_${eval(rutina_index)}" placeholder="Serie" step="1"
+                                        name="serie-${dia}_${eval(rutina_index)}" placeholder="Serie" readonly step="1"
                                         min="1" >
                                 </div>
                                 <div class="col-md-2">

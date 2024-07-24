@@ -11,6 +11,16 @@
     <link rel="icon" href="{{ asset('modo-gym/logo_2.png') }}" type="image/png" />
     @include('backend.layouts.partials.styles')
     @yield('styles')
+    <style>
+        .required_value::after {
+            content: '*';
+            color: #f00;
+        }
+
+        .text-danger.required_value {
+            font-size: .85em;
+        }
+    </style>
 </head>
 
 <body>
