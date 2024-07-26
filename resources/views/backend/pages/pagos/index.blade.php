@@ -47,6 +47,15 @@
             <hr />
             <div class="card">
                 <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label for="filter-select" class="form-label">Filtrar por: </label>
+                        <select name="filter" id="filter-select" class="form-select">
+                            <option value="">[TODO]</option>
+                            @foreach ($costos as $costo)
+                                <option value="{{ $costo->nombre }}">{{ strtoupper($costo->nombre) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
                         <table id="tabla_pagos" class="table table-bordered table-hover">
@@ -241,7 +250,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            var table = $("#tabla_pagos").DataTable({
+            var table = $('#tabla_pagos').DataTable({
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
@@ -263,13 +272,43 @@
                     }
                 },
                 lengthChange: false,
-                buttons: ["copy", "excel", "pdf", "print"],
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    }
+                ]
             });
 
             table
                 .buttons()
                 .container()
                 .appendTo("#example2_wrapper .col-md-6:eq(0)");
+
+            $('#filter-select').on('change', function() {
+                var selectedValue = $(this).val();
+                table.column(4).search(selectedValue).draw();
+            });
         });
     </script>
 @endsection

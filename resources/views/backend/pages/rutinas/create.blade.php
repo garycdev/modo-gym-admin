@@ -5,16 +5,6 @@
 @endsection
 
 @section('styles')
-    <style>
-        .required_value::after {
-            content: '*';
-            color: #f00;
-        }
-
-        .text-danger {
-            font-size: .85em;
-        }
-    </style>
 @endsection
 
 

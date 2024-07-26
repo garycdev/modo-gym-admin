@@ -332,6 +332,7 @@
                     }
                 },
                 lengthChange: false,
+                dom: 'Bfrtip',
                 buttons: ["copy", "excel", "pdf", "print"],
                 // fnDrawCallback: () => {
 
