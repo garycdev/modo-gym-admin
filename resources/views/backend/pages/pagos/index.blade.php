@@ -295,7 +295,18 @@
                         extend: 'print',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                        }
+                        },
+                        // customize: function(win) {
+                        //     $(win.document.body)
+                        //         .css('font-size', '10pt')
+                        //         .prepend(
+                        //             '<img src="https://example.com/logo.png" style="position:absolute; top:0; left:0;" />'
+                        //         );
+
+                        //     $(win.document.body).find('table')
+                        //         .addClass('compact')
+                        //         .css('font-size', 'inherit');
+                        // }
                     }
                 ]
             });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 // use App\Models\Asistencia;
 use App\Models\Usuarios;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -101,6 +102,19 @@ class UsuarioController extends Controller
                 $messageAsistencia = 'Le quedan ' . $diferenciaDias . ' días.';
             }
 
+            if (strpos(strtolower($pagos->nombre), 'mañan') !== false) {
+                $hora = Carbon::now();
+                $horaInicio = Carbon::createFromTime(6, 0, 0);
+                $horaFin = Carbon::createFromTime(11, 0, 0);
+
+                if (!$hora->between($horaInicio, $horaFin)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $pagos->nombre . '. Solo puede ingresar de ' . $horaInicio->format('H:i') . ' a ' . $horaFin->format('H:i') . ' de la mañana.',
+                    ], 400);
+                }
+            }
+
             // Determinar el tipo de asistencia
             if ($asistencia) {
                 if ($asistencia->asistencia_tipo === 'SALIDA') {
@@ -116,7 +130,7 @@ class UsuarioController extends Controller
                     } else {
                         return response()->json([
                             'success' => false,
-                            'message' => 'Solo puede ingresar ' . $pagos->ingreso_dia . ' ' . ($pagos->ingreso_dia > 1 ? 'veces' : 'vez') . ' al dia.',
+                            'message' => 'Solo puede ingresar ' . ($pagos->ingreso_dia > 1 ? $pagos->ingreso_dia . 'veces' : 'una vez') . ' al dia.',
                         ], 400);
                     }
                 } else {
@@ -153,7 +167,7 @@ class UsuarioController extends Controller
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Solo puede ingresar ' . $pagos->ingreso_semana . ' ' . ($pagos->ingreso_semana > 1 ? 'veces' : 'vez') . ' a la semana.',
+                        'message' => 'Solo puede ingresar ' . $pagos->ingreso_semana . ' veces a la semana.',
                     ], 400);
                 }
             }
