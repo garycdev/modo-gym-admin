@@ -75,8 +75,8 @@ class RutinasController extends Controller
         if (is_null($this->user) || !$this->user->can('rutina.create')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ninguna rutina!');
         }
-        // dd($request);
-        // die();
+        dd($request);
+        die();
         $request->validate([
             'usu_id' => 'required',
             'fecha_ini' => 'required',
