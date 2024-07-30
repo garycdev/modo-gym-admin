@@ -26,6 +26,11 @@
         .custom-checkbox:checked+.custom-card {
             border: 2px solid #007bff;
         }
+
+        .modal-body-scrollable {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
     </style>
 @endsection
 
@@ -48,26 +53,36 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                         onclick="resetEjerciciosRutina()"></button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-header">
+                                    <input type="text" id="searchInput" class="form-control"
+                                        placeholder="Buscar ejercicio...">
+                                </div>
+                                <div class="modal-body modal-body-scrollable">
                                     @foreach ($ejercicios as $ejer)
-                                        <input type="checkbox" name="ejercicios[]" id="{{ $ejer->ejer_id }}"
-                                            class="custom-checkbox" data-name="{{ $ejer->ejer_nombre }}"
-                                            data-image="{{ asset($ejer->ejer_imagen) }}">
-                                        <label for="{{ $ejer->ejer_id }}" class="card custom-card p-3">
-                                            <div class="card-body d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <img src="{{ asset($ejer->ejer_imagen) }}"
-                                                        alt="Ejercicio {{ $ejer->ejer_id }}" width="50">
-                                                    <h6 class="card-title">{{ $ejer->ejer_nombre }}</h6>
+                                        <div class="exercise-item">
+                                            <input type="checkbox" name="ejercicios[]" id="{{ $ejer->ejer_id }}"
+                                                class="custom-checkbox" data-name="{{ $ejer->ejer_nombre }}"
+                                                data-image="{{ asset($ejer->ejer_imagen) }}"
+                                                data-tipo="{{ $ejer->equipo->tipo }}">
+                                            <label for="{{ $ejer->ejer_id }}" class="card custom-card p-3">
+                                                <div class="card-body d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <img src="{{ asset($ejer->ejer_imagen) }}"
+                                                            alt="Ejercicio {{ $ejer->ejer_id }}" width="50">
+                                                        <h6 class="card-title">{{ $ejer->ejer_nombre }}</h6>
+                                                    </div>
+                                                    <p class="p-0 m-0" style="font-size:0.8em;">
+                                                        <span class="fw-bold">Equipo:
+                                                        </span>{{ $ejer->equipo->equi_nombre }}
+                                                        <br>
+                                                        <span class="fw-bold">Musculo:
+                                                        </span>{{ $ejer->musculo->mus_nombre }}
+                                                    </p>
+                                                    <span class="align-end badge bg-dark">Nivel
+                                                        {{ $ejer->ejer_nivel }}</span>
                                                 </div>
-                                                <p class="p-0 m-0" style="font-size:0.8em;">
-                                                    <span class="fw-bold">Equipo: </span>{{ $ejer->equipo->equi_nombre }}
-                                                    <br>
-                                                    <span class="fw-bold">Musculo: </span>{{ $ejer->musculo->mus_nombre }}
-                                                </p>
-                                                <span class="align-end badge bg-dark">Nivel {{ $ejer->ejer_nivel }}</span>
-                                            </div>
-                                        </label>
+                                            </label>
+                                        </div>
                                     @endforeach
                                 </div>
                                 <div class="modal-footer">
@@ -146,6 +161,13 @@
                                     @error('rut_dia')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center form-check form-switch"
+                                    style="display:none!important;" id="cont-anterior">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="anterior"
+                                        name="anterior">
+                                    <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina anterior</label>
+                                    <input type="hidden" name="id_anterior" id="id_anterior" value="0">
                                 </div>
                                 <div class="col-md-6 fechas" style="display: none">
                                     <label for="bsValidation9" class="form-label">Fecha inicio </label>
@@ -249,6 +271,68 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         let ejercicios = 0;
+        let series = 0;
+        let serCount = {}
+
+        $(document).ready(function() {
+            $('.usu_id').select2()
+
+            $('#searchInput').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('.exercise-item').each(function() {
+                    var exerciseName = $(this).find('.card-title').text().toLowerCase();
+                    if (exerciseName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+
+        function clearSearch() {
+            $('#searchInput').val('');
+            $('.exercise-item').show();
+        }
+
+
+        function selectUser() {
+            const fecha_ini = $('#usu_id option:selected').data('fecha');
+            const meses = parseInt($('#usu_id option:selected').data('mes'), 10);
+
+            $('#fecha_ini').val(fecha_ini);
+
+            const fecha = new Date(fecha_ini);
+            fecha.setDate(fecha.getDate() + (meses * 31));
+            const anio = fecha.getFullYear();
+            const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            const dia = ('0' + fecha.getDate()).slice(-2);
+            const fecha_fin = `${anio}-${mes}-${dia}`;
+            $('#fecha_fin').val(fecha_fin);
+            $('.fechas').css('display', 'block');
+
+            const id = $('#usu_id').val()
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.rutinas.user') }}",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    $('#cont-anterior').attr('style', 'display:block');
+                    $('#anterior').attr('checked', 'checked');
+                    $('#id_anterior').val(response.rut_grupo);
+                },
+                error: function(err) {
+                    $('#anterior').removeAttr('checked');
+                    $('#cont-anterior').attr('style', 'display:none!important');
+                    $('#id_anterior').val(0);
+                }
+            });
+        }
 
         function agregarEjercicios() {
             var selectEjercicios = [];
@@ -257,16 +341,20 @@
                 var id = $(this).attr('id');
                 var name = $(this).data('name');
                 var image = $(this).data('image');
+                var tipo = $(this).data('tipo');
                 selectEjercicios.push({
                     id: id,
                     name: name,
-                    image: image
+                    image: image,
+                    tipo: tipo,
                 });
             });
             console.log(selectEjercicios);
 
             selectEjercicios.forEach(element => {
-                $('#rutinas').append(`<hr><div id="ejercicio_${ejercicios}" class="mb-3">
+                serCount[ejercicios] = 1
+                $('#rutinas').append(`<div id="ejercicio_${ejercicios}" class="mb-3">
+                                        <hr>
                                         <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
                                             <img src="${element.image}" alt=""
                                                 width="75">
@@ -274,17 +362,17 @@
                                             <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.id}">
                                             <button type="button" class="btn btn-danger" onclick="deleteEjercicio(${ejercicios})">Eliminar</button>
                                         </div>
-                                        <div class="series_${ejercicios} col-md-12 w-75 m-auto">
-                                            <div class="row">
+                                        <div id="series_${ejercicios}" class="col-md-12 w-75 m-auto">
+                                            <div id="serie_${series}" class="row">
                                                 <div class="col-md-2">
                                                     <label for="" class="form-label">Serie </label>
-                                                    <input type="number" class="form-control" name="series[${ejercicios}][serie][]"
-                                                        readonly value="1">
+                                                    <input type="text" class="form-control series_${ejercicios}" name="series[${ejercicios}][serie][]"
+                                                        readonly value="${serCount[ejercicios]}">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label for="" class="form-label">Peso </label>
+                                                    <label for="" class="form-label">Peso (kg) </label>
                                                     <input type="number" class="form-control" name="series[${ejercicios}][peso][]"
-                                                        placeholder="Peso" step="1" min="0">
+                                                        placeholder="Peso" step="1" min="0" ${element.tipo != 'peso' ? 'disabled="disabled"' : ''}>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for="" class="form-label">Repeticiones
@@ -293,20 +381,65 @@
                                                         placeholder="Repeticiones" step="1" min="1">
                                                 </div>
                                                 <div class="col-md-1 d-flex align-items-center justify-content-around">
-                                                    <button type="button" class="btn btn-danger"
-                                                        onclick="removeSerie()">-</button>
+                                                    <button type="button" class="btn btn-outline-danger radius-30"
+                                                        onclick="removeSerie(${series}, ${ejercicios})">
+                                                        <i class='bx bxs-trash'></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12 mt-3 w-75 m-auto">
-                                            <button type="button" class="btn btn-secondary w-100">
+                                            <button type="button" class="btn btn-secondary w-100" onclick="addSerie(${ejercicios}, '${element.tipo}')">
                                                 Agregar serie
                                             </button>
                                         </div>
                                     </div>`);
                 ejercicios++
+                series++
             });
             resetEjerciciosRutina()
+        }
+
+        function addSerie(ejer, tipo) {
+            serCount[ejer] = serCount[ejer] + 1;
+            const template = `<div id="serie_${series}" class="row">
+                                <div class="col-md-2">
+                                    <label for="" class="form-label">Serie </label>
+                                    <input type="text" class="form-control series_${ejer}" name="series[${ejer}][serie][]"
+                                        readonly value="${serCount[ejer]}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="" class="form-label">Peso (kg) </label>
+                                    <input type="number" class="form-control" name="series[${ejer}][peso][]"
+                                        placeholder="Peso" step="1" min="0" ${tipo != 'peso' ? 'disabled="disabled"' : ''}>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="" class="form-label">Repeticiones
+                                    </label>
+                                    <input type="number" class="form-control" name="series[${ejer}][rep][]"
+                                        placeholder="Repeticiones" step="1" min="1">
+                                </div>
+                                <div class="col-md-1 d-flex align-items-center justify-content-around">
+                                    <button type="button" class="btn btn-outline-danger radius-30"
+                                        onclick="removeSerie(${series}, ${ejer})">
+                                        <i class='bx bxs-trash'></i>
+                                    </button>
+                                </div>
+                            </div>`
+            series++
+            $('#series_' + ejer).append(template)
+        }
+
+        function removeSerie(serie, ejer) {
+            $('#serie_' + serie).remove();
+            serCount[ejer] = serCount[ejer] - 1;
+
+            const elementos = $('.series_' + ejer);
+            let i = 1;
+            elementos.each(function(index) {
+                $(this).val(i)
+                i++
+            });
         }
 
         function deleteEjercicio(ejer) {
@@ -314,9 +447,8 @@
         }
 
         function resetEjerciciosRutina() {
-            const semana = $('#semana').val()
+            clearSearch()
             $('#ejercicios_rutina')[0].reset()
-            $('#semana').val(semana)
         }
     </script>
 @endsection

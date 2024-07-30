@@ -62,7 +62,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table id="tabla_pagos" class="table table-bordered table-hover datatable-multi-row">
+                        {{-- <table id="tabla_pagos" class="table table-bordered table-hover datatable-multi-row">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -134,6 +134,7 @@
                                                 {{ $rut->rut_grupo }}</td>
                                             @php
                                                 $grupoAnterior = $grupo;
+                                                $i++;
                                             @endphp
                                         @endif
 
@@ -149,7 +150,7 @@
                                         <td>{{ $rut->rut_serie }}</td>
                                         <td>{{ $rut->rut_repeticiones > 1 ? $rut->rut_repeticiones . ' veces' : $rut->rut_repeticiones . ' vez' }}
                                         </td>
-                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : 'No' }}</td>
+                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : '-' }}</td>
                                         <td>
                                             <span class="badge {{ $rut->rut_rid == 0 ? 'bg-dark' : 'bg-success' }}">
                                                 {{ $rut->rut_rid == 0 ? 'No medido aun' : $rut->rut_rid }}
@@ -188,9 +189,6 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @php
-                                        $i++;
-                                    @endphp
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -209,9 +207,9 @@
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
-                        </table>
+                        </table> --}}
 
-                        {{-- <table id="tabla_pagos" class="table table-bordered table-hover">
+                        <table id="tabla_pagos" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -240,7 +238,7 @@
                                         <td>{{ $rut->rut_serie }}</td>
                                         <td>{{ $rut->rut_repeticiones > 1 ? $rut->rut_repeticiones . ' veces' : $rut->rut_repeticiones . ' vez' }}
                                         </td>
-                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : 'No' }}</td>
+                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : '-' }}</td>
                                         <td>
                                             <span class="badge {{ $rut->rut_rid == 0 ? 'bg-dark' : 'bg-success' }}">
                                                 {{ $rut->rut_rid == 0 ? 'No medido aun' : $rut->rut_rid }}
@@ -298,7 +296,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
-                        </table> --}}
+                        </table>
                     </div>
                 </div>
             </div>
@@ -332,6 +330,7 @@
                     }
                 },
                 lengthChange: false,
+                dom: 'Bfrtip',
                 buttons: ["copy", "excel", "pdf", "print"],
                 // fnDrawCallback: () => {
 
