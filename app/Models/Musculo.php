@@ -14,7 +14,7 @@ class Musculo extends Model
     protected $table = 'musculo';
     protected $primaryKey = 'mus_id';
     protected $fillable = [
-        'mus_id', 'mus_nombre', 'mus_imagen', 'mus_estado',
+        'mus_id', 'mus_nombre', 'mus_imagen', 'mus_descripcion', 'mus_estado',
         'created_at', 'updated_at'
     ];
 }

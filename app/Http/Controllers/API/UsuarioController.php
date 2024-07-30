@@ -144,7 +144,7 @@ class UsuarioController extends Controller
                     } else {
                         return response()->json([
                             'success' => false,
-                            'message' => 'Solo puede ingresar ' . $pagos->ingreso_dia . ' ' . ($pagos->ingreso_dia > 1 ? 'veces' : 'vez') . ' al dia.',
+                            'message' => 'Solo puede ingresar ' . ($pagos->ingreso_dia > 1 ? $pagos->ingreso_dia . 'veces' : 'una vez') . ' al dia.',
                         ], 400);
                     }
                 } else {
@@ -181,7 +181,7 @@ class UsuarioController extends Controller
                 } else {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Solo puede ingresar ' . $pagos->ingreso_semana . ' ' . ($pagos->ingreso_semana > 1 ? 'veces' : 'vez') . ' a la semana.',
+                        'message' => 'Solo puede ingresar ' . $pagos->ingreso_semana . ' veces a la semana.',
                     ], 400);
                 }
             }

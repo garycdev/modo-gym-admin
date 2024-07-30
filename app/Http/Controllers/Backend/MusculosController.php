@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Musculo;
-
 use App\Http\Controllers\Controller;
+use App\Models\Musculo;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class MusculosController extends Controller
 {
@@ -29,7 +24,7 @@ class MusculosController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún Musculo!');
         }
 
-        $musculos = Musculo::where('mus_estado', '!=', 'ELIMINADO')->get();
+        $musculos = Musculo::where('mus_estado', '!=', 'ELIMINADO')->orderBy('mus_id', 'DESC')->get();
         return view('backend.pages.musculos.index', compact('musculos'));
     }
 
@@ -56,7 +51,7 @@ class MusculosController extends Controller
         // Validation Data
         $request->validate([
             'mus_nombre' => 'required|string|max:150',
-            'mus_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'mus_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         // Create New Musculo
         $musculo = new Musculo();
@@ -68,18 +63,18 @@ class MusculosController extends Controller
             //     unlink(public_path($musculo->mus_imagen));
             // }
             $image = $request->file('mus_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo info_logo con el nombre de la nueva imagen
-            $musculo->mus_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $musculo->mus_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $musculo->mus_imagen = $musculo->mus_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
+        $musculo->mus_descripcion = $request->mus_descripcion;
 
         $musculo->save();
-
 
         session()->flash('success', '¡¡Se ha creado los musculos!!');
         return redirect()->route('admin.musculos.index');
@@ -119,13 +114,14 @@ class MusculosController extends Controller
         $request->validate([
             'mus_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120', // Validación de la imagen
             'mus_nombre' => 'required|max:255',
-            'mus_estado' => 'required|string|max:20'
+            'mus_estado' => 'required|string|max:20',
         ]);
         // Obtener el registro de la base de datos
         $musculos = Musculo::find($id);
         // Actualizar los campos del registro con los datos del formulario
         $musculos->mus_nombre = $request->mus_nombre;
         $musculos->mus_estado = $request->mus_estado;
+        $musculos->mus_descripcion = $request->mus_descripcion;
 
         // Procesamiento de la imagen
         if ($request->hasFile('mus_imagen')) {
@@ -134,12 +130,12 @@ class MusculosController extends Controller
                 unlink(public_path($musculos->mus_imagen));
             }
             $image = $request->file('mus_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo mus_imagen con el nombre de la nueva imagen
-            $musculos->mus_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $musculos->mus_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $musculos->mus_imagen = $musculos->mus_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
@@ -149,7 +145,7 @@ class MusculosController extends Controller
 
         // Redireccionar de vuelta con un mensaje de éxito
         session()->flash('success', '¡¡La información ha sido actualizada con éxito!!');
-        return back();
+        return redirect()->route('admin.musculos.index');
 
     }
 
