@@ -110,7 +110,7 @@
                                 <table class="table align-middle mb-0">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>#</th>
+                                            {{-- <th>#</th> --}}
                                             <th>Plan</th>
                                             <th>Tipo</th>
                                             <th>Periodo</th>
@@ -133,10 +133,10 @@
                                         @endphp
                                         @foreach ($costos as $costo)
                                             <tr>
-                                                <td>
+                                                {{-- <td>
                                                     <img src="{{ asset('image/cliente/default.png') }}"
                                                         class="product-img-2" alt="product img" />
-                                                </td>
+                                                </td> --}}
                                                 <td>{{ $costo->nombre }}</td>
                                                 <td>
                                                     @switch($costo->tipo)
