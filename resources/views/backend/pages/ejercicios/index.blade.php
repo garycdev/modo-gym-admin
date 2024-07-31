@@ -54,6 +54,7 @@
                                     <th>Equipo</th>
                                     <th>Nombre Musculo</th>
                                     <th>Musculo</th>
+                                    <th>Descripcion</th>
                                     <th>Estado</th>
                                     {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
@@ -101,6 +102,7 @@
                                                 </div>
                                             @endif
                                         </td>
+                                        <td>{{ $ejercicio->ejer_descripcion }}</td>
                                         <td>
                                             <span
                                                 class="badge bg-{{ $ejercicio->ejer_estado == 'ACTIVO' ? 'success' : 'danger' }}">
@@ -110,14 +112,14 @@
                                         {{-- <td>{{ $ejercicio->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td> --}}
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('ejercicio.edit'))
-                                                <a class="btn btn-success text-white"
+                                                <a class="btn btn-warning"
                                                     href="{{ route('admin.ejercicios.edit', $ejercicio->ejer_id) }}">
                                                     <i class='bx bxs-edit'></i>
                                                 </a>
                                             @endif
 
                                             @if (Auth::guard('admin')->user()->can('ejercicio.delete'))
-                                                <a class="btn btn-danger text-white"
+                                                <a class="btn btn-danger"
                                                     href="{{ route('admin.ejercicios.destroy', $ejercicio->ejer_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $ejercicio->ejer_id }}').submit();">
                                                     <i class='bx bxs-trash'></i>
@@ -138,12 +140,16 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>#</th>
                                     <th>Nombre</th>
                                     <th>Imagen</th>
-                                    <th>Nombre del Equipo</th>
-                                    <th>Nombre del Musculo</th>
+                                    <th>Nombre Equipo</th>
+                                    <th>Equipo</th>
+                                    <th>Nombre Musculo</th>
+                                    <th>Musculo</th>
+                                    <th>Descripcion</th>
                                     <th>Estado</th>
-                                    <th>Fecha Actualizado</th>
+                                    {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

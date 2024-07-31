@@ -78,6 +78,7 @@ class EquiposController extends Controller
             $equipo->equi_imagen = $equipo->equi_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
         $equipo->tipo = $request->tipo;
+        $equipo->equi_descripcion = $request->equi_descripcion;
 
         $equipo->save();
 
@@ -144,6 +145,7 @@ class EquiposController extends Controller
             $equipos->equi_imagen = $equipos->equi_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
         $equipos->tipo = $request->tipo;
+        $equipos->equi_descripcion = $request->equi_descripcion;
 
         // Guardar los cambios en la base de datos
         $equipos->save();

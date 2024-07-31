@@ -51,6 +51,7 @@
                                     <th>Nombre</th>
                                     <th>Imagen</th>
                                     <th>Tipo</th>
+                                    <th>Descripcion</th>
                                     <th>Estado</th>
                                     {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
@@ -78,6 +79,7 @@
                                             @endif
                                         </td>
                                         <td>{{ strtoupper($equipo->tipo) }}</td>
+                                        <td>{{ $equipo->equi_descripcion }}</td>
                                         <td>
                                             <span
                                                 class="badge bg-{{ $equipo->equi_estado == 'ACTIVO' ? 'success' : 'danger' }}">
@@ -87,14 +89,14 @@
                                         {{-- <td>{{ $equipo->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td> --}}
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('equipo.edit'))
-                                                <a class="btn btn-success text-white"
+                                                <a class="btn btn-warning"
                                                     href="{{ route('admin.equipos.edit', $equipo->equi_id) }}">
                                                     <i class='bx bxs-edit'></i>
                                                 </a>
                                             @endif
 
                                             @if (Auth::guard('admin')->user()->can('equipo.delete'))
-                                                <a class="btn btn-danger text-white"
+                                                <a class="btn btn-danger"
                                                     href="{{ route('admin.equipos.destroy', $equipo->equi_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $equipo->equi_id }}').submit();">
                                                     <i class='bx bxs-trash'></i>
@@ -115,9 +117,13 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>#</th>
                                     <th>Nombre</th>
                                     <th>Imagen</th>
+                                    <th>Tipo</th>
+                                    <th>Descripcion</th>
                                     <th>Estado</th>
+                                    {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

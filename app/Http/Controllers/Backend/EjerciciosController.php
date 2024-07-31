@@ -187,7 +187,7 @@ class EjerciciosController extends Controller
 
         // Redireccionar de vuelta con un mensaje de éxito
         session()->flash('success', '¡¡La información ha sido actualizada con éxito!!');
-        return back();
+        return redirect()->route('admin.ejercicios.index');
 
     }
 

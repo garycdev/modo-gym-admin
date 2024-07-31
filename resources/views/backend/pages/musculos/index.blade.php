@@ -115,9 +115,12 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>#</th>
                                     <th>Nombre</th>
                                     <th>Imagen</th>
+                                    <th>Descripcion</th>
                                     <th>Estado</th>
+                                    {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

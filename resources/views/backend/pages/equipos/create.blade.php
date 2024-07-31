@@ -39,16 +39,16 @@
                             <form action="{{ route('admin.equipos.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation3" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="equi_nombre" name="equi_nombre"
                                         placeholder="Agregar nombre" required>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation4" class="form-label">Imagen</label>
                                     <input type="file" class="form-control" id="equi_imagen" name="equi_imagen">
                                 </div>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation4" class="form-label">Tipo</label>
                                     {{-- <select class="form-control" id="tipo" name="tipo" required>
                                         <option selected>[Ninguno]</option>
@@ -65,8 +65,12 @@
                                     <input type="radio" id="rid" value="rid" name="tipo">
                                     <label for="rid">RID</label>
                                 </div>
+                                <div class="mb-3 col-md-12">
+                                    <label for="bsValidation3" class="form-label">Descripcion</label>
+                                    <textarea class="form-control" id="equi_descripcion" name="equi_descripcion" placeholder="Descripcion" rows="5"></textarea>
+                                </div>
                                 <br>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
                                         <button type="submit" class="btn btn-primary px-4">Submit</button>
                                     </div>

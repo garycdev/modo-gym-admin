@@ -46,12 +46,12 @@
                                 enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation3" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="equi_nombre" name="equi_nombre"
                                         value="{{ $equipo->equi_nombre }}" placeholder="Agregar nombre" required>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="equi_estado" class="form-label">Estado</label>
                                     <select id="equi_estado" name="equi_estado" class="form-select">
                                         <option value="ACTIVO" {{ $equipo->equi_estado == 'ACTIVO' ? 'selected' : '' }}>
@@ -61,12 +61,12 @@
                                     </select>
 
                                 </div>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation4" class="form-label">Imagen</label>
                                     <input type="file" class="form-control" id="equi_imagen" name="equi_imagen">
                                 </div>
                                 <br>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <label for="bsValidation4" class="form-label">Tipo</label>
                                     {{-- <select class="form-control" id="tipo" name="tipo" required>
                                     <option selected>[Ninguno]</option>
@@ -86,8 +86,12 @@
                                         {{ $equipo->tipo == 'rid' ? 'checked' : '' }}>
                                     <label for="rid">RID</label>
                                 </div>
+                                <div class="mb-3 col-md-12">
+                                    <label for="bsValidation3" class="form-label">Descripcion</label>
+                                    <textarea class="form-control" id="equi_descripcion" name="equi_descripcion" placeholder="Descripcion" rows="5">{{ $equipo->equi_descripcion }}</textarea>
+                                </div>
                                 <br>
-                                <div class="col-md-12">
+                                <div class="mb-3 col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">
                                         <button type="submit" class="btn btn-primary px-4">Submit</button>
                                     </div>
