@@ -70,6 +70,11 @@
                                                     <img src="{{ asset($musculo->mus_imagen) }}" class="product-img-2"
                                                         alt="product img" width="120">
                                                 </div>
+                                            @else
+                                                <div class="d-flex flex-column align-items-center text-center">
+                                                    <img src="{{ asset('modo-gym/blank.png') }}" class="product-img-2"
+                                                        alt="product img" width="120">
+                                                </div>
                                             @endif
                                         </td>
                                         <td>{{ $musculo->mus_descripcion }}</td>

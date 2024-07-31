@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="bsValidation4" class="form-label">Imagen</label>
-                                    <input type="file" class="form-control" id="equi_imagen" name="equi_imagen" required>
+                                    <input type="file" class="form-control" id="equi_imagen" name="equi_imagen">
                                 </div>
                                 <div class="col-md-12">
                                     <label for="bsValidation4" class="form-label">Tipo</label>

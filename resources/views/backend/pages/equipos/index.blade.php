@@ -52,7 +52,7 @@
                                     <th>Imagen</th>
                                     <th>Tipo</th>
                                     <th>Estado</th>
-                                    <th>Fecha Actualizado</th>
+                                    {{-- <th>Fecha Actualizado</th> --}}
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -65,14 +65,26 @@
                                         <td>{{ $i }}</td>
                                         <td>{{ $equipo->equi_nombre }}</td>
                                         <td>
-                                            <div class="d-flex flex-column align-items-center text-center">
-                                                <img src="{{ asset($equipo->equi_imagen) }}" class="product-img-2"
-                                                    alt="product img" width="120">
-                                            </div>
+                                            @if ($equipo->equi_imagen)
+                                                <div class="d-flex flex-column align-items-center text-center">
+                                                    <img src="{{ asset($equipo->equi_imagen) }}" class="product-img-2"
+                                                        alt="product img" width="120">
+                                                </div>
+                                            @else
+                                                <div class="d-flex flex-column align-items-center text-center">
+                                                    <img src="{{ asset('modo-gym/blank.png') }}" class="product-img-2"
+                                                        alt="product img" width="120">
+                                                </div>
+                                            @endif
                                         </td>
                                         <td>{{ strtoupper($equipo->tipo) }}</td>
-                                        <td>{{ $equipo->equi_estado }}</td>
-                                        <td>{{ $equipo->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $equipo->equi_estado == 'ACTIVO' ? 'success' : 'danger' }}">
+                                                {{ $equipo->equi_estado }}
+                                            </span>
+                                        </td>
+                                        {{-- <td>{{ $equipo->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td> --}}
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('equipo.edit'))
                                                 <a class="btn btn-success text-white"

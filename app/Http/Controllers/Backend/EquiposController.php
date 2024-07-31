@@ -56,7 +56,7 @@ class EquiposController extends Controller
         // Validation Data
         $request->validate([
             'equi_nombre' => 'required|string|max:150',
-            'equi_imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'equi_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
         // Create New Equipo
         $equipo = new Equipos();
