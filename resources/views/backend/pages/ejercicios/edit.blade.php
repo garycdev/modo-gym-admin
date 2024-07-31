@@ -107,20 +107,6 @@
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
-                                        <label for="mus_id" class="form-label">Musculo</label>
-                                        <select id="mus_id" name="mus_id" class="select-musculos form-select" required>
-                                            <option value="{{ $ejercicios->mus_id }}"
-                                                data-image='{{ asset($ejercicios->mus_imagen) }}'>
-                                                {{ $ejercicios->mus_nombre }}
-                                            </option>
-                                            @foreach ($musculos as $musculo)
-                                                <option value='{{ $musculo->mus_id }}'
-                                                    data-image='{{ asset($musculo->mus_imagen) }}'>
-                                                    {{ $musculo->mus_nombre }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
                                         <label for="equi_id" class="form-label">Equipo</label>
                                         <select id="equi_id" name="equi_id" class="select-equipos form-select" required>
                                             <option value="{{ $ejercicios->equi_id }}"
@@ -131,6 +117,20 @@
                                                 <option value='{{ $equipo->equi_id }}'
                                                     data-image='{{ asset($equipo->equi_imagen) }}'>
                                                     {{ $equipo->equi_nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label for="mus_id" class="form-label">Musculo</label>
+                                        <select id="mus_id" name="mus_id" class="select-musculos form-select" required>
+                                            <option value="{{ $ejercicios->mus_id }}"
+                                                data-image='{{ asset($ejercicios->mus_imagen) }}'>
+                                                {{ $ejercicios->mus_nombre }}
+                                            </option>
+                                            @foreach ($musculos as $musculo)
+                                                <option value='{{ $musculo->mus_id }}'
+                                                    data-image='{{ asset($musculo->mus_imagen) }}'>
+                                                    {{ $musculo->mus_nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -174,12 +174,11 @@
                 return $state;
             };
 
-            $('.select-musculos').select2({
+            $('.select-equipos').select2({
                 templateResult: formatState,
                 templateSelection: formatState
             });
-            $('.select-musculos').val('{{ $ejercicios->mus_id }}').trigger('change');
-            $('.select-equipos').select2({
+            $('.select-musculos').select2({
                 templateResult: formatState,
                 templateSelection: formatState
             });

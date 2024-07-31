@@ -90,6 +90,18 @@
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
+                                        <label for="equi_id" class="form-label">Equipo</label>
+                                        <select id="equi_id" name="equi_id" class="select-equipos form-select" required>
+                                            <option selected disabled value>Elegir...</option>
+                                            @foreach ($equipos as $equipo)
+                                                <option value='{{ $equipo->equi_id }}'
+                                                    data-image='{{ asset($equipo->equi_imagen) }}'>
+                                                    {{ $equipo->equi_nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
                                         <label for="mus_id" class="form-label">Musculo</label>
                                         <select id="mus_id" name="mus_id" class="select-musculos form-select" required>
                                             <option selected disabled value>Elegir...</option>
@@ -98,18 +110,6 @@
                                                     data-image='{{ asset($musculo->mus_imagen) }}'>
                                                     {{ $musculo->mus_nombre }}
                                                 </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3 col-md-6">
-                                        <label for="equi_id" class="form-label">Equipo</label>
-                                        <select id="equi_id" name="equi_id" class="select-equipos form-select" required>
-                                            <option selected disabled value>Elegir...</option>
-                                            @foreach ($equipos as $equipo)
-                                                <option value='{{ $equipo->equi_id }}'
-                                                    data-image='{{ asset($equipo->equi_imagen) }}'>
-                                                    {{ $equipo->equi_nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -153,11 +153,11 @@
                 return $state;
             };
 
-            $('.select-musculos').select2({
+            $('.select-equipos').select2({
                 templateResult: formatState,
                 templateSelection: formatState
             });
-            $('.select-equipos').select2({
+            $('.select-musculos').select2({
                 templateResult: formatState,
                 templateSelection: formatState
             });
