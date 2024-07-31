@@ -50,8 +50,8 @@ class EquiposController extends Controller
         if (is_null($this->user) || !$this->user->can('equipo.create')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún equipo!');
         }
-        dd($request);
-        die();
+        // dd($request);
+        // die();
 
         // Validation Data
         $request->validate([
