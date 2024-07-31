@@ -24,4 +24,8 @@ class Costos extends Model
         'updated_at',
     ];
 
+    public function pagos()
+    {
+        return $this->hasMany(Pagos::class, 'costo_id');
+    }
 }

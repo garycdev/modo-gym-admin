@@ -19,7 +19,7 @@ class LoginController extends Controller
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
-    */
+     */
 
     use AuthenticatesUsers;
 
@@ -37,9 +37,11 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
         return view('backend.auth.login');
     }
-
 
     /**
      * login admin
@@ -55,6 +57,10 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        // if (isset($request->remember) && $request->remember == 'on') {
+        //     Cookie::queue(Cookie::make('remember', , 43200));
+        // }
+
         // Attempt to login
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             // Redirect to dashboard
@@ -67,7 +73,7 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard');
             }
             // error
-            session()->flash('error', 'Invalid email and password');
+            session()->flash('error', 'Nombre de usuario o contraseña invalida');
             return back();
         }
     }

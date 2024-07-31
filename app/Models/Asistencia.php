@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Models;
-namespace App\Models\Usuarios;
+
+// namespace App\Models\Usuarios;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,16 +18,16 @@ class Asistencia extends Model
         'usu_id',
         'asistencia_fecha',
         'asistencia_hora',
-        'asistencia_tipo'
+        'asistencia_tipo',
     ];
 
-     // Relación con el modelo Usuario (asumiendo que 'usu_id' es la clave foránea)
-     public function usuario()
-     {
-         return $this->belongsTo(Usuarios::class, 'usu_id', 'usu_id');
-     }
+    // Relación con el modelo Usuario (asumiendo que 'usu_id' es la clave foránea)
+    public function usuario()
+    {
+        return $this->belongsTo(Usuarios::class, 'usu_id', 'usu_id');
+    }
 
-     // Método para obtener el estado de asistencia en forma legible
+    // Método para obtener el estado de asistencia en forma legible
     public function estadoAsistencia()
     {
         return $this->asistencia_asistio ? 1 : 0;

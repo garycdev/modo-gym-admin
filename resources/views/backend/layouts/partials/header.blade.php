@@ -8,13 +8,12 @@
 
             <div class="top-menu ms-auto">
                 <ul class="navbar-nav align-items-center gap-1">
-
-
                     <li class="nav-item dark-mode d-none d-sm-flex">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><i class="bx bx-moon"></i>
                         </a>
                     </li>
-                    <li class="nav-item dropdown dropdown-app">
+
+                    <li style="display:none;" class="nav-item dropdown dropdown-app">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown"
                             href="javascript:;"><i class="bx bx-grid-alt"></i></a>
                         <div class="dropdown-menu dropdown-menu-end p-0">
@@ -24,8 +23,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/slack.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">Slack</p>
@@ -37,8 +36,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/behance.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">Behance</p>
@@ -50,8 +49,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/google-drive.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">Dribble</p>
@@ -63,8 +62,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/outlook.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">Outlook</p>
@@ -76,8 +75,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/github.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">GitHub</p>
@@ -89,8 +88,8 @@
                                         <a href="javascript:;">
                                             <div class="app-box text-center">
                                                 <div class="app-icon">
-                                                    <img src="{{ asset('admin-assets/images/app/stack-overflow.png') }}"
-                                                        width="30" alt="" />
+                                                    <img src="{{ asset('image/cliente/default.png') }}" width="30"
+                                                        alt="" />
                                                 </div>
                                                 <div class="app-name">
                                                     <p class="mb-0 mt-1">Stack</p>
@@ -120,8 +119,8 @@
                                 <a class="dropdown-item" href="javascript:;">
                                     <div class="d-flex align-items-center">
                                         <div class="user-online">
-                                            <img src="{{ asset('admin-assets/images/avatars/avatar-1.png') }}"
-                                                class="msg-avatar" alt="user avatar" />
+                                            <img src="{{ asset('image/cliente/default.png') }}" class="msg-avatar"
+                                                alt="user avatar" />
                                         </div>
                                         <div class="flex-grow-1">
                                             <h6 class="msg-name">
@@ -155,10 +154,11 @@
                             </a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown dropdown-large">
+
+                    <li style="display:none;" class="nav-item dropdown dropdown-large">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{-- <span class="alert-count">8</span> --}}
+                            <span class="alert-count">8</span>
                             <i class="bx bx-shopping-bag"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -173,8 +173,8 @@
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="position-relative">
                                             <div class="cart-product rounded-circle bg-light">
-                                                <img src="{{ asset('admin-assets/images/products/11.png') }}"
-                                                    class="" alt="product image" />
+                                                <img src="{{ asset('image/cliente/default.png') }}" class=""
+                                                    alt="product image" />
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
