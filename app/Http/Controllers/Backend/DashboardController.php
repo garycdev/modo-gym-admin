@@ -43,8 +43,8 @@ class DashboardController extends Controller
         $finMesSiguiente = Carbon::now()->addMonth()->startOfMonth()->day(9)->toDateString();
         $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesActual, $finMesSiguiente])->count();
 
-        $inicioMesAnterior = Carbon::now()->subMonth()->startOfMonth()->day(10)->toDateString();
-        $finMesAnterior = Carbon::now()->subMonth()->endOfMonth()->toDateString();
+        $inicioMesAnterior = Carbon::now()->startOfMonth()->subMonth()->day(10)->startOfDay();
+        $finMesAnterior = Carbon::now()->day(9)->endOfDay();
         $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $finMesAnterior])->count();
 
         if ($registrosMesAnterior > 0) {
