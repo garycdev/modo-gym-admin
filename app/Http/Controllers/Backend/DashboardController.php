@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Asistencia;
 use App\Models\Costos;
-use App\Models\Pagos;
 use App\Models\Usuarios;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -60,53 +59,18 @@ class DashboardController extends Controller
         $asistenciasHoy = Asistencia::where('asistencia_tipo', 'ENTRADA')
             ->whereDate('asistencia_fecha', $hoy)
             ->count();
+        $ayer = Carbon::now()->subDay()->startOfDay();
+        $asistenciasAyer = Asistencia::where('asistencia_tipo', 'ENTRADA')
+            ->whereDate('asistencia_fecha', $ayer)
+            ->count();
 
-        // $currentYear = Carbon::now()->year;
-        // $currentMonth = Carbon::now()->month;
-        // $pagos = Pagos::whereYear('pago_fecha', $currentYear)
-        //     ->whereMonth('pago_fecha', $currentMonth)
-        //     ->whereDay('pago_fecha', 10)
-        //     ->orderBy('pago_id', 'DESC')
-        //     ->get();
-        $pagos = Pagos::orderBy('pago_id', 'DESC')->get();
-
-        $totalUsuarios = 0;
-        foreach ($pagos as $pago) {
-            $fechaPago = new \DateTime($pago->pago_fecha);
-
-            $fechaLimite = clone $fechaPago;
-            $fechaLimite->modify('+' . $pago->costo->mes * 30 . ' days');
-
-            $fechaActual = today();
-
-            $diff = $fechaActual->diff($fechaLimite);
-            $diferenciaDias = $diff->format('%r%a');
-
-            // if ($diferenciaDias > 0) {
-            //     if ($diferenciaDias >= 30) {
-            //         $textoFaltante = '30 días';
-            //     } else {
-            //         $textoFaltante = "$diferenciaDias días";
-            //     }
-            // } elseif ($diferenciaDias == 0) {
-            //     $textoFaltante = 'Hoy es el último día';
-            // } else {
-            //     $textoFaltante = 0;
-            // }
-
-            if ($diferenciaDias >= 0) {
-                $totalUsuarios++;
-            }
+        $porcentaje = 0;
+        if ($asistenciasAyer > 0) {
+            $porcentaje = (($asistenciasHoy - $asistenciasAyer) / $asistenciasAyer) * 100;
         }
 
-        if ($totalUsuarios > 0) {
-            $porcentajeAsistentes = ($asistenciasHoy / $totalUsuarios) * 100;
-        } else {
-            $porcentajeAsistentes = 0;
-        }
-
-        $porcentajeAsistentesF = number_format($porcentajeAsistentes, 2);
-        $porcentajeAsistentesFS = $porcentajeAsistentes > 0 ? '+' . $porcentajeAsistentesF : $porcentajeAsistentesF;
+        $porcentajeFormateado = number_format($porcentaje, 2);
+        $porcentajeFormateado = ($porcentaje >= 0 ? '+' : '') . $porcentajeFormateado;
 
         $costos = Costos::with('pagosMesAnterior')->get();
 
@@ -115,7 +79,7 @@ class DashboardController extends Controller
             'users' => $registrosMesActual,
             'users_total' => $crecimientoFS,
             'asistencias' => $asistenciasHoy,
-            'porcentaje_asistencias' => $porcentajeAsistentesFS,
+            'porcentaje_asistencias' => $porcentajeFormateado,
         );
         return view('backend.pages.dashboard.index', compact('total_admins', 'total_roles', 'total_permissions', 'total', 'costos'));
     }
