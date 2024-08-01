@@ -36,7 +36,7 @@
                                     <p class="mb-0 text-secondary">Total clientes</p>
                                     <h4 class="my-1 text-info">{{ $total['total_users'] }}</h4>
                                     <p class="mb-0 font-13">
-                                        <b>{{ $total['porcentaje_users'] }}</b> respecto al mes anterior
+                                        <b>{{ $total['porcentaje_users'] }}%</b> del total de este mes
                                     </p>
                                 </div>
                                 <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto">
