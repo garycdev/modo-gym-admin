@@ -81,8 +81,11 @@ class DashboardController extends Controller
 
         $costos = Costos::with('pagosMesAnterior')->get();
 
+        $porcentaje_users = ($registrosMesActual * 100) / $total_users;
+        $porcentajeUsersFormateado = ($porcentaje_users >= 0 ? '+' : '') . number_format($porcentaje_users, 2);
         $total = array(
             'total_users' => $total_users,
+            'porcentaje_users' => $porcentajeUsersFormateado,
             'users' => $registrosMesActual,
             'users_total' => $crecimientoFS,
             'asistencias' => $asistenciasHoy,

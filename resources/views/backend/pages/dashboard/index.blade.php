@@ -35,7 +35,9 @@
                                 <div>
                                     <p class="mb-0 text-secondary">Total clientes</p>
                                     <h4 class="my-1 text-info">{{ $total['total_users'] }}</h4>
-                                    {{-- <p class="mb-0 font-13">+2.5% from last week</p> --}}
+                                    <p class="mb-0 font-13">
+                                        <b>{{ $total['porcentaje_users'] }}</b> respecto al mes anterior
+                                    </p>
                                 </div>
                                 <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto">
                                     <i class="bx bxs-group"></i>
@@ -51,7 +53,8 @@
                                 <div>
                                     <p class="mb-0 text-secondary">Clientes por mes</p>
                                     <h4 class="my-1 text-warning">{{ $total['users'] }}</h4>
-                                    <p class="mb-0 font-13"><b>{{ $total['users_total'] }}%</b> desde el mes pasado
+                                    <p class="mb-0 font-13">
+                                        <b>{{ $total['users_total'] }}%</b> respecto al mes anterior
                                     </p>
                                 </div>
                                 <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto">
@@ -68,7 +71,9 @@
                                 <div>
                                     <p class="mb-0 text-secondary">Asistencias por dia</p>
                                     <h4 class="my-1 text-success">{{ $total['asistencias'] }}</h4>
-                                    <p class="mb-0 font-13"><b>{{ $total['porcentaje_asistencias'] }}%</b> desde ayer</p>
+                                    <p class="mb-0 font-13">
+                                        <b>{{ $total['porcentaje_asistencias'] }}%</b> respecto a ayer
+                                    </p>
                                 </div>
                                 <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
                                     <i class="bx bxs-bar-chart-alt-2"></i>
@@ -110,7 +115,9 @@
                                 <div>
                                     <p class="mb-0 text-secondary">Ganancia mensual</p>
                                     <h4 class="my-1 text-danger">Bs {{ $totalGanancia }}</h4>
-                                    <p class="mb-0 font-13"><b>{{ $porcentajeGanacia }}</b> desde el mes anterior</p>
+                                    <p class="mb-0 font-13">
+                                        <b>{{ $porcentajeGanacia }}</b> respecto al mes anterior
+                                    </p>
                                 </div>
                                 <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto">
                                     <i class="bx bxs-wallet"></i>
