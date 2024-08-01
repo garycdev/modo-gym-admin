@@ -8,7 +8,8 @@
 
             <div class="top-menu ms-auto">
                 <ul class="navbar-nav align-items-center gap-1">
-                    <li class="nav-item dark-mode d-none d-sm-flex">
+                    <li class="nav-item dark-mode d-none d-sm-flex" data-bs-toggle="tooltip" data-bs-placement="left"
+                        data-bs-title="Alternar tema oscuro">
                         <a class="nav-link dark-mode-icon" href="javascript:;"><i class="bx bx-moon"></i>
                         </a>
                     </li>
@@ -103,7 +104,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown dropdown-large">
+                    <li style="display:none;" class="nav-item dropdown dropdown-large">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#"
                             data-bs-toggle="dropdown"><span class="alert-count">7</span>
                             <i class="bx bx-bell"></i>

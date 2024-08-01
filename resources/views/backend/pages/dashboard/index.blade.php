@@ -7,6 +7,7 @@
 
 @section('admin-content')
     @php
+        // Colores de badges
         $colors = [
             'deepblue',
             'orange',
@@ -28,12 +29,13 @@
     <div class="page-wrapper">
         <div class="page-content">
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-                <div class="col">
+                <div class="col" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Desde el 10 del mes anterior">
                     <div class="card radius-10 border-start border-0 border-4 border-info">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Total clientes</p>
+                                    <p class="mb-0 text-secondary">Total de clientes</p>
                                     <h4 class="my-1 text-info">{{ $total['total_users'] }}</h4>
                                     <p class="mb-0 font-13">
                                         <b>{{ $total['porcentaje_users'] }}%</b> del total de este mes
@@ -46,7 +48,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Desde el 10 del mes anterior">
                     <div class="card radius-10 border-start border-0 border-4 border-warning">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -64,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Desde el dia de ayer">
                     <div class="card radius-10 border-start border-0 border-4 border-success">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
@@ -82,11 +85,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-bs-title="Desde el 10 del mes anterior">
                     <div class="card radius-10 border-start border-0 border-4 border-danger">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 @php
+                                    // Porcentaje de ganancias (mes actual y mes anterior)
                                     $totalGanancia = 0;
                                     foreach ($costos as $costo) {
                                         foreach ($costo->pagosMesActual as $pago) {
@@ -131,7 +136,8 @@
             <div class="row">
                 <div class="col-12 col-lg-8 d flex">
                     <div class="card radius-10">
-                        <div class="card-header">
+                        <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Desde el 10 del mes anterior">
                             <div class="d-flex align-items-center">
                                 <div>
                                     <h6 class="mt-3">Historial mensual</h6>
@@ -153,7 +159,9 @@
                                     </thead>
                                     <tbody>
                                         @php
+                                            // Obtener la ganancia maxima por costo
                                             $mayorGanacia = 0;
+                                            // Obtener la gananacia total
                                             $totalGanancia = 0;
                                             foreach ($costos as $costo) {
                                                 $ganancia = 0;
@@ -205,6 +213,7 @@
                                                 </td>
                                                 <td>
                                                     @php
+                                                        // Validar que no se divida por 0
                                                         if ($mayorGanacia == 0) {
                                                             $porcentaje = 0;
                                                             $porcentajeU = 0;
@@ -234,6 +243,7 @@
                                             <td class="fw-bold">Bs {{ $totalGanancia }}</td>
                                             <td>
                                                 @php
+                                                    // Validar que no se divida por cero
                                                     if ($totalGanancia == 0) {
                                                         $porcentajeT = 0;
                                                     } else {
@@ -257,7 +267,8 @@
 
                 <div class="col-12 col-lg-4 d-flex">
                     <div class="card radius-10 w-100">
-                        <div class="card-header">
+                        <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="top"
+                            data-bs-title="Desde el 10 del mes anterior">
                             <div class="d-flex align-items-center">
                                 <div>
                                     <h6 class="mt-3">Planes por mes</h6>
@@ -271,6 +282,7 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             @php
+                                // Para grafico de tora respecto a los planes o costos
                                 $colors2 = ['deepblue', 'quepal', 'burning', 'orange'];
                                 $j = 0;
                             @endphp
@@ -412,6 +424,7 @@
         gradientStroke4.addColorStop(0, '#fc4a1a');
         gradientStroke4.addColorStop(1, '#f7b733');
 
+        // Valores para el grafico de torta por planes o costos
         var labels = @json($costos->pluck('nombre'));
         var data = @json(
             $costos->map(function ($costo) {

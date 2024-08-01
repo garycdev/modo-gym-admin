@@ -48,6 +48,7 @@
     @include('backend.layouts.partials.switcher')
     @include('backend.layouts.partials.scripts')
     @yield('scripts')
+
     {{-- <script></script> --}}
 </body>
 
