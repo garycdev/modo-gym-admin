@@ -66,7 +66,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <p class="mb-0 text-secondary">Asistencias dia</p>
+                                    <p class="mb-0 text-secondary">Asistencias por dia</p>
                                     <h4 class="my-1 text-success">{{ $total['asistencias'] }}</h4>
                                     <p class="mb-0 font-13"><b>{{ $total['porcentaje_asistencias'] }}%</b> desde ayer</p>
                                 </div>
@@ -217,6 +217,28 @@
                                                 }
                                             @endphp
                                         @endforeach
+                                        <tr>
+                                            <td colspan="3" align="right" class="fw-bold">Total: </td>
+                                            <td class="fw-bold">Bs {{ $totalGanancia }}</td>
+                                            <td>
+                                                @php
+                                                    $porcentajeT = ($totalGanancia * 100) / $totalGanancia;
+                                                @endphp
+                                                <p class="m-0 p-0 text-center fw-bold" style="font-size:0.85em;">
+                                                    {{ number_format($porcentajeT, 2) }}%</p>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-gradient-{{ $colors[$i] }}"
+                                                        role="progressbar" style="width: {{ $porcentajeT }}%"></div>
+                                                </div>
+                                            </td>
+                                            @php
+                                                if ($i == count($colors) - 1) {
+                                                    $i = 0;
+                                                } else {
+                                                    $i++;
+                                                }
+                                            @endphp
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
