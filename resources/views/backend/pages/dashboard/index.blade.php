@@ -134,7 +134,7 @@
             </div>
             <!--end row-->
             <div class="row">
-                <div class="col-12 col-lg-8 d flex">
+                <div class="col-12 col-lg-8 d flex mb-4">
                     <div class="card radius-10">
                         <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="Desde el 10 del mes anterior">
@@ -265,7 +265,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-4 d-flex">
+                <div class="col-12 col-lg-4 d-flex mb-4">
                     <div class="card radius-10 w-100">
                         <div class="card-header" data-bs-toggle="tooltip" data-bs-placement="top"
                             data-bs-title="Desde el 10 del mes anterior">

@@ -40,36 +40,35 @@ class Pagos extends Model
     public function scopeMesActual(Builder $query)
     {
         $hoy = Carbon::now()->startOfDay();
-        // Validar el 10 de cada mes para el mes actual (si es el 10, se toma el mes actual)
+
         if ($hoy->day < 10) {
-            // Inicio del mes anterior (si es el 10, se toma el mes anterior)
+            // Si hoy es antes del 10, toma el rango desde el 10 del mes anterior
             $startDate = Carbon::now()->subMonth()->day(10)->startOfDay();
-            $endDate = $hoy;
+            $endDate = $hoy->endOfDay();
         } else {
-            // Mes actual
+            // Si hoy es el 10 o después del 10, toma el rango desde el 10 del mes actual
             $startDate = Carbon::now()->day(10)->startOfDay();
-            $endDate = $hoy;
+            $endDate = $hoy->endOfDay();
         }
 
-        return $query->whereBetween('creado_en', [$startDate, $endDate]);
+        return $query->whereBetween('creado_en', [$startDate->toDateTimeString(), $endDate->toDateTimeString()]);
     }
 
     // Scope para mes anterior respecto al costo
     public function scopeMesAnterior(Builder $query)
     {
         $hoy = Carbon::now()->startOfDay();
-        // Validar el 10 de cada mes para el mes anterior (si es el 10, se toma el mes anterior)
+
         if ($hoy->day < 10) {
-            // Inicio del mes anterior (si es el 10, se toma el mes anterior)
+            // Si hoy es antes del 10, el rango del mes anterior debe ir desde el 10 de dos meses atrás
             $startDate = Carbon::now()->subMonths(2)->day(10)->startOfDay();
             $endDate = Carbon::now()->subMonth()->day(9)->endOfDay();
         } else {
-            // Mes anterior
+            // Si hoy es el 10 o después del 10, el rango del mes anterior va desde el 10 del mes pasado
             $startDate = Carbon::now()->subMonth()->day(10)->startOfDay();
             $endDate = Carbon::now()->day(9)->endOfDay();
         }
 
-        return $query->whereBetween('creado_en', [$startDate, $endDate]);
+        return $query->whereBetween('creado_en', [$startDate->toDateTimeString(), $endDate->toDateTimeString()]);
     }
-
 }

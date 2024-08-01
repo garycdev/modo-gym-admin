@@ -41,20 +41,21 @@ class DashboardController extends Controller
 
         // Obtener usuarios respecto al mes actual y el mes anterior (10 de cada mes)
         $hoy = Carbon::now()->startOfDay();
-        // Limites de fecha de mes actual y anterior
+// Limites de fecha de mes actual y anterior
         $inicioMesActual = Carbon::now()->day(10)->startOfDay();
+        $finMesActual = Carbon::now()->endOfMonth(); // Para el final del mes actual
         $inicioMesAnterior = Carbon::now()->subMonth()->day(10)->startOfDay();
-        $finMesAnterior = Carbon::now()->day(9)->endOfDay();
+        $finMesAnterior = Carbon::now()->subMonth()->day(9)->endOfDay(); // Fin del mes anterior
 
-        // Validar el 10 de cada mes para el mes actual (si es el 10, se toma el mes actual)
+// Validar el 10 de cada mes para el mes actual
         if ($hoy->day < 10) {
-            // Inicio del mes anterior (si es el 10, se toma el mes anterior)
+            // Si hoy es antes del 10, contar desde el 10 del mes anterior
             $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $hoy])->count();
             $inicioMesAntepasado = Carbon::now()->subMonths(2)->day(10)->startOfDay();
             $finMesAnterior = Carbon::now()->subMonth()->day(9)->endOfDay();
             $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAntepasado, $finMesAnterior])->count();
         } else {
-            // Mes actual
+            // Si hoy es el 10 o después del 10, contar desde el 10 del mes actual
             $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesActual, $hoy])->count();
             $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $finMesAnterior])->count();
         }
@@ -89,7 +90,7 @@ class DashboardController extends Controller
 
         // Obtener costos para mes actual y el mes anterior
         // Esta definido por scopes (scopeMesActual y scopeMesAnterior) en el modelo Pagos
-        $costos = Costos::with('pagosMesAnterior')->get();
+        $costos = Costos::with('pagosMesActual')->with('pagosMesAnterior')->get();
 
         // Porcentaje de usuarios respecto al total de usuarios
         $porcentaje_users = ($registrosMesActual * 100) / $total_users;
