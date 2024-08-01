@@ -33,16 +33,30 @@ class Pagos extends Model
 
     public function scopeMesActual(Builder $query)
     {
-        $startDate = Carbon::now()->copy()->day(10)->startOfDay();
-        $endDate = Carbon::now()->copy()->addMonth()->day(9)->endOfDay();
+        $hoy = Carbon::now()->startOfDay();
+        if ($hoy->day < 10) {
+            $startDate = Carbon::now()->subMonth()->day(10)->startOfDay();
+            $endDate = $hoy;
+        } else {
+            $startDate = Carbon::now()->day(10)->startOfDay();
+            $endDate = $hoy;
+        }
 
         return $query->whereBetween('pago_fecha', [$startDate, $endDate]);
     }
+
     public function scopeMesAnterior(Builder $query)
     {
-        $startDate = Carbon::now()->startOfMonth()->subMonth()->day(10)->startOfDay();
-        $endDate = Carbon::now()->day(9)->endOfDay();
+        $hoy = Carbon::now()->startOfDay();
+        if ($hoy->day < 10) {
+            $startDate = Carbon::now()->subMonths(2)->day(10)->startOfDay();
+            $endDate = Carbon::now()->subMonth()->day(9)->endOfDay();
+        } else {
+            $startDate = Carbon::now()->subMonth()->day(10)->startOfDay();
+            $endDate = Carbon::now()->day(9)->endOfDay();
+        }
 
         return $query->whereBetween('pago_fecha', [$startDate, $endDate]);
     }
+
 }

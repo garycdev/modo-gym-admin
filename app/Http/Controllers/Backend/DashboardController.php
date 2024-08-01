@@ -38,13 +38,20 @@ class DashboardController extends Controller
 
         $total_users = Usuarios::where('usu_estado', '<>', 'ELIMINADO')->count();
 
-        $inicioMesActual = Carbon::now()->startOfMonth()->day(10)->toDateString();
-        $finMesSiguiente = Carbon::now()->addMonth()->startOfMonth()->day(9)->toDateString();
-        $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesActual, $finMesSiguiente])->count();
-
-        $inicioMesAnterior = Carbon::now()->startOfMonth()->subMonth()->day(10)->startOfDay();
+        $hoy = Carbon::now()->startOfDay();
+        $inicioMesActual = Carbon::now()->day(10)->startOfDay();
+        $inicioMesAnterior = Carbon::now()->subMonth()->day(10)->startOfDay();
         $finMesAnterior = Carbon::now()->day(9)->endOfDay();
-        $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $finMesAnterior])->count();
+
+        if ($hoy->day < 10) {
+            $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $hoy])->count();
+            $inicioMesAntepasado = Carbon::now()->subMonths(2)->day(10)->startOfDay();
+            $finMesAnterior = Carbon::now()->subMonth()->day(9)->endOfDay();
+            $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAntepasado, $finMesAnterior])->count();
+        } else {
+            $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesActual, $hoy])->count();
+            $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $finMesAnterior])->count();
+        }
 
         if ($registrosMesAnterior > 0) {
             $crecimiento = (($registrosMesActual - $registrosMesAnterior) / $registrosMesAnterior) * 100;

@@ -198,8 +198,13 @@
                                                 </td>
                                                 <td>
                                                     @php
-                                                        $porcentaje = ($ganancia * 100) / $mayorGanacia;
-                                                        $porcentajeU = ($ganancia * 100) / $totalGanancia;
+                                                        if ($mayorGanacia == 0) {
+                                                            $porcentaje = 0;
+                                                            $porcentajeU = 0;
+                                                        } else {
+                                                            $porcentaje = ($ganancia * 100) / $mayorGanacia;
+                                                            $porcentajeU = ($ganancia * 100) / $totalGanancia;
+                                                        }
                                                     @endphp
                                                     <p class="m-0 p-0 text-center" style="font-size:0.85em;">
                                                         {{ number_format($porcentajeU, 2) }}%</p>
@@ -222,7 +227,11 @@
                                             <td class="fw-bold">Bs {{ $totalGanancia }}</td>
                                             <td>
                                                 @php
-                                                    $porcentajeT = ($totalGanancia * 100) / $totalGanancia;
+                                                    if ($totalGanancia == 0) {
+                                                        $porcentajeT = 0;
+                                                    } else {
+                                                        $porcentajeT = ($totalGanancia * 100) / $totalGanancia;
+                                                    }
                                                 @endphp
                                                 <p class="m-0 p-0 text-center fw-bold" style="font-size:0.85em;">
                                                     {{ number_format($porcentajeT, 2) }}%</p>
@@ -231,13 +240,6 @@
                                                         role="progressbar" style="width: {{ $porcentajeT }}%"></div>
                                                 </div>
                                             </td>
-                                            @php
-                                                if ($i == count($colors) - 1) {
-                                                    $i = 0;
-                                                } else {
-                                                    $i++;
-                                                }
-                                            @endphp
                                         </tr>
                                     </tbody>
                                 </table>
