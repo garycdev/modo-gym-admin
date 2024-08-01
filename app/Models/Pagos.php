@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,5 +29,20 @@ class Pagos extends Model
     public function costo()
     {
         return $this->belongsTo(Costos::class, 'costo_id');
+    }
+
+    public function scopeMesActual(Builder $query)
+    {
+        $startDate = Carbon::now()->copy()->day(10)->startOfDay();
+        $endDate = Carbon::now()->copy()->addMonth()->day(9)->endOfDay();
+
+        return $query->whereBetween('pago_fecha', [$startDate, $endDate]);
+    }
+    public function scopeMesAnterior(Builder $query)
+    {
+        $startDate = Carbon::now()->startOfMonth()->subMonth()->day(10)->startOfDay();
+        $endDate = Carbon::now()->day(9)->endOfDay();
+
+        return $query->whereBetween('pago_fecha', [$startDate, $endDate]);
     }
 }

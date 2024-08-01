@@ -39,18 +39,18 @@ class DashboardController extends Controller
 
         $total_users = Usuarios::where('usu_estado', '<>', 'ELIMINADO')->count();
 
-        $inicioSemanaActual = Carbon::now()->startOfWeek();
-        $finSemanaActual = Carbon::now()->endOfWeek();
-        $registrosSemanaActual = Usuarios::whereBetween('created_at', [$inicioSemanaActual, $finSemanaActual])->count();
+        $inicioMesActual = Carbon::now()->startOfMonth()->day(10)->toDateString();
+        $finMesSiguiente = Carbon::now()->addMonth()->startOfMonth()->day(9)->toDateString();
+        $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesActual, $finMesSiguiente])->count();
 
-        $inicioSemanaPasada = Carbon::now()->subWeek()->startOfWeek();
-        $finSemanaPasada = Carbon::now()->subWeek()->endOfWeek();
-        $registrosSemanaPasada = Usuarios::whereBetween('created_at', [$inicioSemanaPasada, $finSemanaPasada])->count();
+        $inicioMesAnterior = Carbon::now()->subMonth()->startOfMonth()->day(10)->toDateString();
+        $finMesAnterior = Carbon::now()->subMonth()->endOfMonth()->toDateString();
+        $registrosMesAnterior = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $finMesAnterior])->count();
 
-        if ($registrosSemanaPasada > 0) {
-            $crecimiento = (($registrosSemanaActual - $registrosSemanaPasada) / $registrosSemanaPasada) * 100;
+        if ($registrosMesAnterior > 0) {
+            $crecimiento = (($registrosMesActual - $registrosMesAnterior) / $registrosMesAnterior) * 100;
         } else {
-            $crecimiento = $registrosSemanaActual > 0 ? 100 : 0;
+            $crecimiento = $registrosMesActual > 0 ? 100 : 0;
         }
 
         $crecimientoF = number_format($crecimiento, 2);
@@ -61,6 +61,13 @@ class DashboardController extends Controller
             ->whereDate('asistencia_fecha', $hoy)
             ->count();
 
+        // $currentYear = Carbon::now()->year;
+        // $currentMonth = Carbon::now()->month;
+        // $pagos = Pagos::whereYear('pago_fecha', $currentYear)
+        //     ->whereMonth('pago_fecha', $currentMonth)
+        //     ->whereDay('pago_fecha', 10)
+        //     ->orderBy('pago_id', 'DESC')
+        //     ->get();
         $pagos = Pagos::orderBy('pago_id', 'DESC')->get();
 
         $totalUsuarios = 0;
@@ -101,12 +108,12 @@ class DashboardController extends Controller
         $porcentajeAsistentesF = number_format($porcentajeAsistentes, 2);
         $porcentajeAsistentesFS = $porcentajeAsistentes > 0 ? '+' . $porcentajeAsistentesF : $porcentajeAsistentesF;
 
-        $costos = Costos::all();
+        $costos = Costos::with('pagosMesAnterior')->get();
 
         $total = array(
             'total_users' => $total_users,
-            'week_users' => $registrosSemanaActual,
-            'week_users_total' => $crecimientoFS,
+            'users' => $registrosMesActual,
+            'users_total' => $crecimientoFS,
             'asistencias' => $asistenciasHoy,
             'porcentaje_asistencias' => $porcentajeAsistentesFS,
         );

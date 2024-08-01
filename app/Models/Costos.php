@@ -24,8 +24,12 @@ class Costos extends Model
         'updated_at',
     ];
 
-    public function pagos()
+    public function pagosMesActual()
     {
-        return $this->hasMany(Pagos::class, 'costo_id');
+        return $this->hasMany(Pagos::class, 'costo_id')->mesActual();
+    }
+    public function pagosMesAnterior()
+    {
+        return $this->hasMany(Pagos::class, 'costo_id')->mesAnterior();
     }
 }
