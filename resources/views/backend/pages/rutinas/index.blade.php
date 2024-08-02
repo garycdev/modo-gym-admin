@@ -43,30 +43,18 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="ms-auto">
-                    <div class="btn-group">
-                        @if ($usr->can('rutina.create'))
-                            <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nueva rutina</a>
-                        @endif
-                        {{-- <button type="button"
-                            class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button> --}}
-                        {{-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                            <a class="dropdown-item" href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated
-                                link</a>
-                        </div> --}}
-                    </div>
-                </div>
             </div>
             <!--end breadcrumb-->
             <h6 class="mb-0 text-uppercase">Lista de rutinas</h6>
             <hr />
             <div class="card">
                 <div class="card-body">
+                    <p class="float-right mb-2">
+                        @if ($usr->can('rutina.create'))
+                            <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nueva rutina</a>
+                        @endif
+                    </p>
+                    <br>
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
                         {{-- <table id="tabla_pagos" class="table table-bordered table-hover datatable-multi-row">

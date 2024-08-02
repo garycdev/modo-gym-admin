@@ -6,13 +6,32 @@
 
 @section('styles')
     <style>
-        .required_value::after {
-            content: '*';
-            color: #f00;
+        .img-flag {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
         }
 
-        .text-danger {
-            font-size: .85em;
+        .select2-container--default .select2-selection--single {
+            height: 55px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 50px;
+        }
+
+        .select2-results__option {
+            display: flex;
+            align-items: center;
+            height: 50px;
         }
     </style>
 @endsection
@@ -98,7 +117,7 @@
                                         <div class="col-md-12">
                                             <label for="bsValidation9" class="form-label required_value">Usuario </label>
                                             <input type="text" class="form-control"
-                                                value="{{ $nombre }} {{ $apellidos }}">
+                                                value="{{ $nombre }} {{ $apellidos }}" readonly>
                                             <input type="hidden" id="usu_id" name="usu_id" value="{{ $id }}">
                                             </input>
                                             @error('usu_id')
@@ -109,12 +128,16 @@
                                 @endif
                                 <div class="col-md-8">
                                     <label for="bsValidation9" class="form-label required_value">Ejercicio </label>
-                                    <select id="ejer_id" name="ejer_id" class="form-select ejer_id">
-                                        <option selected disabled value>[EJERCICIO]</option>
+                                    <select id="ejer_id" name="ejer_id" class="select-ejercicios form-select" required>
+                                        <option value="{{ $rutina->ejer_id }}"
+                                            data-image="{{ asset($rutina->ejercicio->ejer_imagen) }}">
+                                            {{ $rutina->ejercicio->ejer_nombre }}
+                                        </option>
                                         @foreach ($ejercicios as $ejer)
                                             <option value="{{ $ejer->ejer_id }}"
-                                                {{ $ejer->ejer_id == $rutina->ejer_id ? 'selected' : '' }}>
-                                                {{ $ejer->ejer_nombre }}</option>
+                                                data-image="{{ asset($ejer->ejer_imagen) }}">
+                                                {{ $ejer->ejer_nombre }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('ejer_id')
@@ -123,8 +146,30 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="bsValidation9" class="form-label required_value">Dia </label>
-                                    <input type="number" class="form-control" id="dia" name="dia"
-                                        placeholder="Dia" step="1" min="0" value="{{ $rutina->rut_dia }}">
+                                    <select id="dia" name="dia" class="form-select rut_dia" required>
+                                        <option selected disabled value>[DIA]</option>
+                                        <option value="1" {{ $rutina->rut_dia == 1 ? 'selected' : '' }}>
+                                            Lunes
+                                        </option>
+                                        <option value="2" {{ $rutina->rut_dia == 2 ? 'selected' : '' }}>
+                                            Martes
+                                        </option>
+                                        <option value="3" {{ $rutina->rut_dia == 3 ? 'selected' : '' }}>
+                                            Miercoles
+                                        </option>
+                                        <option value="4" {{ $rutina->rut_dia == 4 ? 'selected' : '' }}>
+                                            Jueves
+                                        </option>
+                                        <option value="5" {{ $rutina->rut_dia == 5 ? 'selected' : '' }}>
+                                            Viernes
+                                        </option>
+                                        <option value="6" {{ $rutina->rut_dia == 6 ? 'selected' : '' }}>
+                                            Sabado
+                                        </option>
+                                        <option value="7" {{ $rutina->rut_dia == 7 ? 'selected' : '' }}>
+                                            Domingo
+                                        </option>
+                                    </select>
                                     @error('dia')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -272,7 +317,29 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.usu_id').select2();
-        });
+            function formatState(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var image = state.element.getAttribute('data-image');
+                var baseUrl = '';
+                const extensionesValidas = /\.(png|jpg|jpeg)$/i;
+
+                if (extensionesValidas.test(image)) {
+                    baseUrl = image;
+                } else {
+                    baseUrl = image + "modo-gym/blank.png";
+                }
+                var $state = $(
+                    '<span><img src="' + baseUrl + '" class="img-flag" /> ' + state.text + '</span>'
+                );
+                return $state;
+            };
+
+            $('.select-ejercicios').select2({
+                templateResult: formatState,
+                templateSelection: formatState
+            });
+        })
     </script>
 @endsection

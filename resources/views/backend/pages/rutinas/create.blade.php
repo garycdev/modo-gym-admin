@@ -193,7 +193,7 @@
                                 @endif
                                 <div class="col-md-4">
                                     <label for="bsValidation9" class="form-label required_value">Dia </label>
-                                    <select id="rut_dia" name="rut_dia" class="form-select rut_dia">
+                                    <select id="rut_dia" name="rut_dia" class="form-select rut_dia" required>
                                         <option selected disabled value>[DIA]</option>
                                         <option value="1">Lunes</option>
                                         <option value="2">Martes</option>

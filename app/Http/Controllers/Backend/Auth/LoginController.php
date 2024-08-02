@@ -98,7 +98,7 @@ class LoginController extends Controller
                             // dd($user_guest);
 
                             $nuevo = new UsuarioLogin();
-                            $nuevo->usu_login_name = $user_guest->usu_nombre;
+                            $nuevo->usu_login_name = $user_guest->usu_nombre . ' ' . $user_guest->usu_apellidos;
                             $nuevo->usu_login_email = $user_guest->usu_email;
                             $nuevo->usu_login_username = $user_guest->usu_ci;
                             $nuevo->usu_login_password = Hash::make($request->password);
