@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pagos;
 use App\Models\UsuarioLogin;
 use App\Models\Usuarios;
 use App\Providers\RouteServiceProvider;
@@ -74,36 +75,48 @@ class LoginController extends Controller
         } else {
             $user = UsuarioLogin::where('usu_login_email', $request->email)->orWhere('usu_login_username', $request->email)->first();
             if ($user && Hash::check($request->password, $user->usu_login_password)) {
-                Auth::guard('user')->login($user);
+                $pagos = Pagos::where('usu_id', $user->usu_id)->count();
+                if ($pagos > 0) {
+                    Auth::guard('user')->login($user);
 
-                // Redirect to dashboard
-                session()->flash('success', 'Sesión iniciada con exito !');
-                return redirect()->route('admin.dashboard');
+                    // Redirect to dashboard
+                    session()->flash('success', 'Sesión iniciada con exito !');
+                    return redirect()->route('admin.dashboard');
+                } else {
+                    session()->flash('error', 'Cuenta inactiva ¡ No existen pagos para el usuario !');
+                    return back();
+                }
             } else {
                 $user_guest = Usuarios::where('usu_ci', $request->email)->first();
                 if ($user_guest) {
-                    $names = explode(' ', trim($user_guest->usu_nombre));
-                    $name = array_filter($names);
-                    $firstName = reset($name);
-                    if (strtoupper($firstName) . '_' . $user_guest->usu_ci == $request->password) {
-                        // dd($user_guest);
+                    $pagos = Pagos::where('usu_id', $user_guest->usu_id)->count();
+                    if ($pagos > 0) {
+                        $names = explode(' ', trim($user_guest->usu_nombre));
+                        $name = array_filter($names);
+                        $firstName = reset($name);
+                        if (strtoupper($firstName) . '_' . $user_guest->usu_ci == $request->password) {
+                            // dd($user_guest);
 
-                        $nuevo = new UsuarioLogin();
-                        $nuevo->usu_login_name = $user_guest->usu_nombre;
-                        $nuevo->usu_login_email = $user_guest->usu_email;
-                        $nuevo->usu_login_username = $user_guest->usu_ci;
-                        $nuevo->usu_login_password = Hash::make($request->password);
-                        $nuevo->usu_id = $user_guest->usu_id;
-                        $nuevo->save();
+                            $nuevo = new UsuarioLogin();
+                            $nuevo->usu_login_name = $user_guest->usu_nombre;
+                            $nuevo->usu_login_email = $user_guest->usu_email;
+                            $nuevo->usu_login_username = $user_guest->usu_ci;
+                            $nuevo->usu_login_password = Hash::make($request->password);
+                            $nuevo->usu_id = $user_guest->usu_id;
+                            $nuevo->save();
 
-                        $userNuevo = UsuarioLogin::where('usu_login_email', $user_guest->usu_email)->orWhere('usu_login_username', $user_guest->usu_ci)->first();
-                        $userNuevo->assignRole('usuario');
+                            $userNuevo = UsuarioLogin::where('usu_login_email', $user_guest->usu_email)->orWhere('usu_login_username', $user_guest->usu_ci)->first();
+                            $userNuevo->assignRole('usuario');
 
-                        Auth::guard('user')->login($userNuevo);
+                            Auth::guard('user')->login($userNuevo);
 
-                        // Redirect to dashboard
-                        session()->flash('success', 'Usuario creado ¡¡ Por favor, cambie su contraseña !!');
-                        return redirect()->route('admin.dashboard');
+                            // Redirect to dashboard
+                            session()->flash('success', 'Usuario creado ¡¡ Por favor, cambie su contraseña !!');
+                            return redirect()->route('admin.dashboard');
+                        }
+                    } else {
+                        session()->flash('error', '¡ No existen pagos para el usuario !');
+                        return back();
                     }
                 }
                 session()->flash('error', 'Nombre de usuario o contraseña invalida !');
