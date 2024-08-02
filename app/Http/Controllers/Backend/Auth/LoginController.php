@@ -97,7 +97,7 @@ class LoginController extends Controller
                         $nuevo->save();
 
                         $userNuevo = UsuarioLogin::where('usu_login_email', $user_guest->usu_email)->orWhere('usu_login_username', $user_guest->usu_ci)->first();
-                        $userNuevo->assignRole('Usuario');
+                        $userNuevo->assignRole('usuario');
 
                         Auth::guard('user')->login($userNuevo);
 
