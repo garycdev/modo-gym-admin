@@ -2,8 +2,8 @@
 
 use App\Models\Admin;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /**
  * Class RolePermissionSeeder.
@@ -33,7 +33,6 @@ class RolePermissionSeeder extends Seeder
         // $roleEditor = Role::create(['name' => 'editor']);
         // $roleUser = Role::create(['name' => 'user']);
 
-
         // Permission List as array
         $permissions = [
 
@@ -42,7 +41,7 @@ class RolePermissionSeeder extends Seeder
                 'permissions' => [
                     'dashboard.view',
                     'dashboard.edit',
-                ]
+                ],
             ],
             [
                 'group_name' => 'blog',
@@ -52,7 +51,7 @@ class RolePermissionSeeder extends Seeder
                     'blog.view',
                     'blog.edit',
                     'blog.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'admin',
@@ -63,7 +62,7 @@ class RolePermissionSeeder extends Seeder
                     'admin.edit',
                     'admin.delete',
                     'admin.approve',
-                ]
+                ],
             ],
             [
                 'group_name' => 'role',
@@ -74,7 +73,7 @@ class RolePermissionSeeder extends Seeder
                     'role.edit',
                     'role.delete',
                     'role.approve',
-                ]
+                ],
             ],
             [
                 'group_name' => 'perfil',
@@ -83,7 +82,7 @@ class RolePermissionSeeder extends Seeder
                     'perfil.view',
                     'perfil.edit',
                     'perfil.update',
-                ]
+                ],
             ],
             [
                 'group_name' => 'cliente',
@@ -93,7 +92,7 @@ class RolePermissionSeeder extends Seeder
                     'cliente.edit',
                     'cliente.delete',
                     'cliente.update',
-                ]
+                ],
             ],
             [
                 'group_name' => 'asistencia',
@@ -103,7 +102,7 @@ class RolePermissionSeeder extends Seeder
                     'asistencia.view',
                     'asistencia.edit',
                     'asistencia.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'cita',
@@ -113,7 +112,7 @@ class RolePermissionSeeder extends Seeder
                     'cita.view',
                     'cita.edit',
                     'cita.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'contactar',
@@ -121,7 +120,7 @@ class RolePermissionSeeder extends Seeder
                     // Contactar Permissions
                     'contactar.view',
                     'contactar.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'costo',
@@ -129,7 +128,7 @@ class RolePermissionSeeder extends Seeder
                     // Costos Permissions
                     'costo.view',
                     'costo.edit',
-                ]
+                ],
             ],
             [
                 'group_name' => 'ejercicio',
@@ -139,7 +138,7 @@ class RolePermissionSeeder extends Seeder
                     'ejercicio.view',
                     'ejercicio.edit',
                     'ejercicio.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'equipo',
@@ -149,7 +148,7 @@ class RolePermissionSeeder extends Seeder
                     'equipo.view',
                     'equipo.edit',
                     'equipo.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'galeria',
@@ -159,7 +158,7 @@ class RolePermissionSeeder extends Seeder
                     'galeria.view',
                     'galeria.edit',
                     'galeria.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'horario',
@@ -169,7 +168,7 @@ class RolePermissionSeeder extends Seeder
                     'horario.view',
                     'horario.edit',
                     'horario.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'imagen_galeria',
@@ -179,7 +178,7 @@ class RolePermissionSeeder extends Seeder
                     'imagen_galeria.view',
                     'imagen_galeria.edit',
                     'imagen_galeria.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'informacion_empresa',
@@ -187,7 +186,7 @@ class RolePermissionSeeder extends Seeder
                     // Informacion Empresa Permissions
                     'informacion_empresa.view',
                     'informacion_empresa.edit',
-                ]
+                ],
             ],
             [
                 'group_name' => 'medida',
@@ -197,7 +196,7 @@ class RolePermissionSeeder extends Seeder
                     'medida.view',
                     'medida.edit',
                     'medida.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'musculo',
@@ -207,7 +206,7 @@ class RolePermissionSeeder extends Seeder
                     'musculo.view',
                     'musculo.edit',
                     'musculo.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'pago',
@@ -217,7 +216,7 @@ class RolePermissionSeeder extends Seeder
                     'pago.view',
                     'pago.edit',
                     'pago.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'producto',
@@ -227,7 +226,7 @@ class RolePermissionSeeder extends Seeder
                     'producto.view',
                     'producto.edit',
                     'producto.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'rutina',
@@ -237,7 +236,7 @@ class RolePermissionSeeder extends Seeder
                     'rutina.view',
                     'rutina.edit',
                     'rutina.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'test_seguimiento',
@@ -247,7 +246,7 @@ class RolePermissionSeeder extends Seeder
                     'test_seguimiento.view',
                     'test_seguimiento.edit',
                     'test_seguimiento.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'tipo_medida',
@@ -257,7 +256,7 @@ class RolePermissionSeeder extends Seeder
                     'tipo_medida.view',
                     'tipo_medida.edit',
                     'tipo_medida.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'tipo_test',
@@ -267,7 +266,7 @@ class RolePermissionSeeder extends Seeder
                     'tipo_test.view',
                     'tipo_test.edit',
                     'tipo_test.delete',
-                ]
+                ],
             ],
             [
                 'group_name' => 'video',
@@ -277,7 +276,50 @@ class RolePermissionSeeder extends Seeder
                     'video.view',
                     'video.edit',
                     'video.delete',
-                ]
+                ],
+            ],
+        ];
+
+        $permissionsUser = [
+            [
+                'group_name' => 'rutina_user',
+                'permissions' => [
+                    'rutina.view',
+                    'rutina.create',
+                    'rutina.edit',
+                    'rutina.delete',
+                ],
+            ],
+            [
+                'group_name' => 'perfil_user',
+                'permissions' => [
+                    'perfil.view',
+                    'perfil.edit',
+                ],
+            ],
+            [
+                'group_name' => 'dashboard_user',
+                'permissions' => [
+                    'dashboard.view',
+                ],
+            ],
+            [
+                'group_name' => 'musculo_user',
+                'permissions' => [
+                    'musculo.view',
+                ],
+            ],
+            [
+                'group_name' => 'equipo_user',
+                'permissions' => [
+                    'equipo.view',
+                ],
+            ],
+            [
+                'group_name' => 'ejercicio_user',
+                'permissions' => [
+                    'ejercicio.view',
+                ],
             ],
         ];
 
@@ -306,7 +348,7 @@ class RolePermissionSeeder extends Seeder
                         [
                             'name' => $permissions[$i]['permissions'][$j],
                             'group_name' => $permissionGroup,
-                            'guard_name' => 'admin'
+                            'guard_name' => 'admin',
                         ]
                     );
                     $roleSuperAdmin->givePermissionTo($permission);
@@ -318,6 +360,24 @@ class RolePermissionSeeder extends Seeder
         // Assign super admin role permission to superadmin user
         if ($admin) {
             $admin->assignRole($roleSuperAdmin);
+        }
+
+        // Create and Assign Permissions for 'user' guard
+        $roleUser = $this->maybeCreateUserRole();
+
+        foreach ($permissionsUser as $permissionGroup) {
+            foreach ($permissionGroup['permissions'] as $permissionName) {
+                $permissionExist = Permission::where('name', $permissionName)->where('guard_name', 'user')->first();
+                if (is_null($permissionExist)) {
+                    $permission = Permission::create([
+                        'name' => $permissionName,
+                        'group_name' => $permissionGroup['group_name'],
+                        'guard_name' => 'user',
+                    ]);
+                    $roleUser->givePermissionTo($permission);
+                    $permission->assignRole($roleUser);
+                }
+            }
         }
     }
 
@@ -334,5 +394,15 @@ class RolePermissionSeeder extends Seeder
         }
 
         return $roleSuperAdmin;
+    }
+    private function maybeCreateUserRole(): Role
+    {
+        $roleUser = Role::where('name', 'usuario')->where('guard_name', 'admin')->first();
+
+        if (is_null($roleUser)) {
+            $roleUser = Role::create(['name' => 'usuario', 'guard_name' => 'admin']);
+        }
+
+        return $roleUser;
     }
 }

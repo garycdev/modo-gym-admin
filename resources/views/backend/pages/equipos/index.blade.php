@@ -2,10 +2,6 @@
 
 @section('title')
     Equipos Page - Admin Panel
-
-    @php
-        $usr = Auth::guard('admin')->user();
-    @endphp
 @endsection
 
 @section('styles')
@@ -13,6 +9,13 @@
 
 
 @section('admin-content')
+    @php
+        if (Auth::guard('admin')->check()) {
+            $usr = Auth::guard('admin')->user();
+        } else {
+            $usr = Auth::guard('user')->user();
+        }
+    @endphp
     <div class="page-wrapper">
         <div class="page-content">
             <!--breadcrumb-->
@@ -36,7 +39,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="float-right mb-2">
-                        @if (Auth::guard('admin')->user()->can('equipo.create'))
+                        @if ($usr->can('equipo.create'))
                             <a class="btn btn-primary px-5 radius-30" href="{{ route('admin.equipos.create') }}">Crear
                                 Nuevo</a>
                         @endif
@@ -88,14 +91,14 @@
                                         </td>
                                         {{-- <td>{{ $equipo->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td> --}}
                                         <td>
-                                            @if (Auth::guard('admin')->user()->can('equipo.edit'))
+                                            @if ($usr->can('equipo.edit'))
                                                 <a class="btn btn-warning"
                                                     href="{{ route('admin.equipos.edit', $equipo->equi_id) }}">
                                                     <i class='bx bxs-edit'></i>
                                                 </a>
                                             @endif
 
-                                            @if (Auth::guard('admin')->user()->can('equipo.delete'))
+                                            @if ($usr->can('equipo.delete'))
                                                 <a class="btn btn-danger"
                                                     href="{{ route('admin.equipos.destroy', $equipo->equi_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $equipo->equi_id }}').submit();">

@@ -1,6 +1,10 @@
  <!-- sidebar menu area start -->
  @php
-     $usr = Auth::guard('admin')->user();
+     if (Auth::guard('admin')->check()) {
+         $usr = Auth::guard('admin')->user();
+     } else {
+         $usr = Auth::guard('user')->user();
+     }
  @endphp
 
  <!--sidebar wrapper -->

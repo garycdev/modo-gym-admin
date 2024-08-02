@@ -22,6 +22,13 @@
 
 
 @section('admin-content')
+    @php
+        if (Auth::guard('admin')->check()) {
+            $usr = Auth::guard('admin')->user();
+        } else {
+            $usr = Auth::guard('user')->user();
+        }
+    @endphp
     <div class="page-wrapper">
         <div class="page-content">
             <!--breadcrumb-->
@@ -38,7 +45,7 @@
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
-                        @if (Auth::guard('admin')->user()->can('rutina.create'))
+                        @if ($usr->can('rutina.create'))
                             <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nueva rutina</a>
                         @endif
                         {{-- <button type="button"
@@ -168,13 +175,13 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if (Auth::guard('admin')->user()->can('rutina.edit'))
+                                            @if ($usr->can('rutina.edit'))
                                                 <a class="btn btn-sm btn-warning"
                                                     href="{{ route('admin.rutinas.edit', $rut->rut_id) }}">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                             @endif
-                                            @if (Auth::guard('admin')->user()->can('rutina.delete'))
+                                            @if ($usr->can('rutina.delete'))
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.rutinas.destroy', $rut->rut_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $rut->rut_id }}').submit();">
@@ -256,13 +263,13 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if (Auth::guard('admin')->user()->can('rutina.edit'))
+                                            @if ($usr->can('rutina.edit'))
                                                 <a class="btn btn-sm btn-warning"
                                                     href="{{ route('admin.rutinas.edit', $rut->rut_id) }}">
                                                     <i class="bx bxs-edit"></i>
                                                 </a>
                                             @endif
-                                            @if (Auth::guard('admin')->user()->can('rutina.delete'))
+                                            @if ($usr->can('rutina.delete'))
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.rutinas.destroy', $rut->rut_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $rut->rut_id }}').submit();">

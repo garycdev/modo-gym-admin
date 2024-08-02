@@ -33,8 +33,7 @@
                         </div>
                     </div>
                     <div class="col-xl-7">
-                        <img src="{{asset('modo-gym/logo.png')}}"
-                            class="img-fluid" alt="" width="500">
+                        <img src="{{ asset('modo-gym/logo.png') }}" class="img-fluid" alt="" width="500">
                     </div>
                 </div>
                 <!--end row-->

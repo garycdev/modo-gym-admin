@@ -207,15 +207,29 @@
                 </ul>
             </div>
             <div class="user-box dropdown px-3">
-                <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
-                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{{ Auth::guard('admin')->user()->usu_imagen ? asset('image/cliente/' . Auth::guard('admin')->user()->usu_imagen) : asset('image/cliente/default.png') }}"
-                        class="user-img" alt="user avatar" />
-                    <div class="user-info">
-                        <p class="user-name mb-0">{{ Auth::guard('admin')->user()->name }}</p>
-                        <p class="designattion mb-0">{{ Auth::guard('admin')->user()->roles[0]->name }}</p>
-                    </div>
-                </a>
+                @if (Auth::guard('admin')->check())
+                    <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
+                        href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ Auth::guard('admin')->user()->usu_imagen ? asset('image/cliente/' . Auth::guard('admin')->user()->usu_imagen) : asset('image/cliente/default.png') }}"
+                            class="user-img" alt="user avatar" />
+                        <div class="user-info">
+                            <p class="user-name mb-0">{{ Auth::guard('admin')->user()->name }}</p>
+                            <p class="designattion mb-0">{{ Auth::guard('admin')->user()->roles[0]->name }}</p>
+                        </div>
+                    </a>
+                @else
+                    @if (Auth::guard('user')->check())
+                        <a class="d-flex align-items-center nav-link dropdown-toggle gap-3 dropdown-toggle-nocaret"
+                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ Auth::guard('user')->user()->usu_imagen ? asset('image/cliente/' . Auth::guard('user')->user()->usu_imagen) : asset('image/cliente/default.png') }}"
+                                class="user-img" alt="user avatar" />
+                            <div class="user-info">
+                                <p class="user-name mb-0">{{ Auth::guard('user')->user()->usu_login_name }}</p>
+                                <p class="designattion mb-0">{{ Auth::guard('user')->user()->roles[0]->name }}</p>
+                            </div>
+                        </a>
+                    @endif
+                @endif
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
@@ -223,7 +237,7 @@
                     </li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.dashboard') }}"><i
-                                class="bx bx-home-circle fs-5"></i><span>Dashboard</span></a>
+                                class="bx bx-home-circle fs-5"></i><span>Inicio</span></a>
                     </li>
                     <li>
                         <div class="dropdown-divider mb-0"></div>
@@ -232,7 +246,7 @@
                         <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.logout.submit') }}"
                             onclick="event.preventDefault();
                               document.getElementById('admin-logout-form').submit();"><i
-                                class="bx bx-log-out-circle"></i><span>Logout</span></a>
+                                class="bx bx-log-out-circle"></i><span>Cerrar sesión</span></a>
                     </li>
 
                     <form id="admin-logout-form" action="{{ route('admin.logout.submit') }}" method="POST"

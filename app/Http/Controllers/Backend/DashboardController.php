@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Asistencia;
 use App\Models\Costos;
+use App\Models\Pagos;
+use App\Models\Rutinas;
 use App\Models\Usuarios;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +17,17 @@ use Spatie\Permission\Models\Role;
 class DashboardController extends Controller
 {
     public $user;
+    public $guard;
 
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::guard('admin')->user();
+            if (Auth::guard('admin')->check()) {
+                $this->user = Auth::guard('admin')->user();
+            } else {
+                $this->user = Auth::guard('user')->user();
+            }
+
             return $next($request);
         });
     }
@@ -28,8 +36,6 @@ class DashboardController extends Controller
     {
         if (is_null($this->user) || !$this->user->can('dashboard.view')) {
             abort(403, 'Lo sentimos !! No estas autorizado para ver el panel !');
-            // session()->flash('error', 'Lo sentimos !! No estas autorizado para ver el panel !');
-            // return redirect()->route('admin.login');
         }
 
         $total_roles = Role::select('id')->count();
@@ -41,13 +47,13 @@ class DashboardController extends Controller
 
         // Obtener usuarios respecto al mes actual y el mes anterior (10 de cada mes)
         $hoy = Carbon::now()->startOfDay();
-// Limites de fecha de mes actual y anterior
+        // Limites de fecha de mes actual y anterior
         $inicioMesActual = Carbon::now()->day(10)->startOfDay();
         $finMesActual = Carbon::now()->endOfMonth(); // Para el final del mes actual
         $inicioMesAnterior = Carbon::now()->subMonth()->day(10)->startOfDay();
         $finMesAnterior = Carbon::now()->subMonth()->day(9)->endOfDay(); // Fin del mes anterior
 
-// Validar el 10 de cada mes para el mes actual
+        // Validar el 10 de cada mes para el mes actual
         if ($hoy->day < 10) {
             // Si hoy es antes del 10, contar desde el 10 del mes anterior
             $registrosMesActual = Usuarios::whereBetween('created_at', [$inicioMesAnterior, $hoy])->count();
@@ -105,6 +111,22 @@ class DashboardController extends Controller
             'asistencias' => $asistenciasHoy,
             'porcentaje_asistencias' => $porcentajeFormateado,
         );
-        return view('backend.pages.dashboard.index', compact('total_admins', 'total_roles', 'total_permissions', 'total', 'costos'));
+
+        $user = array(
+            'asistencias' => 0,
+            'pagos' => 0,
+            'rutinas' => 0,
+        );
+        if (Auth::guard('user')->check()) {
+            $user['asistencias'] = Asistencia::where('usu_id', Auth::guard('user')->user()->usu_id)
+                ->where('asistencia_tipo', 'ENTRADA')
+                ->count();
+            $user['pagos'] = Pagos::where('usu_id', Auth::guard('user')->user()->usu_id)
+                ->count();
+            $user['rutinas'] = Rutinas::where('usu_id', Auth::guard('user')->user()->usu_id)
+                ->count();
+        }
+        return view('backend.pages.dashboard.index', compact('total_admins', 'total_roles', 'total_permissions', 'total', 'costos', 'user'));
+
     }
 }

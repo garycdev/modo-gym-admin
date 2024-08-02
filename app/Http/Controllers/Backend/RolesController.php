@@ -6,14 +6,12 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
     public $user;
-
 
     public function __construct()
     {
@@ -48,7 +46,7 @@ class RolesController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rol!');
         }
 
-        $all_permissions  = Permission::all();
+        $all_permissions = Permission::all();
         $permission_groups = User::getpermissionGroups();
         return view('backend.pages.roles.create', compact('all_permissions', 'permission_groups'));
     }
@@ -67,9 +65,9 @@ class RolesController extends Controller
 
         // Validation Data
         $request->validate([
-            'name' => 'required|max:100|unique:roles'
+            'name' => 'required|max:100|unique:roles',
         ], [
-            'name.requried' => 'Por favor proporcione un nombre de rol'
+            'name.requried' => 'Por favor proporcione un nombre de rol',
         ]);
 
         // Process Data
@@ -83,7 +81,8 @@ class RolesController extends Controller
         }
 
         session()->flash('success', '¡¡El rol ha sido creado!!');
-        return back();
+        // return back();
+        return redirect()->route('admin.roles.index');
     }
 
     /**
@@ -109,9 +108,12 @@ class RolesController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún rol!');
         }
 
+        // Asegúrate de que el guard del rol coincide
         $role = Role::findById($id, 'admin');
+
         $all_permissions = Permission::all();
         $permission_groups = User::getpermissionGroups();
+
         return view('backend.pages.roles.edit', compact('role', 'all_permissions', 'permission_groups'));
     }
 
@@ -138,9 +140,9 @@ class RolesController extends Controller
 
         // Validation Data
         $request->validate([
-            'name' => 'required|max:100|unique:roles,name,' . $id
+            'name' => 'required|max:100|unique:roles,name,' . $id,
         ], [
-            'name.requried' => 'Por favor proporcione un nombre de rol'
+            'name.requried' => 'Por favor proporcione un nombre de rol',
         ]);
 
         $role = Role::findById($id, 'admin');
@@ -173,15 +175,17 @@ class RolesController extends Controller
         // so that no-one could delete or disable it by somehow.
         if ($id === 1) {
             session()->flash('error', 'Lo siento !! ¡No estás autorizado a eliminar este rol!');
-            return back();
+            // return back();
+            return redirect()->route('admin.roles.index');
         }
 
-        $role = Role::findById($id, 'admin');
+        $role = Role::where('id', $id)->where('guard_name', 'admin')->first();
         if (!is_null($role)) {
             $role->delete();
         }
 
         session()->flash('success', '¡¡El rol ha sido eliminado!!');
-        return back();
+        // return back();
+        return redirect()->route('admin.roles.index');
     }
 }

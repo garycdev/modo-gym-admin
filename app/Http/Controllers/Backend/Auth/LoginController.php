@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Backend\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\UsuarioLogin;
+use App\Models\Usuarios;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -61,19 +64,52 @@ class LoginController extends Controller
         //     Cookie::queue(Cookie::make('remember', , 43200));
         // }
 
-        // Attempt to login
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+        // Attempt to login with email or username
+        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember) ||
+            Auth::guard('admin')->attempt(['username' => $request->email, 'password' => $request->password], $request->remember)) {
+
             // Redirect to dashboard
-            session()->flash('success', 'Successully Logged in !');
+            session()->flash('success', 'Sesión iniciada con exito !');
             return redirect()->route('admin.dashboard');
         } else {
-            // Search using username
-            if (Auth::guard('admin')->attempt(['username' => $request->email, 'password' => $request->password], $request->remember)) {
-                session()->flash('success', 'Successully Logged in !');
+            $user = UsuarioLogin::where('usu_login_email', $request->email)->orWhere('usu_login_username', $request->email)->first();
+            if ($user && Hash::check($request->password, $user->usu_login_password)) {
+                Auth::guard('user')->login($user);
+
+                // Redirect to dashboard
+                session()->flash('success', 'Sesión iniciada con exito !');
                 return redirect()->route('admin.dashboard');
+            } else {
+                $user_guest = Usuarios::where('usu_ci', $request->email)->first();
+                if ($user_guest) {
+                    $names = explode(' ', trim($user_guest->usu_nombre));
+                    $name = array_filter($names);
+                    $firstName = reset($name);
+                    if (strtoupper($firstName) . '_' . $user_guest->usu_ci == $request->password) {
+                        // dd($user_guest);
+
+                        $nuevo = new UsuarioLogin();
+                        $nuevo->usu_login_name = $user_guest->usu_nombre;
+                        $nuevo->usu_login_email = $user_guest->usu_email;
+                        $nuevo->usu_login_username = $user_guest->usu_ci;
+                        $nuevo->usu_login_password = Hash::make($request->password);
+                        $nuevo->usu_id = $user_guest->usu_id;
+                        $nuevo->save();
+
+                        $userNuevo = UsuarioLogin::where('usu_login_email', $user_guest->usu_email)->orWhere('usu_login_username', $user_guest->usu_ci)->first();
+                        $userNuevo->assignRole('Usuario');
+
+                        Auth::guard('user')->login($userNuevo);
+
+                        // Redirect to dashboard
+                        session()->flash('success', 'Usuario creado ¡¡ Por favor, cambie su contraseña !!');
+                        return redirect()->route('admin.dashboard');
+                    }
+                }
+                session()->flash('error', 'Nombre de usuario o contraseña invalida !');
+                return back();
             }
-            // error
-            session()->flash('error', 'Nombre de usuario o contraseña invalida');
+            session()->flash('error', 'Nombre de usuario o contraseña invalida !');
             return back();
         }
     }

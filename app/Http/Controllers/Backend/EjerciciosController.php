@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Ejercicios;
 use App\Models\Equipos;
 use App\Models\Musculo;
-
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
 
 class EjerciciosController extends Controller
 {
 
     public $user;
 
-
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::guard('admin')->user();
+            $guards = ['admin', 'user'];
+
+            foreach ($guards as $guard) {
+                if (Auth::guard($guard)->check()) {
+                    $this->user = Auth::guard($guard)->user();
+                    break;
+                }
+            }
             return $next($request);
         });
     }
@@ -38,12 +38,12 @@ class EjerciciosController extends Controller
         }
 
         $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
-                        ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
-                        ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
-                        ->where('ejercicios.ejer_estado', '!=', 'ELIMINADO')
-                        ->where('equipos.equi_estado', '!=', 'ELIMINADO')
-                        ->where('musculo.mus_estado', '!=', 'ELIMINADO')
-                        ->get();
+            ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
+            ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
+            ->where('ejercicios.ejer_estado', '!=', 'ELIMINADO')
+            ->where('equipos.equi_estado', '!=', 'ELIMINADO')
+            ->where('musculo.mus_estado', '!=', 'ELIMINADO')
+            ->get();
 
         return view('backend.pages.ejercicios.index', compact('ejercicios'));
     }
@@ -92,18 +92,17 @@ class EjerciciosController extends Controller
             //     unlink(public_path($ejercicio->ejer_imagen));
             // }
             $image = $request->file('ejer_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo info_logo con el nombre de la nueva imagen
-            $ejercicio->ejer_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $ejercicio->ejer_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $ejercicio->ejer_imagen = $ejercicio->ejer_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }
 
         $ejercicio->save();
-
 
         session()->flash('success', '¡¡Se ha creado los Ejercicios!!');
         return redirect()->route('admin.ejercicios.index');
@@ -127,11 +126,10 @@ class EjerciciosController extends Controller
         }
 
         $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
-                        ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
-                        ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
-                        ->where('ejercicios.ejer_id', '=', $id)
-                        ->first();
-
+            ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
+            ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
+            ->where('ejercicios.ejer_id', '=', $id)
+            ->first();
 
         $musculos = Musculo::where('mus_estado', '!=', 'ELIMINADO')->get();
         $equipos = Equipos::where('equi_estado', '!=', 'ELIMINADO')->get();
@@ -172,12 +170,12 @@ class EjerciciosController extends Controller
                 unlink(public_path($ejercicio->ejer_imagen));
             }
             $image = $request->file('ejer_imagen');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/modo-gym');
             $image->move($imagePath, $imageName); // Mueve la imagen a la carpeta de uploads/informacion
             // Actualiza el campo ejer_imagen con el nombre de la nueva imagen
-            $ejercicio->ejer_imagen = 'image/modo-gym'.'/'.$imageName;
-        }else {
+            $ejercicio->ejer_imagen = 'image/modo-gym' . '/' . $imageName;
+        } else {
             // Si no se proporciona ningún archivo, no realices ningún procesamiento y simplemente mantén el valor actual del campo info_logo
             $ejercicio->ejer_imagen = $ejercicio->ejer_imagen; // Asegúrate de que esto sea correcto para mantener el valor actual
         }

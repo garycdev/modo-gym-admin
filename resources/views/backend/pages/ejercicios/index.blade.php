@@ -2,10 +2,6 @@
 
 @section('title')
     Ejercicio Page - Admin Panel
-
-    @php
-        $usr = Auth::guard('admin')->user();
-    @endphp
 @endsection
 
 @section('styles')
@@ -13,6 +9,13 @@
 
 
 @section('admin-content')
+    @php
+        if (Auth::guard('admin')->check()) {
+            $usr = Auth::guard('admin')->user();
+        } else {
+            $usr = Auth::guard('user')->user();
+        }
+    @endphp
     <div class="page-wrapper">
         <div class="page-content">
             <!--breadcrumb-->
@@ -36,7 +39,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="float-right mb-2">
-                        @if (Auth::guard('admin')->user()->can('ejercicio.create'))
+                        @if ($usr->can('ejercicio.create'))
                             <a class="btn btn-primary px-5 radius-30" href="{{ route('admin.ejercicios.create') }}">Crear
                                 Nuevo</a>
                         @endif
@@ -111,14 +114,14 @@
                                         </td>
                                         {{-- <td>{{ $ejercicio->updated_at->format('d \d\e M \H\o\r\a\s: H:i A') }}</td> --}}
                                         <td>
-                                            @if (Auth::guard('admin')->user()->can('ejercicio.edit'))
+                                            @if ($usr->can('ejercicio.edit'))
                                                 <a class="btn btn-warning"
                                                     href="{{ route('admin.ejercicios.edit', $ejercicio->ejer_id) }}">
                                                     <i class='bx bxs-edit'></i>
                                                 </a>
                                             @endif
 
-                                            @if (Auth::guard('admin')->user()->can('ejercicio.delete'))
+                                            @if ($usr->can('ejercicio.delete'))
                                                 <a class="btn btn-danger"
                                                     href="{{ route('admin.ejercicios.destroy', $ejercicio->ejer_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $ejercicio->ejer_id }}').submit();">

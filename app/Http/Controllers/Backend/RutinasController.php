@@ -19,7 +19,14 @@ class RutinasController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user = Auth::guard('admin')->user();
+            $guards = ['admin', 'user'];
+
+            foreach ($guards as $guard) {
+                if (Auth::guard($guard)->check()) {
+                    $this->user = Auth::guard($guard)->user();
+                    break;
+                }
+            }
             return $next($request);
         });
     }
