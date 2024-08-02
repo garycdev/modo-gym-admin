@@ -36,6 +36,15 @@
 
 
 @section('admin-content')
+    @php
+        if (Auth::guard('admin')->check()) {
+            $usr = Auth::guard('admin')->user();
+            $guard = 'admin';
+        } else {
+            $usr = Auth::guard('user')->user();
+            $guard = 'user';
+        }
+    @endphp
     <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
@@ -130,22 +139,58 @@
                             <form class="row g-3 needs-validation" method="POST"
                                 action="{{ route('admin.rutinas.store') }}">
                                 @csrf
-                                <div class="col-md-8">
-                                    <label for="bsValidation9" class="form-label required_value">Usuario </label>
-                                    <select id="usu_id" name="usu_id" class="form-select usu_id"
-                                        onchange="selectUser()">
-                                        <option selected disabled value>[USUARIO]</option>
-                                        @foreach ($clientes as $cliente)
-                                            <option value="{{ $cliente->usu_id }}" data-fecha="{{ $cliente->pago_fecha }}"
-                                                data-mes="{{ $cliente->mes }}">
-                                                {{ $cliente->usu_nombre }}
-                                                {{ $cliente->usu_apellidos }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('usu_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                @if ($guard == 'admin')
+                                    <div class="col-md-8">
+                                        <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                                        <select id="usu_id" name="usu_id" class="form-select usu_id"
+                                            onchange="selectUser()">
+                                            <option selected disabled value>[USUARIO]</option>
+                                            @foreach ($clientes as $cliente)
+                                                <option value="{{ $cliente->usu_id }}"
+                                                    data-fecha="{{ $cliente->pago_fecha }}"
+                                                    data-mes="{{ $cliente->mes }}">
+                                                    {{ $cliente->usu_nombre }}
+                                                    {{ $cliente->usu_apellidos }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('usu_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @else
+                                    @if ($guard == 'user')
+                                        <div class="col-md-8">
+                                            <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                                            @php
+                                                foreach ($clientes as $cliente) {
+                                                    if (Auth::guard('user')->user()->usu_id == $cliente->usu_id) {
+                                                        $id = $cliente->usu_id;
+                                                        $pago_fecha = $cliente->pago_fecha;
+                                                        $mes = $cliente->mes;
+                                                        $nombre = $cliente->usu_nombre;
+                                                        $apellidos = $cliente->usu_apellidos;
+
+                                                        $fecha = new DateTime($pago_fecha);
+                                                        $diasASumar = $mes * 31;
+                                                        $fecha->modify('+' . $diasASumar . ' days');
+
+                                                        $anio = $fecha->format('Y');
+                                                        $mes = $fecha->format('m');
+                                                        $dia = $fecha->format('d');
+                                                        $fecha_fin = "$anio-$mes-$dia";
+                                                    }
+                                                }
+                                            @endphp
+                                            <input type="text" class="form-control" readonly
+                                                value="{{ $nombre }} {{ $apellidos }}">
+                                            <input type="hidden" id="usu_id" name="usu_id" value="{{ $id }}"
+                                                onload="rutinaUser({{ $id }})">
+                                            @error('usu_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    @endif
+                                @endif
                                 <div class="col-md-4">
                                     <label for="bsValidation9" class="form-label required_value">Dia </label>
                                     <select id="rut_dia" name="rut_dia" class="form-select rut_dia">
@@ -162,21 +207,47 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12 d-flex justify-content-center form-check form-switch"
-                                    style="display:none!important;" id="cont-anterior">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="anterior"
-                                        name="anterior">
-                                    <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina anterior</label>
-                                    <input type="hidden" name="id_anterior" id="id_anterior" value="0">
-                                </div>
-                                <div class="col-md-6 fechas" style="display: none">
-                                    <label for="bsValidation9" class="form-label">Fecha inicio </label>
-                                    <input type="date" class="form-control" id="fecha_ini" name="fecha_ini" readonly>
-                                </div>
-                                <div class="col-md-6 fechas" style="display: none">
-                                    <label for="bsValidation9" class="form-label">Fecha fin </label>
-                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" readonly>
-                                </div>
+                                @if ($guard == 'admin')
+                                    <div class="col-md-12 d-flex justify-content-center form-check form-switch"
+                                        style="display:none!important;" id="cont-anterior">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="anterior"
+                                            name="anterior">
+                                        <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                            anterior</label>
+                                        <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                    </div>
+                                    <div class="col-md-6 fechas" style="display: none">
+                                        <label for="bsValidation9" class="form-label">Fecha inicio </label>
+                                        <input type="date" class="form-control" id="fecha_ini" name="fecha_ini"
+                                            readonly>
+                                    </div>
+                                    <div class="col-md-6 fechas" style="display: none">
+                                        <label for="bsValidation9" class="form-label">Fecha fin </label>
+                                        <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"
+                                            readonly>
+                                    </div>
+                                @else
+                                    @if ($guard == 'user')
+                                        <div class="col-md-12 d-flex justify-content-center form-check form-switch"
+                                            style="display:none!important;" id="cont-anterior">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="anterior" name="anterior">
+                                            <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                                anterior</label>
+                                            <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                        </div>
+                                        <div class="col-md-6 fechas">
+                                            <label for="bsValidation9" class="form-label">Fecha inicio </label>
+                                            <input type="date" class="form-control" id="fecha_ini" name="fecha_ini"
+                                                readonly value="{{ $pago_fecha }}">
+                                        </div>
+                                        <div class="col-md-6 fechas">
+                                            <label for="bsValidation9" class="form-label">Fecha fin </label>
+                                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"
+                                                readonly value="{{ $fecha_fin }}">
+                                        </div>
+                                    @endif
+                                @endif
                                 <hr>
                                 <button type="button" class="btn btn-primary w-100 mb-3" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal" onclick="addEjercicios(1)">
@@ -288,6 +359,11 @@
                     }
                 });
             });
+
+            const id = $('#usu_id').val()
+            if (id) {
+                rutinaUser()
+            }
         });
 
         function clearSearch() {
@@ -302,17 +378,24 @@
 
             $('#fecha_ini').val(fecha_ini);
 
+            const diasASumar = meses * 31;
+
             const fecha = new Date(fecha_ini);
-            fecha.setDate(fecha.getDate() + (meses * 31));
-            const anio = fecha.getFullYear();
-            const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
-            const dia = ('0' + fecha.getDate()).slice(-2);
+            fecha.setUTCDate(fecha.getUTCDate() + diasASumar);
+
+            const anio = fecha.getUTCFullYear();
+            const mes = ('0' + (fecha.getUTCMonth() + 1)).slice(-2);
+            const dia = ('0' + fecha.getUTCDate()).slice(-2);
             const fecha_fin = `${anio}-${mes}-${dia}`;
+
             $('#fecha_fin').val(fecha_fin);
             $('.fechas').css('display', 'block');
 
-            const id = $('#usu_id').val()
+            rutinaUser()
+        }
 
+        function rutinaUser() {
+            const id = $('#usu_id').val()
             $.ajax({
                 type: "POST",
                 url: "{{ route('admin.rutinas.user') }}",

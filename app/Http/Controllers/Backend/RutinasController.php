@@ -15,6 +15,7 @@ class RutinasController extends Controller
      * Display a listing of the resource.
      */
     public $user;
+    public $guard;
 
     public function __construct()
     {
@@ -24,6 +25,7 @@ class RutinasController extends Controller
             foreach ($guards as $guard) {
                 if (Auth::guard($guard)->check()) {
                     $this->user = Auth::guard($guard)->user();
+                    $this->guard = $guard;
                     break;
                 }
             }
@@ -41,10 +43,18 @@ class RutinasController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún rutina!');
         }
 
-        $rutinas = Rutinas::orderBy('rut_grupo', 'DESC')
-            ->orderBy('usu_id', 'ASC')
-            ->orderBy('rut_dia', 'ASC')
-            ->get();
+        if ($this->guard == 'user') {
+            $rutinas = Rutinas::where('usu_id', Auth::guard('user')->user()->usu_id)
+                ->orderBy('rut_grupo', 'DESC')
+                ->orderBy('usu_id', 'ASC')
+                ->orderBy('rut_dia', 'ASC')
+                ->get();
+        } else {
+            $rutinas = Rutinas::orderBy('rut_grupo', 'DESC')
+                ->orderBy('usu_id', 'ASC')
+                ->orderBy('rut_dia', 'ASC')
+                ->get();
+        }
         return view('backend.pages.rutinas.index', compact('rutinas'));
     }
 
@@ -193,10 +203,10 @@ class RutinasController extends Controller
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin rutinae,
         // so that no-one could delete or disable it by somehow.
-        if ($id === 1) {
-            session()->flash('error', 'Lo siento !! ¡No estás autorizado a editar este rutina!');
-            return back();
-        }
+        // if ($id === 1) {
+        //     session()->flash('error', 'Lo siento !! ¡No estás autorizado a editar este rutina!');
+        //     return back();
+        // }
         $request->validate([
             'usu_id' => 'required',
             'ejer_id' => 'required',

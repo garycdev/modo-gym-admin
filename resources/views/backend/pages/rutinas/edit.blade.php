@@ -19,6 +19,15 @@
 
 
 @section('admin-content')
+    @php
+        if (Auth::guard('admin')->check()) {
+            $usr = Auth::guard('admin')->user();
+            $guard = 'admin';
+        } else {
+            $usr = Auth::guard('user')->user();
+            $guard = 'user';
+        }
+    @endphp
     <!--start page wrapper -->
     <div class="page-wrapper">
         <div class="page-content">
@@ -59,21 +68,45 @@
                                 action="{{ route('admin.rutinas.update', $rutina->rut_id) }}">
                                 @csrf
                                 @method('PUT')
-                                <div class="col-md-12">
-                                    <label for="bsValidation9" class="form-label required_value">Usuario </label>
-                                    <select id="usu_id" name="usu_id" class="form-select usu_id">
-                                        <option selected disabled value>[CLIENTE]</option>
-                                        @foreach ($clientes as $cliente)
-                                            <option value="{{ $cliente->usu_id }}"
-                                                {{ $cliente->usu_id == $rutina->usu_id ? 'selected' : '' }}>
-                                                {{ $cliente->usu_nombre }}
-                                                {{ $cliente->usu_apellidos }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('usu_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                @if ($guard == 'admin')
+                                    <div class="col-md-12">
+                                        <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                                        <select id="usu_id" name="usu_id" class="form-select usu_id">
+                                            <option selected disabled value>[CLIENTE]</option>
+                                            @foreach ($clientes as $cliente)
+                                                <option value="{{ $cliente->usu_id }}"
+                                                    {{ $cliente->usu_id == $rutina->usu_id ? 'selected' : '' }}>
+                                                    {{ $cliente->usu_nombre }}
+                                                    {{ $cliente->usu_apellidos }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('usu_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @else
+                                    @if ($guard == 'user')
+                                        @php
+                                            foreach ($clientes as $cliente) {
+                                                if (Auth::guard('user')->user()->usu_id == $cliente->usu_id) {
+                                                    $id = $cliente->usu_id;
+                                                    $nombre = $cliente->usu_nombre;
+                                                    $apellidos = $cliente->usu_apellidos;
+                                                }
+                                            }
+                                        @endphp
+                                        <div class="col-md-12">
+                                            <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                                            <input type="text" class="form-control"
+                                                value="{{ $nombre }} {{ $apellidos }}">
+                                            <input type="hidden" id="usu_id" name="usu_id" value="{{ $id }}">
+                                            </input>
+                                            @error('usu_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    @endif
+                                @endif
                                 <div class="col-md-8">
                                     <label for="bsValidation9" class="form-label required_value">Ejercicio </label>
                                     <select id="ejer_id" name="ejer_id" class="form-select ejer_id">
