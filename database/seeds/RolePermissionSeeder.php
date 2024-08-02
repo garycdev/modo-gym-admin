@@ -397,10 +397,10 @@ class RolePermissionSeeder extends Seeder
     }
     private function maybeCreateUserRole(): Role
     {
-        $roleUser = Role::where('name', 'usuario')->where('guard_name', 'admin')->first();
+        $roleUser = Role::where('name', 'usuario')->where('guard_name', 'user')->first();
 
         if (is_null($roleUser)) {
-            $roleUser = Role::create(['name' => 'usuario', 'guard_name' => 'admin']);
+            $roleUser = Role::create(['name' => 'usuario', 'guard_name' => 'user']);
         }
 
         return $roleUser;
