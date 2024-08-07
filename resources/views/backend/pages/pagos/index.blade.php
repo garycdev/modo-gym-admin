@@ -67,7 +67,7 @@
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>
-                                    <th>Metodo</th>
+                                    {{-- <th>Metodo</th> --}}
                                     <th>Dias</th>
                                     <th>Estado</th>
                                     <th>Observacion</th>
@@ -117,12 +117,13 @@
                                             <td>{{ $i }}</td>
                                             <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
                                             <td>{{ $pago->cliente->usu_ci }}</td>
-                                            <td>{{ $pago->pago_monto }}</td>
+                                            <td>{{ $pago->pago_monto }} bs <span style="font-size:0.7em">[{{ $pago->pago_metodo }}]</span></td>
                                             <td>
-                                                {{ $pago->costo->monto }} [{{ $pago->costo->nombre }}]</span>
+                                                {{ $pago->costo->nombre }}
+                                                {{-- {{ $pago->costo->monto }} --}}
                                             </td>
                                             <td>{{ $pago->pago_fecha }}</td>
-                                            <td>{{ $pago->pago_metodo }}</td>
+                                            {{-- <td>{{ $pago->pago_metodo }}</td> --}}
                                             <td>
                                                 <span class="badge {{ $badgeClass }}">
                                                     {{ $textoFaltante }}
@@ -142,7 +143,7 @@
                                                 @endif
 
                                                 @if (Auth::guard('admin')->user()->can('pago.delete'))
-                                                    <a class="btn btn-danger text-white"
+                                                    <a class="btn btn-sm btn-danger"
                                                         href="{{ route('admin.pagos.destroy', $pago->pago_id) }}"
                                                         onclick="event.preventDefault(); document.getElementById('delete-form-{{ $pago->pago_id }}').submit();">
                                                         <i class='bx bxs-trash'></i>
@@ -170,7 +171,7 @@
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>
-                                    <th>Metodo</th>
+                                    {{-- <th>Metodo</th> --}}
                                     <th>Dias</th>
                                     <th>Estado</th>
                                     <th>Observacion</th>
