@@ -5,6 +5,16 @@
 @endsection
 
 @section('styles')
+    <style>
+        .max-width-td {
+            width: 350px !important;
+            max-width: 500px !important;
+            white-space: normal;
+            word-wrap: break-word;
+            overflow: hidden;
+            font-size: 0.8em;
+        }
+    </style>
 @endsection
 
 
@@ -117,7 +127,8 @@
                                             <td>{{ $i }}</td>
                                             <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
                                             <td>{{ $pago->cliente->usu_ci }}</td>
-                                            <td>{{ $pago->pago_monto }} bs <span style="font-size:0.7em">[{{ $pago->pago_metodo }}]</span></td>
+                                            <td>{{ $pago->pago_monto }} bs <span
+                                                    style="font-size:0.7em">[{{ $pago->pago_metodo }}]</span></td>
                                             <td>
                                                 {{ $pago->costo->nombre }}
                                                 {{-- {{ $pago->costo->monto }} --}}
@@ -133,7 +144,7 @@
                                                 <span
                                                     class="badge bg-{{ $pago->pago_estado == 'COMPLETADO' ? 'success' : ($pago->pago_estado == 'CANCELADO' ? 'info' : 'warning') }}">{{ $pago->pago_estado }}</span>
                                             </td>
-                                            <td style="font-size:12px">{{ $pago->pago_observaciones }}</td>
+                                            <td>{{ $pago->pago_observaciones }}</td>
                                             <td>
                                                 @if (Auth::guard('admin')->user()->can('pago.edit'))
                                                     <a class="btn btn-sm btn-warning"
@@ -297,25 +308,25 @@
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                         },
-                        // customize: function(win) {
-                        //     $(win.document.body)
-                        //         .css('font-size', '10pt')
-                        //         .prepend(
-                        //             '<img src="https://example.com/logo.png" style="position:absolute; top:0; left:0;" />'
-                        //         );
-
-                        //     $(win.document.body).find('table')
-                        //         .addClass('compact')
-                        //         .css('font-size', 'inherit');
-                        // }
                     }
-                ]
+                ],
+                columnDefs: [{
+                    targets: 8, // Índice de la columna a la que deseas aplicar el ancho máximo
+                    createdCell: function(td, cellData, rowData, row, col) {
+                        // $(td).css('max-width', '300px');
+                        // $(td).css('overflow', 'hidden');
+                        // $(td).css('text-overflow', 'ellipsis');
+                        // $(td).css('white-space', 'normal');
+                        // $(td).css('word-wrap', 'break-word');
+                        $(td).addClass('max-width-td');
+                    }
+                }]
             });
 
-            table
-                .buttons()
-                .container()
-                .appendTo("#example2_wrapper .col-md-6:eq(0)");
+            // table
+            //     .buttons()
+            //     .container()
+            //     .appendTo("#example2_wrapper .col-md-6:eq(0)");
 
             $('#filter-select').on('change', function() {
                 var selectedValue = $(this).val();
