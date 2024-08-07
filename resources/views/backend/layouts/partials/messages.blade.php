@@ -23,3 +23,11 @@
         </div>
     </div>
 @endif
+
+@if (Session::has('info'))
+    <div class="alert alert-info">
+        <div>
+            <p>{{ Session::get('info') }}</p>
+        </div>
+    </div>
+@endif

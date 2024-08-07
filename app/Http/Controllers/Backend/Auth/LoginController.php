@@ -77,7 +77,7 @@ class LoginController extends Controller
             if ($user && Hash::check($request->password, $user->usu_login_password)) {
                 $pagos = Pagos::where('usu_id', $user->usu_id)->count();
                 if ($pagos > 0) {
-                    Auth::guard('user')->login($user);
+                    Auth::guard('user')->login($user, $request->remember);
 
                     // Redirect to dashboard
                     session()->flash('success', 'Sesión iniciada con exito !');
@@ -98,7 +98,7 @@ class LoginController extends Controller
                             // dd($user_guest);
 
                             $nuevo = new UsuarioLogin();
-                            $nuevo->usu_login_name = $user_guest->usu_nombre . ' ' . $user_guest->usu_apellidos;
+                            $nuevo->usu_login_name = $user_guest->usu_nombre;
                             $nuevo->usu_login_email = $user_guest->usu_email;
                             $nuevo->usu_login_username = $user_guest->usu_ci;
                             $nuevo->usu_login_password = Hash::make($request->password);
@@ -108,11 +108,11 @@ class LoginController extends Controller
                             $userNuevo = UsuarioLogin::where('usu_login_email', $user_guest->usu_email)->orWhere('usu_login_username', $user_guest->usu_ci)->first();
                             $userNuevo->assignRole('usuario');
 
-                            Auth::guard('user')->login($userNuevo);
+                            Auth::guard('user')->login($userNuevo, $request->remember);
 
                             // Redirect to dashboard
-                            session()->flash('success', 'Usuario creado ¡¡ Por favor, cambie su contraseña !!');
-                            return redirect()->route('admin.dashboard');
+                            session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y su contraseña !!');
+                            return redirect()->route('admin.perfil.index');
                         }
                     } else {
                         session()->flash('error', '¡ No existen pagos para el usuario !');
@@ -135,6 +135,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
+        Auth::guard('user')->logout();
         return redirect()->route('admin.login');
     }
 }

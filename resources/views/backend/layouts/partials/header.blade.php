@@ -232,7 +232,8 @@
                 @endif
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                        <a class="dropdown-item d-flex align-items-center"
+                            href="{{ route('admin.perfil.index') }}"><i
                                 class="bx bx-user fs-5"></i><span>Perfil</span></a>
                     </li>
                     <li>

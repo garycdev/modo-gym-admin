@@ -49,6 +49,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('contactos', 'Backend\ContactosController', ['names' => 'admin.contactos']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
+    Route::resource('perfil', 'Backend\PerfilController', ['names' => 'admin.perfil']);
 
     // Extras
     Route::post('/rutuser', 'Backend\RutinasController@user')->name('admin.rutinas.user');
