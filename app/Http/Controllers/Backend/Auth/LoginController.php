@@ -184,7 +184,7 @@ class LoginController extends Controller
                     return redirect()->route('admin.login');
                 }
             } else {
-                session()->flash('error', '¡ Cuenta no existente en el sistema !');
+                session()->flash('error', '¡ Correo no vinculado en el sistema !');
                 return redirect()->route('admin.login');
             }
         }
@@ -226,10 +226,12 @@ class LoginController extends Controller
     {
         if ($request->type == 'admin') {
             Admin::where('google_id', $request->google_id)->update([
+                'email' => null,
                 'google_id' => null,
             ]);
         } else if ($request->type == 'user') {
             UsuarioLogin::where('google_id', $request->google_id)->update([
+                'usu_login_email' => null,
                 'google_id' => null,
             ]);
         }
