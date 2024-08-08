@@ -74,4 +74,9 @@ class Admin extends Authenticatable
         }
         return $hasPermission;
     }
+
+    public function datos()
+    {
+        return $this->hasOne(AdminDatos::class, 'id');
+    }
 }

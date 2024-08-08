@@ -39,6 +39,8 @@ class PerfilController extends Controller
                 'name' => $this->user->name,
                 'email' => $this->user->email,
                 'username' => $this->user->username,
+                'google_id' => $this->user->google_id,
+                'type' => 'admin',
             ];
         } else if ($this->guard == 'user') {
             $user = [
@@ -46,6 +48,8 @@ class PerfilController extends Controller
                 'name' => $this->user->usu_login_name,
                 'email' => $this->user->usu_login_email,
                 'username' => $this->user->usu_login_username,
+                'google_id' => $this->user->google_id,
+                'type' => 'user',
             ];
         }
         return view('backend.pages.perfil.edit', compact('user'));
@@ -92,11 +96,11 @@ class PerfilController extends Controller
             if ($this->guard == 'admin') {
                 $request->validate([
                     'name' => 'required',
-                    'email' => [
-                        'required',
-                        'email',
-                        Rule::unique('admins', 'email')->ignore($id),
-                    ],
+                    // 'email' => [
+                    //     'required',
+                    //     'email',
+                    //     Rule::unique('admins', 'email')->ignore($id),
+                    // ],
                     'username' => [
                         'required',
                         Rule::unique('admins', 'username')->ignore($id),
@@ -111,11 +115,11 @@ class PerfilController extends Controller
             } else if ($this->guard == 'user') {
                 $request->validate([
                     'name' => 'required',
-                    'email' => [
-                        'required',
-                        'email',
-                        Rule::unique('usuario_login', 'usu_login_email')->ignore($id, 'usu_login_id'),
-                    ],
+                    // 'email' => [
+                    //     'required',
+                    //     'email',
+                    //     Rule::unique('usuario_login', 'usu_login_email')->ignore($id, 'usu_login_id'),
+                    // ],
                     'username' => [
                         'required',
                         Rule::unique('usuario_login', 'usu_login_username')->ignore($id, 'usu_login_id'),

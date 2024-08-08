@@ -17,7 +17,7 @@ class UsuarioLogin extends Authenticatable
     protected $table = 'usuario_login';
     protected $primaryKey = 'usu_login_id';
     protected $fillable = [
-        'usu_login_name', 'usu_login_email', 'usu_login_username', 'usu_login_password',
+        'usu_login_name', 'usu_login_email', 'usu_login_username', 'usu_login_password', 'google_id',
     ];
 
     protected $hidden = [
@@ -56,5 +56,10 @@ class UsuarioLogin extends Authenticatable
             }
         }
         return $hasPermission;
+    }
+
+    public function datos()
+    {
+        return $this->hasOne(Usuarios::class, 'usu_id');
     }
 }

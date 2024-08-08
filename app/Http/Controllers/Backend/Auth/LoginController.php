@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Backend\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pagos;
+use App\Models\Admin;
 use App\Models\UsuarioLogin;
 use App\Models\Usuarios;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -75,22 +77,19 @@ class LoginController extends Controller
         } else {
             $user = UsuarioLogin::where('usu_login_email', $request->email)->orWhere('usu_login_username', $request->email)->first();
             if ($user && Hash::check($request->password, $user->usu_login_password)) {
-                $pagos = Pagos::where('usu_id', $user->usu_id)->count();
-                if ($pagos > 0) {
+                if ($this->verificarPagos($user->usu_id)) {
                     Auth::guard('user')->login($user, $request->remember);
 
                     // Redirect to dashboard
                     session()->flash('success', 'Sesión iniciada con exito !');
                     return redirect()->route('admin.dashboard');
                 } else {
-                    session()->flash('error', 'Cuenta inactiva ¡ No existen pagos para el usuario !');
                     return back();
                 }
             } else {
                 $user_guest = Usuarios::where('usu_ci', $request->email)->first();
                 if ($user_guest) {
-                    $pagos = Pagos::where('usu_id', $user_guest->usu_id)->count();
-                    if ($pagos > 0) {
+                    if ($this->verificarPagos($user_guest->usu_id)) {
                         $names = explode(' ', trim($user_guest->usu_nombre));
                         $name = array_filter($names);
                         $firstName = reset($name);
@@ -111,11 +110,10 @@ class LoginController extends Controller
                             Auth::guard('user')->login($userNuevo, $request->remember);
 
                             // Redirect to dashboard
-                            session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y su contraseña !!');
+                            session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!');
                             return redirect()->route('admin.perfil.index');
                         }
                     } else {
-                        session()->flash('error', '¡ No existen pagos para el usuario !');
                         return back();
                     }
                 }
@@ -137,5 +135,106 @@ class LoginController extends Controller
         Auth::guard('admin')->logout();
         Auth::guard('user')->logout();
         return redirect()->route('admin.login');
+    }
+
+    public function redirect()
+    {
+        /** @var \Laravel\Socialite\Two\AbstractProvider $socialite */
+        $socialite = Socialite::driver('google');
+        return $socialite->with(['prompt' => 'select_account'])->redirect();
+    }
+
+    public function callback()
+    {
+        $google_user = Socialite::driver('google')->user();
+        // $user->token
+        // dd($google_user);
+        $user_admin = Admin::where('email', $google_user->email)->first();
+        if ($user_admin) {
+            if (!$user_admin->google_id) {
+                $user_admin->google_id = $google_user->id;
+                $user_admin->save();
+            } else if ($user_admin->google_id != $google_user->id) {
+                session()->flash('error', '¡ Error al iniciar sesión !');
+                return redirect()->route('admin.dashboard');
+            }
+            Auth::guard('admin')->login($user_admin);
+
+            // Redirect to dashboard
+            session()->flash('success', 'Sesión iniciada con exito !');
+            return redirect()->route('admin.dashboard');
+        } else {
+            $user = UsuarioLogin::where('usu_login_email', $google_user->email)->first();
+            if ($user) {
+                if ($this->verificarPagos($user->usu_id)) {
+                    if (!$user->google_id) {
+                        $user->google_id = $google_user->id;
+                        $user->save();
+                    } else if ($user->google_id != $google_user->id) {
+                        session()->flash('error', '¡ Error al iniciar sesión !');
+                        return redirect()->route('admin.dashboard');
+                    }
+
+                    Auth::guard('user')->login($user);
+
+                    // Redirect to dashboard
+                    session()->flash('success', 'Sesión iniciada con exito !');
+                    return redirect()->route('admin.dashboard');
+                } else {
+                    return redirect()->route('admin.login');
+                }
+            } else {
+                session()->flash('error', '¡ Cuenta no existente en el sistema !');
+                return redirect()->route('admin.login');
+            }
+        }
+    }
+
+    public function verificarPagos($usu_id)
+    {
+        $pagos = DB::table('usuarios')
+            ->join('pagos', 'usuarios.usu_id', '=', 'pagos.usu_id')
+            ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
+            ->where('usuarios.usu_id', $usu_id)
+            ->orderBy('pagos.actualizado_en', 'desc')
+            ->select('costos.*', 'pagos.pago_fecha')
+            ->first();
+
+        if ($pagos) {
+            $fechaPago = new \DateTime($pagos->pago_fecha);
+            $fechaLimite = clone $fechaPago;
+            $fechaLimite->modify('+' . ($pagos->mes * 30) . ' days');
+            $fechaActual = today();
+            $diff = $fechaActual->diff($fechaLimite);
+            $diferenciaDias = $diff->format('%r%a');
+            if (intval($diferenciaDias) < 0) {
+                session()->flash('error', 'Cuenta inactiva. ¡ No se encontró un pago actual para este usuario !');
+                return false;
+            } elseif (intval($diferenciaDias) > 30) {
+                session()->flash('error', 'Cuenta inactiva. ¡ Aun no inicia su mensualidad !');
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            session()->flash('error', '¡ No existen pagos para el usuario !');
+            return false;
+        }
+    }
+
+    public function unlink(Request $request)
+    {
+        if ($request->type == 'admin') {
+            Admin::where('google_id', $request->google_id)->update([
+                'google_id' => null,
+            ]);
+        } else if ($request->type == 'user') {
+            UsuarioLogin::where('google_id', $request->google_id)->update([
+                'google_id' => null,
+            ]);
+        }
+
+        session()->flash('success', '¡ Google desvinculado satisfactoriamente !');
+        return redirect()->route('admin.perfil.index');
     }
 }

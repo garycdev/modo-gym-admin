@@ -61,7 +61,18 @@ Route::group(['prefix' => 'admin'], function () {
     // Logout Routes
     Route::post('/logout/submit', 'Backend\Auth\LoginController@logout')->name('admin.logout.submit');
 
+    // Desvincular google
+    Route::post('/google/unlink', 'Backend\Auth\LoginController@unlink')->name('admin.google.unlink');
+
     // Forget Password Routes
-    Route::get('/password/reset', 'Backend\Auth\ForgetPasswordController@showLinkRequestForm')->name('admin.password.request');
-    Route::post('/password/reset/submit', 'Backend\Auth\ForgetPasswordController@reset')->name('admin.password.update');
+    // Route::get('/password/reset', 'Backend\Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
+    // Route::post('/password/reset/submit', 'Backend\Auth\ForgotPasswordController@reset')->name('admin.password.update');
 });
+
+// Forget Password
+Route::get('/password/reset', 'Backend\Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
+Route::post('/password/reset/submit', 'Backend\Auth\ForgotPasswordController@reset')->name('admin.password.update');
+
+// Socialite Routes
+Route::get('/auth/redirect', 'Backend\Auth\LoginController@redirect')->name('login.redirect');
+Route::get('/auth/callback', 'Backend\Auth\LoginController@callback')->name('login.callback');
