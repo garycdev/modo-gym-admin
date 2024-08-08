@@ -33,7 +33,7 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://test.com:8000/auth/callback',
+        'redirect' => 'https://modo-gym.gcod.dev/auth/callback',
     ],
 
 ];
