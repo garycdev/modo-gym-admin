@@ -75,22 +75,24 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <label for="bsValidation9" class="form-label required_value">Costo </label>
-                                    <select id="costo_id" name="costo_id" class="form-select" onchange="setMonto()">
+                                    <select id="costo_id" name="costo_id" class="form-select select-monto"
+                                        onchange="setMonto()">
                                         <option disabled value>[COSTO]</option>
                                         @foreach ($costos as $costo)
                                             <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}"
                                                 {{ $costo->costo_id == $pago->costo_id ? 'selected' : '' }}>
                                                 {{ $costo->monto }}
-                                                [{{ $costo->periodo }}]</option>
+                                                [{{ $costo->nombre }} - {{ $costo->periodo }}]
+                                            </option>
                                         @endforeach
                                     </select>
                                     @error('costo_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="bsValidation9" class="form-label required_value">Monto </label>
                                     <input type="number" class="form-control" id="monto" name="monto"
                                         placeholder="Monto" value="{{ $pago->pago_monto }}">
@@ -109,7 +111,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label required_value">Metodo </label>
-                                    <select id="metodo" name="metodo" class="form-select">
+                                    {{-- <select id="metodo" name="metodo" class="form-select">
                                         <option selected disabled value>[METODO]</option>
                                         <option value="EFECTIVO" {{ $pago->pago_metodo == 'EFECTIVO' ? 'selected' : '' }}>
                                             EFECTIVO</option>
@@ -119,21 +121,39 @@
                                         <option value="TRANSFERENCIA"
                                             {{ $pago->pago_metodo == 'TRANSFERENCIA' ? 'selected' : '' }}>
                                             TRANSFERENCIA</option>
-                                    </select>
+                                    </select> --}}
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="metodo" id="metodo1"
+                                                value="EFECTIVO" {{ $pago->pago_metodo == 'EFECTIVO' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="metodo1">
+                                                EFECTIVO
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="metodo" id="metodo2"
+                                                value="TARJETA_CREDITO"
+                                                {{ $pago->pago_metodo == 'TARJETA_CREDITO' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="metodo2">
+                                                TARJETA DE CREDITO
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="metodo" id="metodo3"
+                                                value="TRANSFERENCIA"
+                                                {{ $pago->pago_metodo == 'TRANSFERENCIA' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="metodo3">
+                                                TRANSFERENCIA
+                                            </label>
+                                        </div>
+                                    </div>
                                     @error('metodo')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="bsValidation9" class="form-label">Observaciones </label>
-                                    <textarea name="observaciones" id="observaciones" rows="3" placeholder="Observaciones" class="form-control">{{ $pago->pago_observaciones }}</textarea>
-                                    @error('observaciones')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="bsValidation9" class="form-label required_value">Estado </label>
-                                    <select id="estado" name="estado" class="form-select">
+                                <div class="col-md-4">
+                                    <label for="bsValidation9" class="form-label required_value">Estado pago </label>
+                                    {{-- <select id="estado" name="estado" class="form-select">
                                         <option selected disabled value>[ESTADO]</option>
                                         <option value="PENDIENTE"
                                             {{ $pago->pago_estado == 'PENDIENTE' ? 'selected' : '' }}>
@@ -144,8 +164,41 @@
                                         <option value="CANCELADO"
                                             {{ $pago->pago_estado == 'CANCELADO' ? 'selected' : '' }}>
                                             CANCELADO</option>
-                                    </select>
+                                    </select> --}}
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="estado" id="estado1"
+                                                value="PENDIENTE"
+                                                {{ $pago->pago_estado == 'PENDIENTE' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="estado1">
+                                                PENDIENTE
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="estado" id="estado2"
+                                                value="COMPLETADO"
+                                                {{ $pago->pago_estado == 'COMPLETADO' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="estado2">
+                                                COMPLETADO
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="estado" id="estado3"
+                                                value="CANCELADO"
+                                                {{ $pago->pago_estado == 'CANCELADO' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="estado3">
+                                                CANCELADO
+                                            </label>
+                                        </div>
+                                    </div>
                                     @error('estado')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="bsValidation9" class="form-label">Observaciones </label>
+                                    <textarea name="observaciones" id="observaciones" rows="3" placeholder="Observaciones" class="form-control">{{ $pago->pago_observaciones }}</textarea>
+                                    @error('observaciones')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -235,6 +288,7 @@
     <script>
         $(document).ready(function() {
             $('.usu_id').select2();
+            $('.select-monto').select2();
         });
 
         function setMonto() {
