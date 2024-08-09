@@ -240,7 +240,7 @@
         function setMonto() {
             var monto = $('#costo_id option:selected').attr('data-monto');
             $('#monto').val(monto);
-            $('#monto').attr('step', monto);
+            // $('#monto').attr('step', monto);
         }
         setMonto()
     </script>
