@@ -280,49 +280,6 @@ class RolePermissionSeeder extends Seeder
             ],
         ];
 
-        $permissionsUser = [
-            [
-                'group_name' => 'rutina_user',
-                'permissions' => [
-                    'rutina.view',
-                    'rutina.create',
-                    'rutina.edit',
-                    'rutina.delete',
-                ],
-            ],
-            [
-                'group_name' => 'perfil_user',
-                'permissions' => [
-                    'perfil.view',
-                    'perfil.edit',
-                ],
-            ],
-            [
-                'group_name' => 'dashboard_user',
-                'permissions' => [
-                    'dashboard.view',
-                ],
-            ],
-            [
-                'group_name' => 'musculo_user',
-                'permissions' => [
-                    'musculo.view',
-                ],
-            ],
-            [
-                'group_name' => 'equipo_user',
-                'permissions' => [
-                    'equipo.view',
-                ],
-            ],
-            [
-                'group_name' => 'ejercicio_user',
-                'permissions' => [
-                    'ejercicio.view',
-                ],
-            ],
-        ];
-
         // Create and Assign Permissions
         // for ($i = 0; $i < count($permissions); $i++) {
         //     $permissionGroup = $permissions[$i]['group_name'];
@@ -356,29 +313,6 @@ class RolePermissionSeeder extends Seeder
                 }
             }
         }
-
-        // Assign super admin role permission to superadmin user
-        if ($admin) {
-            $admin->assignRole($roleSuperAdmin);
-        }
-
-        // Create and Assign Permissions for 'user' guard
-        $roleUser = $this->maybeCreateUserRole();
-
-        foreach ($permissionsUser as $permissionGroup) {
-            foreach ($permissionGroup['permissions'] as $permissionName) {
-                $permissionExist = Permission::where('name', $permissionName)->where('guard_name', 'user')->first();
-                if (is_null($permissionExist)) {
-                    $permission = Permission::create([
-                        'name' => $permissionName,
-                        'group_name' => $permissionGroup['group_name'],
-                        'guard_name' => 'user',
-                    ]);
-                    $roleUser->givePermissionTo($permission);
-                    $permission->assignRole($roleUser);
-                }
-            }
-        }
     }
 
     private function maybeCreateSuperAdminRole($admin): Role
@@ -394,15 +328,5 @@ class RolePermissionSeeder extends Seeder
         }
 
         return $roleSuperAdmin;
-    }
-    private function maybeCreateUserRole(): Role
-    {
-        $roleUser = Role::where('name', 'usuario')->where('guard_name', 'user')->first();
-
-        if (is_null($roleUser)) {
-            $roleUser = Role::create(['name' => 'usuario', 'guard_name' => 'user']);
-        }
-
-        return $roleUser;
     }
 }
