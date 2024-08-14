@@ -77,6 +77,7 @@
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>
+                                    <th>Registro</th>
                                     {{-- <th>Metodo</th> --}}
                                     <th>Dias</th>
                                     <th>Estado</th>
@@ -127,13 +128,15 @@
                                             <td>{{ $i }}</td>
                                             <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
                                             <td>{{ $pago->cliente->usu_ci }}</td>
-                                            <td>{{ $pago->pago_monto }} bs <span
-                                                    style="font-size:0.7em">[{{ $pago->pago_metodo }}]</span></td>
+                                            <td>{{ $pago->pago_monto }} bs
+                                                {{-- <span style="font-size:0.7em">[{{ $pago->pago_metodo }}]</span> --}}
+                                            </td>
                                             <td>
                                                 {{ $pago->costo->nombre }}
                                                 {{-- {{ $pago->costo->monto }} --}}
                                             </td>
                                             <td>{{ $pago->pago_fecha }}</td>
+                                            <td>{{ $pago->creado_en->format('H:i:s') }}</td>
                                             {{-- <td>{{ $pago->pago_metodo }}</td> --}}
                                             <td>
                                                 <span class="badge {{ $badgeClass }}">
@@ -182,6 +185,7 @@
                                     <th>Pago</th>
                                     <th>Costo</th>
                                     <th>Fecha</th>
+                                    <th>Registro</th>
                                     {{-- <th>Metodo</th> --}}
                                     <th>Dias</th>
                                     <th>Estado</th>
@@ -284,34 +288,35 @@
                     }
                 },
                 lengthChange: false,
+                pageLength: 15,
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'copy',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                         }
                     },
                     {
                         extend: 'excel',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                         }
                     },
                     {
                         extend: 'pdf',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                         }
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                         },
                     }
                 ],
                 columnDefs: [{
-                    targets: 8, // Índice de la columna a la que deseas aplicar el ancho máximo
+                    targets: 9, // Índice de la columna a la que deseas aplicar el ancho máximo
                     createdCell: function(td, cellData, rowData, row, col) {
                         // $(td).css('max-width', '300px');
                         // $(td).css('overflow', 'hidden');
