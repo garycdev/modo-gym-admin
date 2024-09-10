@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ejercicios;
+use App\Models\Musculo;
 use App\Models\Rutinas;
 use App\Models\Usuarios;
 use Illuminate\Http\Request;
@@ -44,19 +45,40 @@ class RutinasController extends Controller
         }
 
         if ($this->guard == 'user') {
-            $rutinas = Rutinas::where('usu_id', Auth::guard('user')->user()->usu_id)
-                ->orderBy('rut_grupo', 'DESC')
-                ->orderBy('usu_id', 'ASC')
-                ->orderBy('rut_dia', 'ASC')
-                ->get();
+            // $rutinas = Rutinas::where('usu_id', Auth::guard('user')->user()->usu_id)
+            //     ->orderBy('rut_grupo', 'DESC')
+            //     ->orderBy('usu_id', 'ASC')
+            //     ->orderBy('rut_dia', 'ASC')
+            //     ->get();
+
+            return view('backend.pages.rutinas.rutinas', compact('rutinas'));
         } else {
-            $rutinas = Rutinas::orderBy('rut_grupo', 'DESC')
-                ->orderBy('usu_id', 'ASC')
-                ->orderBy('rut_dia', 'ASC')
+            $usuarios = Rutinas::join('usuarios', 'usuarios.usu_id', '=', 'rutinas.usu_id')
+                ->select('usuarios.usu_id')
+                ->groupBy('usuarios.usu_id')
                 ->get();
+
+            return view('backend.pages.rutinas.index', compact('usuarios'));
         }
-        return view('backend.pages.rutinas.index', compact('rutinas'));
     }
+
+    public function usuarioRutinas($usu_id)
+    {
+        $usuario = Usuarios::where('usu_id', $usu_id)->first();
+        $rutinas = Rutinas::where('usu_id', $usu_id)->get();
+        $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
+
+        return view('backend.pages.rutinas.rutinas', compact('usuario', 'rutinas', 'musculos'));
+    }
+
+    // public function usuarioRutinasDia($usu_id, $dia)
+    // {
+    //     $usuario = Usuarios::where('usu_id', $usu_id)->first();
+    //     $rutinas = Rutinas::where('usu_id', $usu_id)->where('rut_dia', $dia)->get();
+    //     $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
+
+    //     return view('backend.pages.rutinas.rutinas', compact('usuario', 'rutinas', 'dia', 'musculos'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -76,7 +98,14 @@ class RutinasController extends Controller
             ->where('usuarios.usu_estado', 'ACTIVO')
             ->orderBy('usuarios.usu_id', 'DESC')
             ->get();
-        $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
+        // $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
+        $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
+            ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
+            ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
+            ->where('ejercicios.ejer_estado', '!=', 'ELIMINADO')
+            ->where('equipos.equi_estado', '!=', 'ELIMINADO')
+            ->where('musculo.mus_estado', '!=', 'ELIMINADO')
+            ->get();
         return view('backend.pages.rutinas.create', compact('clientes', 'ejercicios'));
     }
 
@@ -100,13 +129,14 @@ class RutinasController extends Controller
             'fecha_fin' => 'required',
         ]);
 
-        if (isset($request->anterior)) {
-            if ($request->anterior == 'on') {
-                $rut_grupo = $request->id_anterior;
-            }
-        } else {
-            $rut_grupo = $request->id_anterior + 1;
-        }
+        // if (isset($request->anterior)) {
+        //     if ($request->anterior == 'on') {
+        //         $rut_grupo = $request->id_anterior;
+        //     }
+        // } else {
+        //     $rut_grupo = $request->id_anterior + 1;
+        // }
+
         // Recorrer por dias lunes a domingo (1 - 7)
         // for ($dia = 1; $dia <= 7; $dia++) {
         //     // Recorrer por cantidad de rutinas por dia
@@ -135,7 +165,8 @@ class RutinasController extends Controller
                 foreach ($request->series[$key]['serie'] as $key2 => $value2) {
                     $newRutina = new Rutinas();
                     $newRutina->usu_id = $request->usu_id;
-                    $newRutina->rut_grupo = $rut_grupo;
+                    // $newRutina->rut_grupo = $rut_grupo;
+                    $newRutina->rut_grupo = 1;
                     $newRutina->ejer_id = $value[0];
                     $newRutina->rut_serie = $value2;
                     if (isset($request->series[$key]['peso'][$key2])) {
@@ -155,7 +186,7 @@ class RutinasController extends Controller
         }
 
         session()->flash('success', '¡¡Se han creado las rutina!!');
-        return redirect()->route('admin.rutinas.index');
+        return redirect()->route('admin.usuario.rutinas', $request->usu_id);
     }
 
     /**

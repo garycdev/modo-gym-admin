@@ -201,8 +201,8 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label for="bsValidation9" class="form-label required_value">RID </label>
-                                    <input type="number" class="form-control" id="rid" name="rid"
-                                        placeholder="RID" step="1" min="0" value="{{ $rutina->rut_rid }}">
+                                    <input type="text" class="form-control" id="rid" name="rid"
+                                        placeholder="RID" value="{{ $rutina->rut_rid }}">
                                     @error('rid')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

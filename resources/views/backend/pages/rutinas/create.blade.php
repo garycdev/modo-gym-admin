@@ -212,9 +212,9 @@
                                         style="display:none!important;" id="cont-anterior">
                                         <input class="form-check-input" type="checkbox" role="switch" id="anterior"
                                             name="anterior">
-                                        <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                        {{-- <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
                                             anterior</label>
-                                        <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                        <input type="hidden" name="id_anterior" id="id_anterior" value="0"> --}}
                                     </div>
                                     <div class="col-md-6 fechas" style="display: none">
                                         <label for="bsValidation9" class="form-label">Fecha inicio </label>
@@ -232,9 +232,9 @@
                                             style="display:none!important;" id="cont-anterior">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="anterior" name="anterior">
-                                            <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                            {{-- <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
                                                 anterior</label>
-                                            <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                            <input type="hidden" name="id_anterior" id="id_anterior" value="0"> --}}
                                         </div>
                                         <div class="col-md-6 fechas">
                                             <label for="bsValidation9" class="form-label">Fecha inicio </label>
@@ -405,14 +405,14 @@
                 },
                 dataType: "JSON",
                 success: function(response) {
-                    $('#cont-anterior').attr('style', 'display:block');
-                    $('#anterior').attr('checked', 'checked');
-                    $('#id_anterior').val(response.rut_grupo);
+                    // $('#cont-anterior').attr('style', 'display:block');
+                    // $('#anterior').attr('checked', 'checked');
+                    // $('#id_anterior').val(response.rut_grupo);
                 },
                 error: function(err) {
-                    $('#anterior').removeAttr('checked');
-                    $('#cont-anterior').attr('style', 'display:none!important');
-                    $('#id_anterior').val(0);
+                    // $('#anterior').removeAttr('checked');
+                    // $('#cont-anterior').attr('style', 'display:none!important');
+                    // $('#id_anterior').val(0);
                 }
             });
         }

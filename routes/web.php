@@ -37,6 +37,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('equipos', 'Backend\EquiposController', ['names' => 'admin.equipos']);
     Route::resource('musculos', 'Backend\MusculosController', ['names' => 'admin.musculos']);
     Route::resource('rutinas', 'Backend\RutinasController', ['names' => 'admin.rutinas']);
+    Route::get('usuario/rutinas/{usu_id}', 'Backend\RutinasController@usuarioRutinas')->name('admin.usuario.rutinas');
+    // Route::get('usuario/rutinas/{usu_id}/{dia}', 'Backend\RutinasController@usuarioRutinasDia')->name('admin.usuario.rutinas.dia');
+
     Route::resource('blogs', 'Backend\BlogsController', ['names' => 'admin.blogs']);
     Route::resource('productos', 'Backend\ProductosController', ['names' => 'admin.productos']);
     Route::resource('galerias', 'Backend\GaleriasController', ['names' => 'admin.galerias']);

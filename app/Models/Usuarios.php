@@ -21,4 +21,10 @@ class Usuarios extends Model
     // {
     //     return $this->belongsToMany()
     // }
+
+    public function costo()
+    {
+        return $this->belongsToMany(Costos::class, 'pagos', 'usu_id', 'costo_id')->limit(1);
+    }
+
 }

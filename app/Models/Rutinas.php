@@ -22,6 +22,6 @@ class Rutinas extends Model
     }
     public function ejercicio()
     {
-        return $this->belongsTo(Ejercicios::class, 'ejer_id');
+        return $this->belongsTo(Ejercicios::class, 'ejer_id', 'ejer_id');
     }
 }

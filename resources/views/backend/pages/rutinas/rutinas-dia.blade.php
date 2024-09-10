@@ -6,6 +6,11 @@
 
 @section('styles')
     <style>
+        table {
+            /* transform: rotate(90deg); */
+            /* transform-origin: top left; */
+        }
+
         td,
         th {
             vertical-align: top;
@@ -16,6 +21,23 @@
         li {
             padding-left: 5px;
             margin-left: 5px;
+        }
+
+        .card-dia {
+            padding: 30px;
+            border: 1px solid #007bff;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold
+        }
+
+        .card-dia:hover {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: #fff;
+            border-color: #0056b3;
         }
     </style>
 @endsection
@@ -49,51 +71,65 @@
             <hr />
             <div class="card">
                 <div class="card-body">
-                    <p class="float-right mb-2">
-                        @if ($usr->can('rutina.create'))
-                            <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nueva rutina</a>
-                        @endif
-                    </p>
-                    <br>
-                    <div class="table-responsive">
-                        @include('backend.layouts.partials.messages')
-
-                        <table id="tabla_pagos" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>CI</th>
-                                    <th>Nombres</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php $i = 1; @endphp
-                                @foreach ($usuarios as $usu)
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $usu->usuario->usu_ci }}</td>
-                                        <td>{{ $usu->usuario->usu_nombre }} {{ $usu->usuario->usu_apellidos }}</td>
-                                        <td>
-                                            <a class="btn btn-sm btn-primary"
-                                                href="{{ route('admin.usuario.rutinas', $usu->usu_id) }}">
-                                                Rutinas
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @php $i++; @endphp
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>CI</th>
-                                    <th>Nombres</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <div class="row p-2 d-flex justify-content-center align-items-center">
+                        <div class="col-10">
+                            <b>CI:</b> {{ $usuario->usu_ci }} <br>
+                            <b>Usuario:</b> {{ $usuario->usu_nombre }} {{ $usuario->usu_apellidos }} <br>
+                            <b>Plan: </b> {{ $usuario->costo[0]->nombre }}
+                        </div>
+                        <p class="col-2">
+                            @if ($usr->can('rutina.create'))
+                                <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary float-end">Nueva
+                                    rutina</a>
+                            @endif
+                        </p>
                     </div>
+                    <br>
+                    @include('backend.layouts.partials.messages')
+
+                    <div class="container-fluid">
+                        <div class="row justify-content-between mb-4">
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 1]) }}" class="card-dia">
+                                    {{ strtoupper(dias(1)) }}
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 2]) }}" class="card-dia">
+                                    {{ strtoupper(dias(2)) }}
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 3]) }}" class="card-dia">
+                                    {{ strtoupper(dias(3)) }}
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 4]) }}" class="card-dia">
+                                    {{ strtoupper(dias(4)) }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 5]) }}" class="card-dia">
+                                    {{ strtoupper(dias(5)) }}
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 6]) }}" class="card-dia">
+                                    {{ strtoupper(dias(6)) }}
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.usuario.rutinas.dia', [$usuario->usu_id, 7]) }}" class="card-dia">
+                                    {{ strtoupper(dias(7)) }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -104,7 +140,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            var table = $("#tabla_pagos").DataTable({
+            var table = $("#tabla_pago").DataTable({
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
