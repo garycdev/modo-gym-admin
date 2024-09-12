@@ -76,14 +76,19 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard');
         } else {
             $user = UsuarioLogin::where('usu_login_email', $request->email)->orWhere('usu_login_username', $request->email)->first();
-            if ($user && Hash::check($request->password, $user->usu_login_password)) {
-                if ($this->verificarPagos($user->usu_id)) {
-                    Auth::guard('user')->login($user, $request->remember);
+            if ($user) {
+                if (Hash::check($request->password, $user->usu_login_password)) {
+                    if ($this->verificarPagos($user->usu_id)) {
+                        Auth::guard('user')->login($user, $request->remember);
 
-                    // Redirect to dashboard
-                    session()->flash('success', 'Sesión iniciada con exito !');
-                    return redirect()->route('admin.dashboard');
+                        // Redirect to dashboard
+                        session()->flash('success', 'Sesión iniciada con exito !');
+                        return redirect()->route('admin.dashboard');
+                    } else {
+                        return back();
+                    }
                 } else {
+                    session()->flash('error', 'Nombre de usuario o contraseña invalida !');
                     return back();
                 }
             } else {

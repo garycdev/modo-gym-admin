@@ -51,7 +51,15 @@ class RutinasController extends Controller
             //     ->orderBy('rut_dia', 'ASC')
             //     ->get();
 
-            return view('backend.pages.rutinas.rutinas', compact('rutinas'));
+            // return view('backend.pages.rutinas.rutinas', compact('rutinas'));
+
+            // dd(Auth::guard('user')->user());
+
+            $usuario = Usuarios::where('usu_id', Auth::guard('user')->user()->usu_id)->first();
+            $rutinas = Rutinas::where('usu_id', Auth::guard('user')->user()->usu_id)->get();
+            $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
+
+            return view('backend.pages.rutinas.rutinas', compact('usuario', 'rutinas', 'musculos'));
         } else {
             $usuarios = Rutinas::join('usuarios', 'usuarios.usu_id', '=', 'rutinas.usu_id')
                 ->select('usuarios.usu_id')
