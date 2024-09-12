@@ -280,7 +280,7 @@
 
             // Filtrado por músculo
             $('#filter_musculo').on('change', function() {
-                table.column(2).search(this.value).draw();
+                table.column(3).search(this.value).draw();
                 var musculo = $(this).find('option:selected').data('musculo');
 
                 $('#text_musculo').html(musculo)
