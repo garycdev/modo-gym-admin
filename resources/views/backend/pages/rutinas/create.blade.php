@@ -106,6 +106,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -128,6 +129,7 @@
                 </div>
             </div> --}}
             </div>
+
             <!--end breadcrumb-->
             <div class="row">
                 <div class="col-xl-6 mx-auto">
@@ -135,6 +137,38 @@
                         <div class="card-header px-4 py-3">
                             <h5 class="mb-0">Registrar rutinas</h5>
                         </div>
+                        {{-- <div class="row mx-5 pb-1 d-flex justify-content-center align-items-center alert alert-info">
+                            <div class="col-3">
+                                <p style="font-size:15px;">
+                                    <b>CI:</b> {{ $usuario->usu_ci }} <br>
+                                    <b>Nombres:</b> {{ $usuario->usu_nombre }} <br>
+                                    <b>Apellidos:</b> {{ $usuario->usu_apellidos }} <br>
+                                    <b>Edad: </b> {{ $usuario->usu_edad }} años<br>
+                                    <b>Genero: </b> {{ $usuario->usu_genero }}
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <p style="font-size:15px;">
+                                    <b>Plan: </b> {{ $usuario->costo[0]->nombre }} <br>
+                                    <b>Dia: </b> -<span id="text_dia">TODOS</span>- <br>
+                                    <b>Musculo: </b> -<span id="text_musculo">TODOS</span>-
+                                </p>
+                            </div>
+                            <div class="col-5">
+                                <p style="font-size:15px;">
+                                    <b>Antecedentes medicos:</b>
+                                    {{ $usuario->usu_ante_medicos ? $usuario->usu_ante_medicos : '-Ninguno-' }} <br>
+                                    <b>Lesiones:</b> {{ $usuario->usu_lesiones ? $usuario->usu_lesiones : '-Ninguno-' }}
+                                    <br>
+                                    <b>Objetivo:</b> {{ $usuario->usu_objetivo ? $usuario->usu_objetivo : '-Ninguno-' }}
+                                    <br>
+                                    <b>Frecuencia: </b>
+                                    {{ $usuario->usu_frecuencia ? $usuario->usu_frecuencia : '-0-' }}<br>
+                                    <b>Horas: </b> {{ $usuario->usu_hora ? $usuario->usu_hora : '-0-' }} <br>
+                                    <b>Deportes: </b> {{ $usuario->usu_deportes ? $usuario->usu_deportes : '-Ninguno-' }}
+                                </p>
+                            </div>
+                        </div> --}}
                         <div class="card-body p-4">
                             <form class="row g-3 needs-validation" method="POST"
                                 action="{{ route('admin.rutinas.store') }}">
@@ -147,8 +181,10 @@
                                             <option selected disabled value>[USUARIO]</option>
                                             @foreach ($clientes as $cliente)
                                                 <option value="{{ $cliente->usu_id }}"
-                                                    data-fecha="{{ $cliente->pago_fecha }}"
-                                                    data-mes="{{ $cliente->mes }}">
+                                                    data-fecha="{{ $cliente->pago_fecha }}" data-mes="{{ $cliente->mes }}"
+                                                    data-ci="{{ $cliente->usu_ci }}"
+                                                    data-nombres="{{ $cliente->usu_nombres }}"
+                                                    data-usuario="{{ json_encode($cliente) }}">
                                                     {{ $cliente->usu_nombre }}
                                                     {{ $cliente->usu_apellidos }}</option>
                                             @endforeach
@@ -193,29 +229,30 @@
                                 @endif
                                 <div class="col-md-4">
                                     <label for="bsValidation9" class="form-label required_value">Dia </label>
-                                    <select id="rut_dia" name="rut_dia" class="form-select rut_dia" required>
+                                    <select id="rut_dia" class="form-select rut_dia" required
+                                        onchange="selectDia(this)">
                                         <option selected disabled value>[DIA]</option>
-                                        <option value="1">Lunes</option>
-                                        <option value="2">Martes</option>
-                                        <option value="3">Miercoles</option>
-                                        <option value="4">Jueves</option>
-                                        <option value="5">Viernes</option>
-                                        <option value="6">Sabado</option>
-                                        <option value="7">Domingo</option>
+                                        <option value="1">{{ strtoupper(dias(1)) }}</option>
+                                        <option value="2">{{ strtoupper(dias(2)) }}</option>
+                                        <option value="3">{{ strtoupper(dias(3)) }}</option>
+                                        <option value="4">{{ strtoupper(dias(4)) }}</option>
+                                        <option value="5">{{ strtoupper(dias(5)) }}</option>
+                                        <option value="6">{{ strtoupper(dias(6)) }}</option>
+                                        <option value="7">{{ strtoupper(dias(7)) }}</option>
                                     </select>
                                     @error('rut_dia')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 @if ($guard == 'admin')
-                                    <div class="col-md-12 d-flex justify-content-center form-check form-switch"
+                                    {{-- <div class="col-md-12 d-flex justify-content-center form-check form-switch"
                                         style="display:none!important;" id="cont-anterior">
                                         <input class="form-check-input" type="checkbox" role="switch" id="anterior"
                                             name="anterior">
-                                        {{-- <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                        <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
                                             anterior</label>
-                                        <input type="hidden" name="id_anterior" id="id_anterior" value="0"> --}}
-                                    </div>
+                                        <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                    </div> --}}
                                     <div class="col-md-6 fechas" style="display: none">
                                         <label for="bsValidation9" class="form-label">Fecha inicio </label>
                                         <input type="date" class="form-control" id="fecha_ini" name="fecha_ini"
@@ -226,16 +263,20 @@
                                         <input type="date" class="form-control" id="fecha_fin" name="fecha_fin"
                                             readonly>
                                     </div>
+                                    <br>
+                                    <div id="info_user" style="display: none!important;"
+                                        class="col-12 row ms-1 pb-1 mt-3 d-flex justify-content-center align-items-center alert alert-info">
+                                    </div>
                                 @else
                                     @if ($guard == 'user')
-                                        <div class="col-md-12 d-flex justify-content-center form-check form-switch"
+                                        {{-- <div class="col-md-12 d-flex justify-content-center form-check form-switch"
                                             style="display:none!important;" id="cont-anterior">
                                             <input class="form-check-input" type="checkbox" role="switch"
                                                 id="anterior" name="anterior">
-                                            {{-- <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
+                                            <label class="form-check-label" for="anterior">&nbsp;Agregar a rutina
                                                 anterior</label>
-                                            <input type="hidden" name="id_anterior" id="id_anterior" value="0"> --}}
-                                        </div>
+                                            <input type="hidden" name="id_anterior" id="id_anterior" value="0">
+                                        </div> --}}
                                         <div class="col-md-6 fechas">
                                             <label for="bsValidation9" class="form-label">Fecha inicio </label>
                                             <input type="date" class="form-control" id="fecha_ini" name="fecha_ini"
@@ -250,7 +291,7 @@
                                 @endif
                                 <hr>
                                 <button type="button" class="btn btn-primary w-100 mb-3" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(1)">
+                                    data-bs-target="#exampleModal" onclick="addEjercicios(1)" id="btn-agregar" disabled>
                                     Agregar ejercicios
                                 </button>
                                 <div id="rutinas">
@@ -371,6 +412,9 @@
             $('.exercise-item').show();
         }
 
+        function selectDia() {
+            $('#btn-agregar').removeAttr('disabled');
+        }
 
         function selectUser() {
             const fecha_ini = $('#usu_id option:selected').data('fecha');
@@ -389,7 +433,30 @@
             const fecha_fin = `${anio}-${mes}-${dia}`;
 
             $('#fecha_fin').val(fecha_fin);
-            $('.fechas').css('display', 'block');
+            // $('.fechas').css('display', 'block');
+
+            $('#info_user').css('display', 'block');
+            const usuario = $('#usu_id option:selected').data('usuario')
+            console.log(usuario);
+            $('#info_user').html(`<div class="col-4">
+                                    <p>
+                                        <b>CI:</b> ${usuario.usu_ci} <br>
+                                        <b>Nombres:</b> ${usuario.usu_nombre} <br>
+                                        <b>Apellidos:</b> ${usuario.usu_apellidos} <br>
+                                        <b>Edad: </b> ${usuario.usu_edad} años<br>
+                                        <b>Genero: </b> ${usuario.usu_genero}
+                                    </p>
+                                </div>
+                                <div class="col-8">
+                                    <p>
+                                        <b>Antecedentes medicos:</b> ${usuario.usu_ante_medicos ? usuario.usu_ante_medicos : '-Ninguno-'} <br>
+                                        <b>Lesiones:</b> ${usuario.usu_lesiones ? usuario.usu_lesiones : '-Ninguno-'} <br>
+                                        <b>Objetivo:</b> ${usuario.usu_objetivo ? usuario.usu_objetivo : '-Ninguno-'} <br>
+                                        <b>Frecuencia: </b> ${usuario.usu_frecuencia ? usuario.usu_frecuencia : '-0-'} <br>
+                                        <b>Horas: </b> ${usuario.usu_hora ? usuario.usu_hora : '-0-'} <br>
+                                        <b>Deportes: </b>${usuario.usu_deportes ? usuario.usu_deportes : '-Ninguno-'}
+                                    </p>
+                                </div>`)
 
             rutinaUser()
         }
@@ -420,16 +487,27 @@
         function agregarEjercicios() {
             var selectEjercicios = [];
 
+            var dias = {
+                1: 'Lunes',
+                2: 'Martes',
+                3: 'Miercoles',
+                4: 'Jueves',
+                5: 'Viernes',
+                6: 'Sabado',
+                7: 'Domingo'
+            }
             $('#ejercicios_rutina input[name="ejercicios[]"]:checked').each(function() {
                 var id = $(this).attr('id');
                 var name = $(this).data('name');
                 var image = $(this).data('image');
                 var tipo = $(this).data('tipo');
+                var dia = $('#rut_dia').val();
                 selectEjercicios.push({
                     id: id,
                     name: name,
                     image: image,
                     tipo: tipo,
+                    dia: dia
                 });
             });
             console.log(selectEjercicios);
@@ -441,8 +519,12 @@
                                         <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
                                             <img src="${element.image}" alt=""
                                                 width="75">
-                                            <h5>${element.name}</h5>
+                                            <div class="d-flex align-items-start">
+                                                <h5>${element.name}</h5>
+                                                <span class="badge bg-primary">${dias[element.dia]}</span>
+                                            </div>
                                             <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.id}">
+                                            <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.dia}">
                                             <button type="button" class="btn btn-danger" onclick="deleteEjercicio(${ejercicios})">Eliminar</button>
                                         </div>
                                         <div id="series_${ejercicios}" class="col-md-12 w-75 m-auto">

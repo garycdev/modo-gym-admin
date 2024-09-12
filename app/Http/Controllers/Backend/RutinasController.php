@@ -124,7 +124,7 @@ class RutinasController extends Controller
         // die();
         $request->validate([
             'usu_id' => 'required',
-            'rut_dia' => 'required',
+            // 'rut_dia' => 'required',
             'fecha_ini' => 'required',
             'fecha_fin' => 'required',
         ]);
@@ -177,7 +177,8 @@ class RutinasController extends Controller
                     }
                     $newRutina->rut_rid = 0;
                     $newRutina->rut_tiempo = 0;
-                    $newRutina->rut_dia = $request->rut_dia;
+                    // $newRutina->rut_dia = $request->rut_dia;
+                    $newRutina->rut_dia = $value[1];
                     $newRutina->rut_date_ini = $request->fecha_ini;
                     $newRutina->rut_date_fin = $request->fecha_fin;
                     $newRutina->save();

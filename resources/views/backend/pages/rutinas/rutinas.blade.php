@@ -27,20 +27,41 @@
             <hr />
             <div class="card">
                 <div class="card-body">
-                    <div class="row p-2 d-flex justify-content-center align-items-center">
+                    <div class="row mx-5 pb-1 d-flex justify-content-center align-items-center alert alert-info">
                         <div class="col-3">
-                            <p style="font-size:18px;">
+                            <p style="font-size:15px;">
                                 <b>CI:</b> {{ $usuario->usu_ci }} <br>
-                                <b>Usuario:</b> {{ $usuario->usu_nombre }} {{ $usuario->usu_apellidos }} <br>
-                                <b>Plan: </b> {{ $usuario->costo[0]->nombre }} <br>
-                                <b>Dia: </b> -<span id="text_dia">Toda la semana</span>- <br>
-                                <b>Musculo: </b> -<span id="text_musculo">Todos</span>- <br>
+                                <b>Nombres:</b> {{ $usuario->usu_nombre }} <br>
+                                <b>Apellidos:</b> {{ $usuario->usu_apellidos }} <br>
+                                <b>Edad: </b> {{ $usuario->usu_edad }} años<br>
+                                <b>Genero: </b> {{ $usuario->usu_genero }}
                             </p>
                         </div>
+                        <div class="col-3">
+                            <p style="font-size:15px;">
+                                <b>Plan: </b> {{ $usuario->costo[0]->nombre }} <br>
+                                <b>Dia: </b> -<span id="text_dia">TODOS</span>- <br>
+                                <b>Musculo: </b> -<span id="text_musculo">TODOS</span>-
+                            </p>
+                        </div>
+                        <div class="col-5">
+                            <p style="font-size:15px;">
+                                <b>Antecedentes medicos:</b>
+                                {{ $usuario->usu_ante_medicos ? $usuario->usu_ante_medicos : '-Ninguno-' }} <br>
+                                <b>Lesiones:</b> {{ $usuario->usu_lesiones ? $usuario->usu_lesiones : '-Ninguno-' }} <br>
+                                <b>Objetivo:</b> {{ $usuario->usu_objetivo ? $usuario->usu_objetivo : '-Ninguno-' }} <br>
+                                <b>Frecuencia: </b> {{ $usuario->usu_frecuencia ? $usuario->usu_frecuencia : '-0-' }}<br>
+                                <b>Horas: </b> {{ $usuario->usu_hora ? $usuario->usu_hora : '-0-' }} <br>
+                                <b>Deportes: </b> {{ $usuario->usu_deportes ? $usuario->usu_deportes : '-Ninguno-' }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row p-2 d-flex justify-content-center align-items-center">
+                        <div class="col-1"></div>
                         <div class="col-2">
                             <label for="filter_dia">Filtrar por día</label>
                             <select name="dia" id="filter_dia" class="form-control">
-                                <option value="">[TODOS]</option>
+                                <option value="" data-dia="TODOS">[TODOS]</option>
                                 <option value="1" data-dia="{{ strtoupper(dias(1)) }}">
                                     {{ strtoupper(dias(1)) }}
                                 </option>
@@ -64,10 +85,10 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="col-5">
+                        <div class="col-7">
                             <label for="filter_musculo">Filtrar por Músculo</label>
                             <select name="musculo" id="filter_musculo" class="form-control filter_musculo">
-                                <option value="">[TODOS]</option>
+                                <option value="" data-musculo="TODOS">[TODOS]</option>
                                 @foreach ($musculos as $mus)
                                     <option value="{{ $mus->mus_id }}" data-musculo="{{ $mus->mus_nombre }}">
                                         {{ $mus->mus_nombre }} - <span
@@ -83,6 +104,8 @@
                             @endif
                         </p>
                     </div>
+
+                    <br>
 
                     <br>
                     @include('backend.layouts.partials.messages')
@@ -216,7 +239,7 @@
                 dom: 'Bfrtip',
                 buttons: ["copy", "excel", "pdf", "print"],
                 columnDefs: [{
-                    targets: [1, 2, 3, 4], // Índices de las columnas que deseas ocultar
+                    targets: [1, 3], // Índices de las columnas que deseas ocultar
                     visible: false
                 }],
                 dom: 'Bfrtip',
