@@ -14,6 +14,19 @@ class AddSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $permissions = [
+            'user.create',
+            'user.view',
+            'user.edit',
+            'user.delete',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::create([
+                'name' => $permission,
+                'guard_name' => 'admin',   // Guard name "admin"
+                'group_name' => 'user',    // Group name "user"
+            ]);
+        }
     }
 }
