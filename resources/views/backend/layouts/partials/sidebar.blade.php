@@ -53,6 +53,16 @@
                  </a>
              </li>
          @endif
+         @if ($usr->can('user.create') || $usr->can('user.view') || $usr->can('user.edit') || $usr->can('user.delete'))
+             <li
+                 class="{{ Route::is('admin.users.index') || Route::is('admin.users.edit') || Route::is('admin.users.create') ? 'mm-active' : '' }}">
+                 <a href="{{ route('admin.users.index') }}">
+                     <div class="parent-icon"><i class='bx bx-group'></i>
+                     </div>
+                     <div class="menu-title">Usuarios</div>
+                 </a>
+             </li>
+         @endif
          @if (
              $usr->can('informacion_empresa.view') ||
                  $usr->can('equipo.view') ||

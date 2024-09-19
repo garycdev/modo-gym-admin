@@ -133,7 +133,8 @@ class RolesController extends Controller
         // TODO: You can delete this in your local. This is for heroku publish.
         // This is only for Super Admin role,
         // so that no-one could delete or disable it by somehow.
-        if ($id === 1) {
+        // if ($id === 1) {
+        if (Auth::guard('admin')->user()->id !== 1) {
             session()->flash('error', 'Lo siento !! ¡No estás autorizado a editar este rol!');
             return back();
         }

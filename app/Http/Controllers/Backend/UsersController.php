@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\UsuarioLogin;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = UsuarioLogin::all();
         return view('backend.pages.users.index', compact('users'));
     }
 
@@ -138,6 +139,22 @@ class UsersController extends Controller
         }
 
         session()->flash('success', 'User has been deleted !!');
+        return back();
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'usu_login_id' => 'required',
+            'usu_login_password' => 'required|min:5',
+            'usu_login_password_confirm' => 'required|same:usu_login_password',
+        ]);
+
+        $user = UsuarioLogin::where('usu_login_id', $request->usu_login_id)->first();
+        $user->usu_login_password = bcrypt($request->input('usu_login_password'));
+        $user->save();
+
+        session()->flash('success', 'Contraseña actualizada exitosamente.');
         return back();
     }
 }

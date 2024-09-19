@@ -269,6 +269,16 @@ class RolePermissionSeeder extends Seeder
                 ],
             ],
             [
+                'group_name' => 'user',
+                'permissions' => [
+                    // User Permissions
+                    'user.create',
+                    'user.view',
+                    'user.edit',
+                    'user.delete',
+                ],
+            ],
+            [
                 'group_name' => 'video',
                 'permissions' => [
                     // Video Permissions

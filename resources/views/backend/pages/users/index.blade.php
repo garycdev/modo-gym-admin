@@ -1,121 +1,155 @@
-
 @extends('backend.layouts.master')
 
 @section('title')
-Users - Admin Panel
-@endsection
-
-@section('styles')
-    <!-- Start datatable css -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+    Usuarios - Admin Panel
 @endsection
 
 
 @section('admin-content')
+    <!--start page wrapper -->
+    <div class="page-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Usuarios </div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
+                                        class="bx bx-home-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+                        </ol>
+                    </nav>
+                </div>
 
-<!-- page title area start -->
-<div class="page-title-area">
-    <div class="row align-items-center">
-        <div class="col-sm-6">
-            <div class="breadcrumbs-area clearfix">
-                <h4 class="page-title pull-left">Users</h4>
-                <ul class="breadcrumbs pull-left">
-                    <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li><span>All Users</span></li>
-                </ul>
             </div>
-        </div>
-        <div class="col-sm-6 clearfix">
-            @include('backend.layouts.partials.logout')
-        </div>
-    </div>
-</div>
-<!-- page title area end -->
+            <!--end breadcrumb-->
 
-<div class="main-content-inner">
-    <div class="row">
-        <!-- data table start -->
-        <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title float-left">Users List</h4>
+                    <h4 class="header-title float-left">Usuarios Lista</h4>
                     <p class="float-right mb-2">
-                        <a class="btn btn-primary text-white" href="{{ route('admin.users.create') }}">Create New User</a>
+                        {{-- @if (Auth::guard('admin')->user()->can('user.create'))
+                            <a class="btn btn-primary px-5 radius-30" href="{{ route('admin.users.create') }}">Crear Nuevo
+                                Usuario</a>
+                        @endif --}}
                     </p>
-                    <div class="clearfix"></div>
-                    <div class="data-tables">
+                    <br>
+                    <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table id="dataTable" class="text-center">
-                            <thead class="bg-light text-capitalize">
+                        <table class="table mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <th width="5%">Sl</th>
-                                    <th width="10%">Name</th>
-                                    <th width="10%">Email</th>
-                                    <th width="40%">Roles</th>
-                                    <th width="15%">Action</th>
+                                    <th width="5%">#</th>
+                                    <th width="20%">Nombre</th>
+                                    <th width="25%">Email</th>
+                                    <th width="20%">Username</th>
+                                    <th width="10%">Rol</th>
+                                    <th width="20%">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($users as $user)
-                               <tr>
-                                    <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>
-                                        @foreach ($user->roles as $role)
-                                            <span class="badge badge-info mr-1">
-                                                {{ $role->name }}
-                                            </span>
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-success text-white" href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $user->usu_login_name }}</td>
+                                        <td>{{ $user->usu_login_email }}</td>
+                                        <td>{{ $user->usu_login_username }}</td>
+                                        <td>
+                                            @foreach ($user->roles as $role)
+                                                <div
+                                                    class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
+                                                    {{ $role->name }}
+                                                </div>
+                                            @endforeach
+                                        </td>
+                                        <td>
 
-                                        <a class="btn btn-danger text-white" href="{{ route('admin.users.destroy', $user->id) }}"
-                                        onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->id }}').submit();">
-                                            Delete
-                                        </a>
+                                            @if (Auth::guard('admin')->user()->can('user.edit'))
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#updatePassword"
+                                                    onclick="showModal({{ $user->usu_login_id }}, '{{ $user->usu_login_username }}')">
+                                                    <i class='bx bxs-lock'></i>
+                                                </button>
 
-                                        <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: none;">
-                                            @method('DELETE')
-                                            @csrf
-                                        </form>
-                                    </td>
-                                </tr>
-                               @endforeach
+                                                {{-- <a class="btn btn-warning text-white"
+                                                    href="{{ route('admin.users.edit', $user->usu_login_id) }}">
+                                                    <i class='bx bxs-edit'></i>
+                                                </a> --}}
+                                            @endif
+
+                                            {{-- @if (Auth::guard('admin')->user()->can('user.delete'))
+                                                <a class="btn btn-danger text-white"
+                                                    href="{{ route('admin.users.destroy', $user->usu_login_id) }}"
+                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->usu_login_id }}').submit();">
+                                                    <i class='bx bxs-trash'></i>
+                                                </a>
+                                                <form id="delete-form-{{ $user->usu_login_id }}"
+                                                    action="{{ route('admin.users.destroy', $user->usu_login_id) }}"
+                                                    method="POST" style="display: none;">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                </form>
+                                            @endif --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- data table end -->
-        
     </div>
-</div>
+
+    <div class="modal fade" id="updatePassword" tabindex="-1" aria-labelledby="updatePasswordLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="{{ route('admin.users.password') }}" id="formPass">
+                @csrf()
+                <input type="hidden" name="usu_login_id" id="usu_login_id">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="updatePasswordLabel">Reestablecer contraseña</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            onclick="reset()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="username" class="col-form-label">Nombre de usuario</label>
+                            <input type="text" class="form-control" id="username" name="usu_login_username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="col-form-label">Nueva contraseña</label>
+                            <input type="password" class="form-control" id="password" name="usu_login_password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password_confirm" class="col-form-label">Confirmar contraseña</label>
+                            <input type="password" class="form-control" id="password_confirm" name="usu_login_password_confirm">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            onclick="reset()">Close</button>
+                        <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 
-
 @section('scripts')
-     <!-- Start datatable js -->
-     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-     <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
-     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
-     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-     
-     <script>
-         /*================================
-        datatable active
-        ==================================*/
-        if ($('#dataTable').length) {
-            $('#dataTable').DataTable({
-                responsive: true
-            });
+    <script>
+        function reset() {
+            $('#formPass').reset()
         }
 
-     </script>
+        function showModal(id, username) {
+            console.log('modal');
+
+            $('#usu_login_id').val(id);
+            $('#username').val(username);
+        }
+    </script>
 @endsection
