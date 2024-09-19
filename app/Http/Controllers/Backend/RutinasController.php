@@ -305,4 +305,21 @@ class RutinasController extends Controller
     {
         return Rutinas::select('rut_grupo')->where('usu_id', $request->id)->groupBy('rut_grupo')->orderBy('rut_grupo', 'DESC')->first();
     }
+
+    public function updateRutina(Request $request, $id)
+    {
+        $rutina = Rutinas::where('rut_id', $id)->first();
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        if ($field === 'series') {
+            $rutina->rut_serie = $value;
+        } elseif ($field === 'repeticiones') {
+            $rutina->rut_repeticiones = $value;
+        }
+
+        $rutina->save();
+
+        return response()->json(['message' => 'Actualización exitosa.']);
+    }
 }

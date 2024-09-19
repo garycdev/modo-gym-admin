@@ -55,9 +55,8 @@
                         @endif
                     </p>
                     <br>
+                    @include('backend.layouts.partials.messages')
                     <div class="table-responsive">
-                        @include('backend.layouts.partials.messages')
-
                         <table id="tabla_pagos" class="table table-bordered table-hover">
                             <thead>
                                 <tr>

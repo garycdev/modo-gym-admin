@@ -19,7 +19,17 @@
 <script src="{{ asset('admin-assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 
 <!-- TABLES-->
-<script src="{{ asset('admin-assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> --}}
+{{-- <script src="{{ asset('admin-assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script> --}}
+<script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/datatables.min.js"></script>
+
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.6/js/dataTables.bootstrap5.js"></script>
 <script src="{{ asset('admin-assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
 <!--Password show & hide js -->
 <script>

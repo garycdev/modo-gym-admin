@@ -1,33 +1,28 @@
-
 <!--LOGIN---------------- --- -->
 
 <!--plugins-->
 <link href="{{ asset('admin-assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
-<link
-  href="{{ asset('admin-assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}"
-  rel="stylesheet"
-/>
-<link
-  href="{{ asset('admin-assets/plugins/metismenu/css/metisMenu.min.css') }}"
-  rel="stylesheet"
-/>
+<link href="{{ asset('admin-assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
+<link href="{{ asset('admin-assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
 
-<link
-      href="{{ asset('admin-assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
-      rel="stylesheet"
-    />
+<link href="{{ asset('admin-assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css">
+<link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/b-3.1.2/b-colvis-3.1.2/b-html5-3.1.2/b-print-3.1.2/datatables.min.css" rel="stylesheet">
+{{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.bootstrap5.min.css"> --}}
+
+
 <!--plugins-->
-<link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet"/>
+{{-- <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" /> --}}
 <!-- loader-->
 <link href="{{ asset('admin-assets/css/pace.min.css') }}" rel="stylesheet" />
 <script src="{{ asset('admin-assets/js/pace.min.js') }}"></script>
 <!-- Bootstrap CSS -->
 <link href="{{ asset('admin-assets/css/bootstrap.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('admin-assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
-<link
-  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet" />
 <link href="{{ asset('admin-assets/css/app.css') }}" rel="stylesheet" />
 <link href="{{ asset('admin-assets/css/icons.css') }}" rel="stylesheet" />
 <!-- SELECT -->
@@ -36,9 +31,9 @@
 
 
 <!-- Theme Style CSS -->
-<link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}"/>
-<link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}"/>
-<link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}"/>
+<link rel="stylesheet" href="{{ asset('admin-assets/css/dark-theme.css') }}" />
+<link rel="stylesheet" href="{{ asset('admin-assets/css/semi-dark.css') }}" />
+<link rel="stylesheet" href="{{ asset('admin-assets/css/header-colors.css') }}" />
 
 
 

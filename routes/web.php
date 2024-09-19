@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('perfil', 'Backend\PerfilController', ['names' => 'admin.perfil']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::post('/auth/update', 'Backend\UsersController@updatePassword')->name('admin.users.password');
+    Route::post('/rutinaup/{id}', 'Backend\RutinasController@updateRutina')->name('admin.rutinas.rutinaup');
 
     // Extras
     Route::post('/rutuser', 'Backend\RutinasController@user')->name('admin.rutinas.user');
