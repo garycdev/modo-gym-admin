@@ -228,12 +228,12 @@
                         <div class="mb-3 col-12">
                             <label class="form-label required-value">¿Ya estabas inscrito?</label>
                             <div class="form-group mb-2">
-                                <input type="radio" name="inscrito" id="inscrito-si" value="si"
+                                <input type="radio" name="inscrito" id="inscrito-si" value="Si, ya estaba inscrito/a"
                                     class="form-check-input" required>
                                 <label for="inscrito-si" class="form-check-label">Si, ya estaba inscrito/a</label>
                             </div>
                             <div class="form-group">
-                                <input type="radio" name="inscrito" id="inscrito-no" value="no"
+                                <input type="radio" name="inscrito" id="inscrito-no" value="No, es la primera vez"
                                     class="form-check-input" required>
                                 <label for="inscrito-no" class="form-check-label">No, es la primera vez</label>
                             </div>
@@ -291,11 +291,11 @@
                             <div class="form-group mb-3 col-lg-6 col-12">
                                 <label class="form-label required-value">¿Deseas entrenamiento personalizado?</label>
                                 <div class="form-group mb-2">
-                                    <input type="radio" name="entrenamiento" value="no" id="entrenamiento-no">
+                                    <input type="radio" name="entrenamiento" value="Si" id="entrenamiento-no">
                                     <label for="entrenamiento-no">No</label>
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" name="entrenamiento" value="si" id="entrenamiento-si">
+                                    <input type="radio" name="entrenamiento" value="No" id="entrenamiento-si">
                                     <label for="entrenamiento-si">Si</label>
                                 </div>
                             </div>
