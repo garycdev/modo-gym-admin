@@ -4979,11 +4979,26 @@ input::placeholder {
 
 }
 
+@media screen and (max-width:768px) {
 
-@media screen and (max-width:520px) {
+	body {
+		font-size: 13px !important;
+	}
+
+}
+
+
+@media screen and (max-width:425px) {
 
 	body {
 		font-size: 12px !important;
 	}
 
+}
+
+.required-value::after {
+	content: "*";
+	margin-left: 5px;
+	color: red;
+	font-weight: bold;
 }

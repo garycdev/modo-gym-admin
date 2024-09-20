@@ -18,11 +18,17 @@ class UsuarioLogin extends User
     protected $table = 'usuario_login';
     protected $primaryKey = 'usu_login_id';
     protected $fillable = [
-        'usu_login_name', 'usu_login_email', 'usu_login_username', 'usu_login_password', 'google_id',
+        'usu_login_name',
+        'usu_login_email',
+        'usu_login_username',
+        'usu_login_password',
+        'google_id',
+        'formulario'
     ];
 
     protected $hidden = [
-        'usu_login_password', 'remember_token',
+        'usu_login_password',
+        'remember_token',
     ];
     // Especifica el nombre de la columna para updated_at
     const UPDATED_AT = 'usu_login_updated_at';
@@ -61,6 +67,6 @@ class UsuarioLogin extends User
 
     public function datos()
     {
-        return $this->hasOne(Usuarios::class, 'usu_id');
+        return $this->hasOne(Usuarios::class, 'usu_id', 'usu_id');
     }
 }

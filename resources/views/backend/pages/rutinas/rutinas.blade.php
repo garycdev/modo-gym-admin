@@ -149,13 +149,14 @@
                                         <td>{{ dias($rut->rut_dia) }}</td>
                                         <td>{{ $rut->ejercicio->musculo->mus_id }}</td>
                                         <td>{{ $rut->ejercicio->musculo->mus_nombre }}</td>
-                                        <td>{{ $rut->rut_serie }}</td>
-                                        <td>{{ $rut->rut_repeticiones }}</td>
-                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : '-' }}</td>
                                         <td>
-                                            <span class="badge {{ $rut->rut_rid == 0 ? 'bg-dark' : 'bg-success' }}">
-                                                {{ $rut->rut_rid == 0 ? 'No medido aún' : $rut->rut_rid }}
-                                            </span>
+                                            <span class="badge bg-primary">{{ $rut->rut_serie }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary">{{ $rut->rut_repeticiones }}</span>
+                                        </td>
+                                        <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : '-' }}</td>
+                                        <td>{{ $rut->rut_rid == 0 ? '-' : $rut->rut_rid }}</span>
                                         </td>
                                         <td>
                                             <span class="badge {{ $rut->rut_tiempo == 0 ? 'bg-dark' : 'bg-success' }}">
@@ -285,13 +286,17 @@
                         targets: 1
                     },
                     {
-                        targets: [3, 4, 5], // Asegúrate de que estos índices sean correctos
+                        targets: [3, 4, 5, 6], // Asegúrate de que estos índices sean correctos
                         visible: false
                     },
                     {
                         targets: '_all',
                         orderable: true
-                    }
+                    },
+                    // {
+                    //     targets: [7, 8],
+                    //     className: 'text-center fw-bold'
+                    // },
                 ]
             });
 

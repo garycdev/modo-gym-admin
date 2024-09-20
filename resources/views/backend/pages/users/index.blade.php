@@ -38,7 +38,7 @@
                     <br>
                     <div class="table-responsive">
                         @include('backend.layouts.partials.messages')
-                        <table class="table mb-0">
+                        <table class="table table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th width="5%">#</th>
@@ -49,7 +49,7 @@
                                     <th width="20%">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="accordionTable">
                                 @foreach ($users as $user)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
@@ -65,33 +65,93 @@
                                             @endforeach
                                         </td>
                                         <td>
-
                                             @if (Auth::guard('admin')->user()->can('user.edit'))
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#updatePassword"
                                                     onclick="showModal({{ $user->usu_login_id }}, '{{ $user->usu_login_username }}')">
                                                     <i class='bx bxs-lock'></i>
                                                 </button>
-
-                                                {{-- <a class="btn btn-warning text-white"
-                                                    href="{{ route('admin.users.edit', $user->usu_login_id) }}">
-                                                    <i class='bx bxs-edit'></i>
-                                                </a> --}}
                                             @endif
 
-                                            {{-- @if (Auth::guard('admin')->user()->can('user.delete'))
-                                                <a class="btn btn-danger text-white"
-                                                    href="{{ route('admin.users.destroy', $user->usu_login_id) }}"
-                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->usu_login_id }}').submit();">
-                                                    <i class='bx bxs-trash'></i>
-                                                </a>
-                                                <form id="delete-form-{{ $user->usu_login_id }}"
-                                                    action="{{ route('admin.users.destroy', $user->usu_login_id) }}"
-                                                    method="POST" style="display: none;">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                </form>
-                                            @endif --}}
+                                            <!-- Botón para ver detalles del formulario -->
+                                            <button class="btn btn-info" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapse{{ $user->usu_login_id }}" aria-expanded="false"
+                                                aria-controls="collapse{{ $user->usu_login_id }}">
+                                                Ver Formulario
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapse" id="collapse{{ $user->usu_login_id }}"
+                                        data-bs-parent="#accordionTable">
+                                        <td colspan="6">
+                                            <div class="p-3">
+                                                <h5>Detalles del Formulario</h5>
+                                                @if ($user->datos->formulario)
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>Inscrito</th>
+                                                                <td>{{ $user->datos->formulario->inscrito }}</td>
+                                                                <th>CI</th>
+                                                                <td>{{ $user->datos->usu_ci }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nombre Completo</th>
+                                                                <td>{{ $user->datos->formulario->nombre_completo }}</td>
+                                                                <th>Fecha de Nacimiento</th>
+                                                                <td>{{ $user->datos->formulario->fecha_nacimiento }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Edad</th>
+                                                                <td>{{ $user->datos->formulario->edad }}</td>
+                                                                <th>Teléfono</th>
+                                                                <td>{{ $user->datos->formulario->telefono }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Dirección</th>
+                                                                <td>{{ $user->datos->formulario->direccion }}</td>
+                                                                <th>Medicamentos</th>
+                                                                <td>{{ $user->datos->formulario->medicamentos }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Correo Electrónico</th>
+                                                                <td>{{ $user->datos->formulario->correo }}</td>
+                                                                <th>Enfermedades</th>
+                                                                <td>{{ $user->datos->formulario->enfermedades }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Referencia</th>
+                                                                <td>{{ $user->datos->formulario->referencia }}</td>
+                                                                <th>Entrenamiento personalizado</th>
+                                                                <td>{{ $user->datos->formulario->entrenamiento }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Horario</th>
+                                                                <td>{{ $user->datos->formulario->horario }}</td>
+                                                                <th>Días a la Semana</th>
+                                                                <td>{{ $user->datos->formulario->dias_semana }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Nivel de Entrenamiento</th>
+                                                                <td>{{ $user->datos->formulario->nivel_entrenamiento }}
+                                                                </td>
+                                                                <th>Lesiones</th>
+                                                                <td>{{ $user->datos->formulario->lesion }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Objetivos</th>
+                                                                <td>{{ implode(', ', $user->datos->formulario->objetivos ?? []) }}
+                                                                </td>
+                                                                <th>Detalles de Deportes</th>
+                                                                <td>{{ $user->datos->formulario->deportes_detalles }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                @else
+                                                    No hay formulario disponible para este usuario.
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -125,7 +185,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="password_confirm" class="col-form-label">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="password_confirm" name="usu_login_password_confirm">
+                            <input type="password" class="form-control" id="password_confirm"
+                                name="usu_login_password_confirm">
                         </div>
                     </div>
                     <div class="modal-footer">

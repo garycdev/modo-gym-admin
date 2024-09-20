@@ -53,6 +53,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
     Route::resource('perfil', 'Backend\PerfilController', ['names' => 'admin.perfil']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
+    Route::resource('formulario', 'Backend\FormularioController', ['names' => 'admin.formulario']);
     Route::post('/auth/update', 'Backend\UsersController@updatePassword')->name('admin.users.password');
     Route::post('/rutinaup/{id}', 'Backend\RutinasController@updateRutina')->name('admin.rutinas.rutinaup');
 

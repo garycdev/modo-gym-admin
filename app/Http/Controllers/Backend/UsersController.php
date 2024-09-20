@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\UsuarioLogin;
 use App\User;
+use App\Models\Formulario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -146,11 +147,13 @@ class UsersController extends Controller
     {
         $request->validate([
             'usu_login_id' => 'required',
+            'usu_login_username' => 'required|min:4',
             'usu_login_password' => 'required|min:5',
             'usu_login_password_confirm' => 'required|same:usu_login_password',
         ]);
 
         $user = UsuarioLogin::where('usu_login_id', $request->usu_login_id)->first();
+        $user->usu_login_username = $request->input('usu_login_username');
         $user->usu_login_password = bcrypt($request->input('usu_login_password'));
         $user->save();
 

@@ -45,9 +45,9 @@
                         @endif
                     </p>
                     <br>
-                    <div class="table-responsive">
-                        @include('backend.layouts.partials.messages')
-                        <table id="example2" class="table table-striped table-bordered">
+                    @include('backend.layouts.partials.messages')
+                    <div class="table-responsive w-100">
+                        <table id="example2" class="table table-striped table-bordered w-100">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -169,14 +169,31 @@
     <script>
         $(document).ready(function() {
             var table = $("#example2").DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
                 lengthChange: false,
-                buttons: ["copy", "excel", "pdf", "print"],
+                pageLength: 15,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'excel', 'pdf', 'print']
             });
-
-            table
-                .buttons()
-                .container()
-                .appendTo("#example2_wrapper .col-md-6:eq(0)");
         });
     </script>
 @endsection

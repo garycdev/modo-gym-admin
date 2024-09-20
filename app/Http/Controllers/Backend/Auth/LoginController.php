@@ -89,6 +89,7 @@ class LoginController extends Controller
 
                         // Redirect to dashboard
                         session()->flash('success', 'Sesión iniciada con exito !');
+                        session()->flash('formulario', $user->formulario);
                         return redirect()->route('admin.dashboard');
                     } else {
                         return back();
@@ -120,7 +121,9 @@ class LoginController extends Controller
 
                             // Redirect to dashboard
                             session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!');
-                            return redirect()->route('admin.perfil.index');
+                            session()->flash('formulario', 0);
+                            // return redirect()->route('admin.perfil.index');
+                            return redirect()->route('admin.dashboard');
                         } else {
                             return back();
                         }

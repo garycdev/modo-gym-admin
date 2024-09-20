@@ -61,4 +61,9 @@ class Usuarios extends Model
 
         return null; // Retorna null si no coincide
     }
+
+    public function formulario()
+    {
+        return $this->hasOne(Formulario::class, 'usu_id', 'usu_id');
+    }
 }
