@@ -237,7 +237,7 @@
                         </form>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
-                        <a href="javascript:void(0)" class="link" data-bs-dismiss="modal">Llenar otro momento</a>
+                        <a href="javascript:void(0)" class="link" data-bs-dismiss="modal">Llenar en otro momento</a>
                         <button type="submit" form="form-inscripcion" class="btn btn-success">Enviar</button>
                     </div>
                 </div>

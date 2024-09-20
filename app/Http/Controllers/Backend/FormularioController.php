@@ -82,7 +82,7 @@ class FormularioController extends Controller
         $user->save();
 
         // Redirigir con un mensaje de éxito
-        return back()->with('success', 'Formulario enviado con éxito');
+        return back()->with('success', 'Formulario registrado con éxito');
     }
 
     /**

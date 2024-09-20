@@ -184,7 +184,8 @@
                                                     data-fecha="{{ $cliente->pago_fecha }}" data-mes="{{ $cliente->mes }}"
                                                     data-ci="{{ $cliente->usu_ci }}"
                                                     data-nombres="{{ $cliente->usu_nombres }}"
-                                                    data-usuario="{{ json_encode($cliente) }}">
+                                                    data-usuario="{{ json_encode($cliente) }}"
+                                                    data-formulario="{{ json_encode($cliente->formulario) }}">
                                                     {{ $cliente->usu_nombre }}
                                                     {{ $cliente->usu_apellidos }}</option>
                                             @endforeach
@@ -437,8 +438,10 @@
 
             $('#info_user').css('display', 'block');
             const usuario = $('#usu_id option:selected').data('usuario')
-            console.log(usuario);
-            $('#info_user').html(`<div class="col-4">
+            const formulario = $('#usu_id option:selected').data('formulario')
+            console.log(formulario);
+            if (!formulario) {
+                $('#info_user').html(`<div class="col-6">
                                     <p>
                                         <b>CI:</b> ${usuario.usu_ci} <br>
                                         <b>Nombres:</b> ${usuario.usu_nombre} <br>
@@ -447,17 +450,52 @@
                                         <b>Genero: </b> ${usuario.usu_genero}
                                     </p>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-6">
                                     <p>
-                                        <b>Antecedentes medicos:</b> ${usuario.usu_ante_medicos ? usuario.usu_ante_medicos : '-Ninguno-'} <br>
-                                        <b>Lesiones:</b> ${usuario.usu_lesiones ? usuario.usu_lesiones : '-Ninguno-'} <br>
-                                        <b>Objetivo:</b> ${usuario.usu_objetivo ? usuario.usu_objetivo : '-Ninguno-'} <br>
-                                        <b>Frecuencia: </b> ${usuario.usu_frecuencia ? usuario.usu_frecuencia : '-0-'} <br>
-                                        <b>Horas: </b> ${usuario.usu_hora ? usuario.usu_hora : '-0-'} <br>
-                                        <b>Deportes: </b>${usuario.usu_deportes ? usuario.usu_deportes : '-Ninguno-'}
+                                        <b>Formulario no llenado</b>
                                     </p>
                                 </div>`)
-
+                // $('#info_user').html(`<div class="col-4">
+            //                     <p>
+            //                         <b>CI:</b> ${usuario.usu_ci} <br>
+            //                         <b>Nombres:</b> ${usuario.usu_nombre} <br>
+            //                         <b>Apellidos:</b> ${usuario.usu_apellidos} <br>
+            //                         <b>Edad: </b> ${usuario.usu_edad} años<br>
+            //                         <b>Genero: </b> ${usuario.usu_genero}
+            //                     </p>
+            //                 </div>
+            //                 <div class="col-8">
+            //                     <p>
+            //                         <b>Antecedentes medicos:</b> ${usuario.usu_ante_medicos ? usuario.usu_ante_medicos : '-Ninguno-'} <br>
+            //                         <b>Lesiones:</b> ${usuario.usu_lesiones ? usuario.usu_lesiones : '-Ninguno-'} <br>
+            //                         <b>Objetivo:</b> ${usuario.usu_objetivo ? usuario.usu_objetivo : '-Ninguno-'} <br>
+            //                         <b>Frecuencia: </b> ${usuario.usu_frecuencia ? usuario.usu_frecuencia : '-0-'} <br>
+            //                         <b>Horas: </b> ${usuario.usu_hora ? usuario.usu_hora : '-0-'} <br>
+            //                         <b>Deportes: </b>${usuario.usu_deportes ? usuario.usu_deportes : '-Ninguno-'}
+            //                     </p>
+            //                 </div>`)
+            } else {
+                $('#info_user').html(`<div class="col-4">
+                                    <p>
+                                        <b>CI:</b> ${usuario.usu_ci} <br>
+                                        <b>Nombre:</b> ${formulario.nombre_completo} <br>
+                                        <b>Fecha nacimiento:</b> ${formulario.fecha_nacimiento} <br>
+                                        <b>Edad: </b> ${formulario.edad} años<br>
+                                        <b>Genero: </b> ${usuario.usu_genero}
+                                    </p>
+                                </div>
+                                <div class="col-8">
+                                    <p>
+                                        <b>Antecedentes medicos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-Ninguno-'} <br>
+                                        <b>Medicamentos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-Ninguno-'} <br>
+                                        <b>Lesiones:</b> ${formulario.lesion ? formulario.lesion : '-Ninguno-'} <br>
+                                        <b>Objetivo:</b> ${formulario.objetivos ? formulario.objetivos : '-Ninguno-'} <br>
+                                        <b>Horario: </b> ${formulario.dias_semana ? formulario.dias_semana : '-Ninguno-'} <br>
+                                        <b>Dias: </b> ${formulario.dias_semana ? formulario.dias_semana : '-Ninguno-'} <br>
+                                        <b>Deportes: </b>${formulario.deportes_detalles ? formulario.deportes_detalles : '-Ninguno-'}
+                                    </p>
+                                </div>`)
+            }
             rutinaUser()
         }
 
