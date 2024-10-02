@@ -54,13 +54,33 @@
                         </div>
                         <div class="col-lg-5 col-md-6 col-12">
                             <p style="font-size:1.1em;">
-                                <b>Antecedentes medicos:</b>
+                                {{-- @dd($usuario->formulario) --}}
+                                @if ($usuario->formulario)
+                                    @php
+                                        $form = $usuario->formulario;
+                                    @endphp
+                                    <b>Antecedentes medicos:</b>
+                                    {{ $form->enfermedades ? $form->enfermedades : '-' }}
+                                    <br>
+                                    <b>Medicamentos:</b> {{ $form->medicamentos ? $form->medicamentos : '-' }}
+                                    <br>
+                                    <b>Lesiones:</b> {{ $form->lesion ? $form->lesion : '-' }} <br>
+                                    <b>Objetivo:</b> {{ $form->objetivos ? implode(' y ', $form->objetivos) : '-' }}
+                                    <br>
+                                    <b>Horario: </b> {{ $form->horario ? $form->horario : '-' }} <br>
+                                    <b>Dias: </b> {{ $form->dias_semana ? $form->dias_semana : '-' }} <br>
+                                    <b>Deportes:</b>
+                                    {{ $form->deportes_detalles ? $form->deportes_detalles : '-' }}
+                                @else
+                                    <b>Formulario no llenado</b>
+                                @endif
+                                {{-- <b>Antecedentes medicos:</b>
                                 {{ $usuario->usu_ante_medicos ? $usuario->usu_ante_medicos : '-Ninguno-' }} <br>
                                 <b>Lesiones:</b> {{ $usuario->usu_lesiones ? $usuario->usu_lesiones : '-Ninguno-' }} <br>
                                 <b>Objetivo:</b> {{ $usuario->usu_objetivo ? $usuario->usu_objetivo : '-Ninguno-' }} <br>
                                 <b>Frecuencia: </b> {{ $usuario->usu_frecuencia ? $usuario->usu_frecuencia : '-0-' }}<br>
                                 <b>Horas: </b> {{ $usuario->usu_hora ? $usuario->usu_hora : '-0-' }} <br>
-                                <b>Deportes: </b> {{ $usuario->usu_deportes ? $usuario->usu_deportes : '-Ninguno-' }}
+                                <b>Deportes: </b> {{ $usuario->usu_deportes ? $usuario->usu_deportes : '-Ninguno-' }} --}}
                             </p>
                         </div>
                     </div>
@@ -150,10 +170,10 @@
                                         <td>{{ $rut->ejercicio->musculo->mus_id }}</td>
                                         <td>{{ $rut->ejercicio->musculo->mus_nombre }}</td>
                                         <td>
-                                            <span class="badge bg-primary">{{ $rut->rut_serie }}</span>
+                                            {{ $rut->rut_serie }}
                                         </td>
                                         <td>
-                                            <span class="badge bg-primary">{{ $rut->rut_repeticiones }}</span>
+                                            {{ $rut->rut_repeticiones }}
                                         </td>
                                         <td>{{ $rut->rut_peso ? $rut->rut_peso . ' kg' : '-' }}</td>
                                         <td>{{ $rut->rut_rid == 0 ? '-' : $rut->rut_rid }}</span>

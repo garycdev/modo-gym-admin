@@ -486,13 +486,13 @@
                                 </div>
                                 <div class="col-8">
                                     <p>
-                                        <b>Antecedentes medicos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-Ninguno-'} <br>
-                                        <b>Medicamentos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-Ninguno-'} <br>
-                                        <b>Lesiones:</b> ${formulario.lesion ? formulario.lesion : '-Ninguno-'} <br>
-                                        <b>Objetivo:</b> ${formulario.objetivos ? formulario.objetivos : '-Ninguno-'} <br>
-                                        <b>Horario: </b> ${formulario.dias_semana ? formulario.dias_semana : '-Ninguno-'} <br>
-                                        <b>Dias: </b> ${formulario.dias_semana ? formulario.dias_semana : '-Ninguno-'} <br>
-                                        <b>Deportes: </b>${formulario.deportes_detalles ? formulario.deportes_detalles : '-Ninguno-'}
+                                        <b>Antecedentes medicos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-'} <br>
+                                        <b>Medicamentos:</b> ${formulario.enfermedades ? formulario.enfermedades : '-'} <br>
+                                        <b>Lesiones:</b> ${formulario.lesion ? formulario.lesion : '-'} <br>
+                                        <b>Objetivo:</b> ${formulario.objetivos ? formulario.objetivos.join(' y ') : '-'} <br>
+                                        <b>Horario: </b> ${formulario.dias_semana ? formulario.dias_semana : '-'} <br>
+                                        <b>Dias: </b> ${formulario.dias_semana ? formulario.dias_semana : '-'} <br>
+                                        <b>Deportes: </b>${formulario.deportes_detalles ? formulario.deportes_detalles : '-'}
                                     </p>
                                 </div>`)
             }

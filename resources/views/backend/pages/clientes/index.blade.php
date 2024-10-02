@@ -61,12 +61,12 @@
                                     <th>Huella</th>
                                     <th>Genero</th>
                                     <th>Nivel</th>
-                                    <th>Antecedentes medicos</th>
+                                    {{-- <th>Antecedentes medicos</th>
                                     <th>Lesiones</th>
                                     <th>Objetivo</th>
                                     <th>Frecuencia</th>
                                     <th>Hora</th>
-                                    <th>Deportes</th>
+                                    <th>Deportes</th> --}}
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -91,12 +91,12 @@
                                         </td>
                                         <td>{{ $cliente->usu_genero }}</td>
                                         <td>{{ $cliente->usu_nivel }}</td>
-                                        <td>{{ $cliente->usu_ante_medicos }}</td>
+                                        {{-- <td>{{ $cliente->usu_ante_medicos }}</td>
                                         <td>{{ $cliente->usu_lesiones }}</td>
                                         <td>{{ $cliente->usu_objetivo }}</td>
                                         <td>{{ $cliente->usu_frecuencia }}</td>
                                         <td>{{ $cliente->usu_hora }}</td>
-                                        <td>{{ $cliente->usu_deportes }}</td>
+                                        <td>{{ $cliente->usu_deportes }}</td> --}}
                                         <td>
                                             <span
                                                 class="badge bg-{{ $cliente->usu_estado == 'ACTIVO' ? 'success' : ($cliente->usu_estado == 'INACTIVO' ? 'danger' : 'dark') }}">{{ $cliente->usu_estado }}</span>
@@ -138,12 +138,12 @@
                                     <th>Edad</th>
                                     <th>Genero</th>
                                     <th>Nivel</th>
-                                    <th>Antecedentes medicos</th>
+                                    {{-- <th>Antecedentes medicos</th>
                                     <th>Lesiones</th>
                                     <th>Objetivo</th>
                                     <th>Frecuencia</th>
                                     <th>Hora</th>
-                                    <th>Deportes</th>
+                                    <th>Deportes</th> --}}
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -243,13 +243,10 @@
                     }
                 },
                 lengthChange: false,
-                buttons: ["copy", "excel", "pdf", "print"],
+                pageLength: 15,
+                dom: 'Bfrtip',
+                buttons: ['copy', 'excel', 'pdf', 'print']
             });
-
-            table
-                .buttons()
-                .container()
-                .appendTo("#example2_wrapper .col-md-6:eq(0)");
         });
     </script>
 @endsection

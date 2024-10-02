@@ -63,31 +63,37 @@
                         <form id="form-inscripcion" method="POST" class="row"
                             action="{{ route('admin.formulario.store') }}">
                             @csrf()
-                            <input type="hidden" name="usu_id" value="{{ Auth::guard('user')->user()->usu_id }}">
+                            <input type="hidden" name="usu_id" value="{{ $usr->usu_id }}">
                             <!-- Pregunta inicial -->
                             <div class="mb-3 col-12">
                                 <label class="form-label required-value">¿Ya estabas inscrito?</label>
                                 <div class="form-group mb-2">
-                                    <input type="radio" name="inscrito" id="inscrito-si" value="si"
+                                    <input type="radio" name="inscrito" id="inscrito-si" value="Si, ya estaba inscrito/a"
                                         class="form-check-input" required>
                                     <label for="inscrito-si" class="form-check-label">Si, ya estaba inscrito/a</label>
                                 </div>
                                 <div class="form-group">
-                                    <input type="radio" name="inscrito" id="inscrito-no" value="no"
+                                    <input type="radio" name="inscrito" id="inscrito-no" value="No, es la primera vez"
                                         class="form-check-input" required>
                                     <label for="inscrito-no" class="form-check-label">No, es la primera vez</label>
                                 </div>
                             </div>
                             <hr>
-                            <div class="mb-3 col-12">
-                                <label for="nombre_completo" class="form-label required-value">Nombre completo</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre_completo" required>
+                            <div class="mb-3 col-lg-6 col-md-6 col-12">
+                                <label for="nombres" class="form-label required-value">Nombres</label>
+                                <input type="text" class="form-control" id="nombre" name="nombres" required
+                                    value="{{ $usr->datos->usu_nombre }}">
+                            </div>
+                            <div class="mb-3 col-lg-6 col-md-6 col-12">
+                                <label for="apellidos" class="form-label required-value">Apellidos</label>
+                                <input type="text" class="form-control" id="nombre" name="apellidos" required
+                                    value="{{ $usr->datos->usu_apellidos }}">
                             </div>
                             <div id="campos-adicionales" style="display: none;" class="m-auto col-12 row">
                                 <div class="form-group mb-3 col-lg-4 col-md-6 col-12">
                                     <label for="fecha-nacimiento" class="form-label required-value">Fecha de
                                         nacimiento</label>
-                                    <input type="date" class="form-control" id="fecha-nacimiento"
+                                    <input type="date" class="form-control" id="fecha_nacimiento"
                                         name="fecha_nacimiento">
                                 </div>
                                 <div class="form-group mb-3 col-lg-2 col-md-6 col-12">
@@ -99,20 +105,21 @@
                                     <input type="tel" class="form-control" id="telefono" name="telefono">
                                 </div>
                                 <div class="form-group mb-3 col-md-6 col-12">
-                                    <label for="direccion" class="form-label required-value">Dirección</label>
+                                    <label for="direccion" class="form-label">Dirección</label>
                                     <input type="text" class="form-control" id="direccion" name="direccion">
                                 </div>
                                 <div class="form-group mb-3 col-lg-6 col-12">
                                     <label for="correo" class="form-label required-value">Correo electrónico</label>
-                                    <input type="email" class="form-control" id="correo" name="correo">
+                                    <input type="email" class="form-control" id="correo" name="correo"
+                                        value="{{ $usr->usu_login_email }}">
                                 </div>
                                 <div class="form-group mb-3 col-lg-6 col-md-12 col-12">
-                                    <label for="medicamentos" class="form-label required-value">¿Tomas algún
+                                    <label for="medicamentos" class="form-label">¿Tomas algún
                                         medicamento?</label>
                                     <textarea class="form-control" id="medicamentos" name="medicamentos"></textarea>
                                 </div>
                                 <div class="form-group mb-3 col-lg-6 col-md-12 col-12">
-                                    <label for="enfermedades" class="form-label required-value">¿Tienes alguna enfermedad
+                                    <label for="enfermedades" class="form-label">¿Tienes alguna enfermedad
                                         diagnostica?</label>
                                     <textarea class="form-control" id="enfermedades" name="enfermedades"></textarea>
                                 </div>
@@ -130,11 +137,11 @@
                                 <div class="form-group mb-3 col-lg-6 col-12">
                                     <label class="form-label required-value">¿Deseas entrenamiento personalizado?</label>
                                     <div class="form-group mb-2">
-                                        <input type="radio" name="entrenamiento" value="no" id="entrenamiento-no">
+                                        <input type="radio" name="entrenamiento" value="Si" id="entrenamiento-no">
                                         <label for="entrenamiento-no">No</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="radio" name="entrenamiento" value="si" id="entrenamiento-si">
+                                        <input type="radio" name="entrenamiento" value="No" id="entrenamiento-si">
                                         <label for="entrenamiento-si">Si</label>
                                     </div>
                                 </div>
@@ -178,7 +185,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group mb-3 col-lg-6 col-md-6 col-12">
-                                        <label class="form-label required-value">¿Tienes o tuviste alguna lesión reciente?
+                                        <label class="form-label">¿Tienes o tuviste alguna lesión reciente?
                                             (Especifica cual)</label>
                                         <textarea class="form-control" id="lesion" name="lesion"></textarea>
                                     </div>
@@ -237,7 +244,7 @@
                         </form>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
-                        <a href="javascript:void(0)" class="link" data-bs-dismiss="modal">Llenar en otro momento</a>
+                        <a href="javascript:void(0)" data-bs-dismiss="modal">Llenar en otro momento</a>
                         <button type="submit" form="form-inscripcion" class="btn btn-success">Enviar</button>
                     </div>
                 </div>
@@ -728,8 +735,24 @@
         });
     </script>
     <script>
+        function calcularEdad(fecha_nacimiento) {
+            const hoy = new Date();
+            const nacimiento = new Date(fecha_nacimiento);
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+            const mes = hoy.getMonth() - nacimiento.getMonth();
+
+            if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+                edad--;
+            }
+
+            console.log(edad);
+
+            return edad;
+        }
+    </script>
+    <script>
         $(document).ready(function() {
-            @if (session('formulario') === 0)
+            @if (session('formulario') === false)
                 var miModal = new bootstrap.Modal($('#miModal').get(0), {
                     backdrop: 'static',
                     keyboard: false
@@ -797,6 +820,15 @@
                     $('.objetivo-checkbox').prop('disabled', false);
                 }
             });
+
+            $('#fecha_nacimiento').on('change', function() {
+                const fecha_nacimiento = $(this).val();
+                const edad = calcularEdad(fecha_nacimiento);
+                console.log(edad);
+
+                $('#edad').val(edad);
+            });
         });
     </script>
+    {{-- // @if (session('formulario') === false) --}}
 @endsection

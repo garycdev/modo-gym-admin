@@ -88,8 +88,10 @@ class LoginController extends Controller
                         Auth::guard('user')->login($user, $request->remember);
 
                         // Redirect to dashboard
+                        $form = $user->datos->formulario ? true : false;
+
                         session()->flash('success', 'Sesión iniciada con exito !');
-                        session()->flash('formulario', $user->formulario);
+                        session()->flash('formulario', $form);
                         return redirect()->route('admin.dashboard');
                     } else {
                         return back();

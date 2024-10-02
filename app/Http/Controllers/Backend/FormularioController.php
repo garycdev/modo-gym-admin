@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Formulario;
+use App\Models\Usuarios;
 use App\Models\UsuarioLogin;
 
 class FormularioController extends Controller
@@ -32,7 +33,8 @@ class FormularioController extends Controller
     {
         $request->validate([
             'inscrito' => 'required|string',
-            'nombre_completo' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
             'fecha_nacimiento' => 'nullable|date',
             'edad' => 'nullable|integer|min:10',
             'telefono' => 'nullable|string|max:15',
@@ -56,7 +58,7 @@ class FormularioController extends Controller
 
         // Asignar valores al objeto Formulario
         $formulario->inscrito = $request->inscrito;
-        $formulario->nombre_completo = $request->nombre_completo;
+        $formulario->nombre_completo = $request->nombres . ' ' . $request->apellidos;
         $formulario->fecha_nacimiento = $request->fecha_nacimiento;
         $formulario->edad = $request->edad;
         $formulario->telefono = $request->telefono;
@@ -78,7 +80,17 @@ class FormularioController extends Controller
         $formulario->save();
 
         $user = UsuarioLogin::where('usu_id', $request->usu_id)->first();
-        $user->formulario = true;
+        // $user->formulario = true;
+        $user->usu_login_name = $request->nombres . ' ' . $request->apellidos;
+        if ($request->correo && !$user->usu_login_email) {
+            $user->usu_login_email = $request->correo;
+        }
+        $user->save();
+
+        $user = Usuarios::where('usu_id', $request->usu_id)->first();
+        $user->usu_nombre = $request->nombres;
+        $user->usu_apellidos = $request->apellidos;
+        $user->usu_edad = $request->edad;
         $user->save();
 
         // Redirigir con un mensaje de éxito
