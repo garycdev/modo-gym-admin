@@ -111,8 +111,8 @@
 
                                         // Texto de días restantes para completar el mes
                                         if ($diferenciaDias > 0) {
-                                            if ($diferenciaDias >= 30) {
-                                                $textoFaltante = '30 días';
+                                            if ($diferenciaDias >= $pago->costo->mes * 30) {
+                                                $textoFaltante = $pago->costo->mes * 30 . ' días';
                                             } else {
                                                 $textoFaltante = "$diferenciaDias días";
                                             }

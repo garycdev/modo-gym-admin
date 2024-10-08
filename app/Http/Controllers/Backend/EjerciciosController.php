@@ -43,6 +43,7 @@ class EjerciciosController extends Controller
             ->where('ejercicios.ejer_estado', '!=', 'ELIMINADO')
             ->where('equipos.equi_estado', '!=', 'ELIMINADO')
             ->where('musculo.mus_estado', '!=', 'ELIMINADO')
+            ->orderBy('ejercicios.ejer_nombre', 'ASC')
             ->get();
 
         return view('backend.pages.ejercicios.index', compact('ejercicios'));

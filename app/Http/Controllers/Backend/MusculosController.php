@@ -31,7 +31,7 @@ class MusculosController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a ver ningún Musculo!');
         }
 
-        $musculos = Musculo::where('mus_estado', '!=', 'ELIMINADO')->orderBy('mus_id', 'DESC')->get();
+        $musculos = Musculo::where('mus_estado', '!=', 'ELIMINADO')->orderBy('mus_nombre', 'ASC')->get();
         return view('backend.pages.musculos.index', compact('musculos'));
     }
 
