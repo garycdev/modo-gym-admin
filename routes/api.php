@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\API\UsuarioController;
+use App\Http\Controllers\API\LoginAppController;
+use App\Http\Controllers\API\RutinasController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,3 +27,8 @@ Route::middleware('apiCredential')->group(function () {
     Route::get('/usuario/{ci}', [UsuarioController::class, 'usuario']);
     Route::post('/registra-huella', [UsuarioController::class, 'huella']);
 });
+
+Route::get('/', [LoginAppController::class, 'getStatus']);
+Route::post('/login-app', [LoginAppController::class, 'loginApp']);
+Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
+Route::get('/rutinas-app/{id}', [RutinasController::class, 'rutinasApp']);
