@@ -68,6 +68,7 @@ class LoginAppController extends Controller
         if ($user) {
             return response()->json([
                 ...$user->toArray(),
+                'datos' => $user->datos,
                 'formulario' => $user->datos->formulario ? $user->datos->formulario->toArray() : null
             ], 200);
         }

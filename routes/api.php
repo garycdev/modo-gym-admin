@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UsuarioController;
 use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\RutinasController;
+use App\Http\Controllers\API\EjerciciosController;
+use App\Http\Controllers\API\BlogsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,3 +34,5 @@ Route::get('/', [LoginAppController::class, 'getStatus']);
 Route::post('/login-app', [LoginAppController::class, 'loginApp']);
 Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
 Route::get('/rutinas-app/{id}', [RutinasController::class, 'rutinasApp']);
+Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
+Route::get('/blogs-app', [BlogsController::class, 'blogsApp']);
