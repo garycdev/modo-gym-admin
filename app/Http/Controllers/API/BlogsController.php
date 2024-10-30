@@ -10,7 +10,7 @@ class BlogsController extends Controller
 {
     public function blogsApp()
     {
-        $blogs = Blogs::all();
+        $blogs = Blogs::where('blog_estado', 'ACTIVO')->orderBy('blog_id', 'DESC')->get();
         return response()->json($blogs, 200);
     }
 }
