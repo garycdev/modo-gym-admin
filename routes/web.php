@@ -82,3 +82,8 @@ Route::post('/password/reset/submit', 'Backend\Auth\ForgotPasswordController@res
 // Socialite Routes
 Route::get('/auth/redirect', 'Backend\Auth\LoginController@redirect')->name('login.redirect');
 Route::get('/auth/callback', 'Backend\Auth\LoginController@callback')->name('login.callback');
+
+Route::get('/android', function () {
+    $path = public_path('app/app-release.apk');
+    return response()->download($path, 'modo-gym_android.apk');
+});
