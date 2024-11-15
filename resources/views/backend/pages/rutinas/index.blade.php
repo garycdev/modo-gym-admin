@@ -51,7 +51,11 @@
                 <div class="card-body">
                     <p class="float-right mb-2">
                         @if ($usr->can('rutina.create'))
-                            <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nueva rutina</a>
+                            {{-- <a href="{{ route('admin.rutinas.create') }}" class="btn btn-primary">Nuevo rutina cliente</a> --}}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#modalNuevo">
+                                Nuevo rutina cliente
+                            </button>
                         @endif
                     </p>
                     <br>
@@ -97,10 +101,51 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="modalNuevoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('admin.rutinas.store') }}">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalNuevoLabel">Modal title</h1>
+                        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <input type="hidden" name="ejer_id" value="{{ $ejer->ejer_id }}">
+                        @csrf
+                    </div>
+                    <div class="modal-body row">
+                        <div class="col-md-12">
+                            <label for="bsValidation9" class="form-label required_value">Usuario </label>
+                            <select id="usu_id" name="usu_id" class="form-select usu_id" onchange="selectUser()">
+                                <option selected disabled value>[USUARIO]</option>
+                                @foreach ($clientes as $cliente)
+                                    <option value="{{ $cliente->usu_id }}" data-fecha="{{ $cliente->pago_fecha }}"
+                                        data-mes="{{ $cliente->mes }}" data-ci="{{ $cliente->usu_ci }}"
+                                        data-nombres="{{ $cliente->usu_nombres }}"
+                                        data-usuario="{{ json_encode($cliente) }}"
+                                        data-formulario="{{ json_encode($cliente->formulario) }}">
+                                        {{ $cliente->usu_nombre }}
+                                        {{ $cliente->usu_apellidos }}</option>
+                                @endforeach
+                            </select>
+                            @error('usu_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" disabled id="btn_rutina_cliente">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             var table = $("#tabla_pagos").DataTable({
@@ -127,45 +172,16 @@
                 lengthChange: false,
                 dom: 'Bfrtip',
                 buttons: ["copy", "excel", "pdf", "print"],
-                // fnDrawCallback: () => {
-
-                //     $table = $(this);
-
-                //     // only apply this to specific tables
-                //     if ($table.closest(".datatable-multi-row").length) {
-
-                //         // for each row in the table body...
-                //         $table.find("tbody>tr").each(function() {
-                //             var $tr = $(this);
-
-                //             // get the "extra row" content from the <script> tag.
-                //             // note, this could be any DOM object in the row.
-                //             var extra_row = $tr.find(".extra-row-content").html();
-
-                //             // in case draw() fires multiple times, 
-                //             // we only want to add new rows once.
-                //             if (!$tr.next().hasClass('dt-added')) {
-                //                 $tr.after(extra_row);
-                //                 $tr.find("td").each(function() {
-
-                //                     // for each cell in the top row,
-                //                     // set the "rowspan" according to the data value.
-                //                     var $td = $(this);
-                //                     var rowspan = parseInt($td.data(
-                //                         "datatable-multi-row-rowspan"), 10);
-                //                     if (rowspan) {
-                //                         $td.attr('rowspan', rowspan);
-                //                     }
-                //                 });
-                //             }
-
-                //         });
-
-                //     } // end if the table has the proper class
-                // }
             });
 
-            // table.buttons().container().appendTo('#tabla_pagos_wrapper .col-md-6:eq(0)');
+            $('.usu_id').select2({
+                dropdownParent: $('#modalNuevo'),
+                width: '100%',
+            })
         });
+
+        function selectUser() {
+            $('#btn_rutina_cliente').removeAttr('disabled');
+        }
     </script>
 @endsection

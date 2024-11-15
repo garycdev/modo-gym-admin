@@ -174,7 +174,8 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-12">
                             <p style="font-size:1.1em;">
-                                <b>Plan: </b> {{ $usuario->costo[0]->nombre }} <br>
+                                <b>Plan: </b> {{ count($usuario->costo) > 0 ? $usuario->costo[0]->nombre : '-No tiene-' }}
+                                <br>
                                 <b>Dia: </b> -<span id="text_dia">TODOS</span>- <br>
                                 <b>Musculo: </b> -<span id="text_musculo">TODOS</span>-
                             </p>
