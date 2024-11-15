@@ -84,18 +84,18 @@ class LoginController extends Controller
             if ($user) {
                 // Si existe
                 if (Hash::check($request->password, $user->usu_login_password)) {
-                    if ($this->verificarPagos($user->usu_id)) {
-                        Auth::guard('user')->login($user, $request->remember);
+                    // if ($this->verificarPagos($user->usu_id)) {
+                    Auth::guard('user')->login($user, $request->remember);
 
-                        // Redirect to dashboard
-                        $form = $user->datos->formulario ? true : false;
+                    // Redirect to dashboard
+                    $form = $user->datos->formulario ? true : false;
 
-                        session()->flash('success', 'Sesión iniciada con exito !');
-                        session()->flash('formulario', $form);
-                        return redirect()->route('admin.dashboard');
-                    } else {
-                        return back();
-                    }
+                    session()->flash('success', 'Sesión iniciada con exito !');
+                    session()->flash('formulario', $form);
+                    return redirect()->route('admin.dashboard');
+                    // } else {
+                    //     return back();
+                    // }
                 } else {
                     session()->flash('error', 'Nombre de usuario o contraseña invalida !');
                     return back();
@@ -107,28 +107,28 @@ class LoginController extends Controller
                     $user_log = UsuarioLogin::where('usu_id', $user_guest->usu_id)->first();
                     // dd($user_log);
                     if (!$user_log) {
-                        if ($this->verificarPagos($user_guest->usu_id)) {
-                            $nuevo = new UsuarioLogin();
-                            $nuevo->usu_login_name = $user_guest->usu_nombre;
-                            $nuevo->usu_login_email = $user_guest->usu_email;
-                            $nuevo->usu_login_username = $user_guest->usu_ci;
-                            $nuevo->usu_login_password = Hash::make($request->password);
-                            $nuevo->usu_id = $user_guest->usu_id;
-                            $nuevo->save();
+                        // if ($this->verificarPagos($user_guest->usu_id)) {
+                        $nuevo = new UsuarioLogin();
+                        $nuevo->usu_login_name = $user_guest->usu_nombre;
+                        $nuevo->usu_login_email = $user_guest->usu_email;
+                        $nuevo->usu_login_username = $user_guest->usu_ci;
+                        $nuevo->usu_login_password = Hash::make($request->password);
+                        $nuevo->usu_id = $user_guest->usu_id;
+                        $nuevo->save();
 
-                            $userNuevo = UsuarioLogin::where('usu_id', $user_guest->usu_id)->where('usu_login_username', $user_guest->usu_ci)->first();
-                            $userNuevo->assignRole('usuario');
+                        $userNuevo = UsuarioLogin::where('usu_id', $user_guest->usu_id)->where('usu_login_username', $user_guest->usu_ci)->first();
+                        $userNuevo->assignRole('usuario');
 
-                            Auth::guard('user')->login($userNuevo, $request->remember);
+                        Auth::guard('user')->login($userNuevo, $request->remember);
 
-                            // Redirect to dashboard
-                            session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!');
-                            session()->flash('formulario', 0);
-                            // return redirect()->route('admin.perfil.index');
-                            return redirect()->route('admin.dashboard');
-                        } else {
-                            return back();
-                        }
+                        // Redirect to dashboard
+                        session()->flash('info', 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!');
+                        session()->flash('formulario', 0);
+                        // return redirect()->route('admin.perfil.index');
+                        return redirect()->route('admin.dashboard');
+                        // } else {
+                        //     return back();
+                        // }
                     } else {
                         session()->flash('error', 'El usuario ya se encuentra registrado, inicie sesión con sus credenciales !');
                         return back();
@@ -183,23 +183,23 @@ class LoginController extends Controller
         } else {
             $user = UsuarioLogin::where('usu_login_email', $google_user->email)->first();
             if ($user) {
-                if ($this->verificarPagos($user->usu_id)) {
-                    if (!$user->google_id) {
-                        $user->google_id = $google_user->id;
-                        $user->save();
-                    } else if ($user->google_id != $google_user->id) {
-                        session()->flash('error', '¡ Error al iniciar sesión !');
-                        return redirect()->route('admin.dashboard');
-                    }
-
-                    Auth::guard('user')->login($user);
-
-                    // Redirect to dashboard
-                    session()->flash('success', 'Sesión iniciada con exito !');
+                // if ($this->verificarPagos($user->usu_id)) {
+                if (!$user->google_id) {
+                    $user->google_id = $google_user->id;
+                    $user->save();
+                } else if ($user->google_id != $google_user->id) {
+                    session()->flash('error', '¡ Error al iniciar sesión !');
                     return redirect()->route('admin.dashboard');
-                } else {
-                    return redirect()->route('admin.login');
                 }
+
+                Auth::guard('user')->login($user);
+
+                // Redirect to dashboard
+                session()->flash('success', 'Sesión iniciada con exito !');
+                return redirect()->route('admin.dashboard');
+                // } else {
+                //     return redirect()->route('admin.login');
+                // }
             } else {
                 session()->flash('error', '¡ Correo no vinculado en el sistema !');
                 return redirect()->route('admin.login');

@@ -310,8 +310,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $lun->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $lun->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $lun->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -322,8 +324,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(1)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(1)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Martes</h4>
@@ -368,8 +373,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $mar->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $mar->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $mar->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -380,8 +387,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(2)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(2)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Miercoles</h4>
@@ -426,8 +436,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $mie->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $mie->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $mie->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -438,8 +450,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(3)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(3)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Jueves</h4>
@@ -484,8 +499,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $jue->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $jue->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $jue->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -496,8 +513,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(4)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(4)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Viernes</h4>
@@ -542,8 +562,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $vie->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $vie->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $vie->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -554,8 +576,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(5)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(5)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Sabado</h4>
@@ -600,8 +625,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $sab->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $sab->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $sab->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -612,8 +639,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(6)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(6)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                             <div class="columna">
                                 <h4>Domingo</h4>
@@ -658,8 +688,10 @@
                                             <div class="campo">
                                                 <button class="boton boton-guardar btn btn-primary"
                                                     onclick="guardarRutina({{ $dom->rut_id }})">Guardar</button>
-                                                <button class="boton boton-eliminar btn btn-danger"
-                                                    onclick="eliminarRutina({{ $dom->rut_id }})">-</button>
+                                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                                    <button class="boton boton-eliminar btn btn-danger"
+                                                        onclick="eliminarRutina({{ $dom->rut_id }})">-</button>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -670,8 +702,11 @@
                                         </div>
                                     </div>
                                 @endif
-                                <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" onclick="addEjercicios(7)" id="btn-agregar">+</button>
+                                @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+                                    <button class="boton boton-guardar btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal" onclick="addEjercicios(7)"
+                                        id="btn-agregar">+</button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -680,59 +715,64 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="ejercicios_rutina">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar ejercicios - <span
-                                id="title_dia"></span></h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            onclick="resetEjerciciosRutina()"></button>
-                    </div>
-                    <div class="modal-header">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar ejercicio...">
-                        <input type="hidden" id="dia_rut">
-                    </div>
-                    <div class="modal-body modal-body-scrollable">
-                        @foreach ($ejercicios as $ejer)
-                            <div class="exercise-item">
-                                <input type="checkbox" name="ejercicios[]" id="{{ $ejer->ejer_id }}"
-                                    class="custom-checkbox" data-name="{{ $ejer->ejer_nombre }}"
-                                    data-image="{{ asset($ejer->ejer_imagen) }}" data-tipo="{{ $ejer->equipo->tipo }}">
-                                <label for="{{ $ejer->ejer_id }}" class="card custom-card p-3">
-                                    <div class="card-body d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <img src="{{ asset($ejer->ejer_imagen) }}"
-                                                alt="Ejercicio {{ $ejer->ejer_id }}" width="50">
-                                            <h6 class="card-title">{{ $ejer->ejer_nombre }}</h6>
+    @if ($usr->roles[0]->name == 'superadmin' || $usr->roles[0]->name == 'Modo GYM')
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="ejercicios_rutina">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar ejercicios - <span
+                                    id="title_dia"></span></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                onclick="resetEjerciciosRutina()"></button>
+                        </div>
+                        <div class="modal-header">
+                            <input type="text" id="searchInput" class="form-control"
+                                placeholder="Buscar ejercicio...">
+                            <input type="hidden" id="dia_rut">
+                        </div>
+                        <div class="modal-body modal-body-scrollable">
+                            @foreach ($ejercicios as $ejer)
+                                <div class="exercise-item">
+                                    <input type="checkbox" name="ejercicios[]" id="{{ $ejer->ejer_id }}"
+                                        class="custom-checkbox" data-name="{{ $ejer->ejer_nombre }}"
+                                        data-image="{{ asset($ejer->ejer_imagen) }}"
+                                        data-tipo="{{ $ejer->equipo->tipo }}">
+                                    <label for="{{ $ejer->ejer_id }}" class="card custom-card p-3">
+                                        <div class="card-body d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <img src="{{ asset($ejer->ejer_imagen) }}"
+                                                    alt="Ejercicio {{ $ejer->ejer_id }}" width="50">
+                                                <h6 class="card-title">{{ $ejer->ejer_nombre }}</h6>
+                                            </div>
+                                            <p class="p-0 m-0" style="font-size:0.8em;">
+                                                <span class="fw-bold">Equipo:
+                                                </span>{{ $ejer->equipo->equi_nombre }}
+                                                <br>
+                                                <span class="fw-bold">Musculo:
+                                                </span>{{ $ejer->musculo->mus_nombre }}
+                                            </p>
+                                            <span class="align-end badge bg-dark">Nivel
+                                                {{ $ejer->ejer_nivel }}</span>
                                         </div>
-                                        <p class="p-0 m-0" style="font-size:0.8em;">
-                                            <span class="fw-bold">Equipo:
-                                            </span>{{ $ejer->equipo->equi_nombre }}
-                                            <br>
-                                            <span class="fw-bold">Musculo:
-                                            </span>{{ $ejer->musculo->mus_nombre }}
-                                        </p>
-                                        <span class="align-end badge bg-dark">Nivel
-                                            {{ $ejer->ejer_nivel }}</span>
-                                    </div>
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                            onclick="resetEjerciciosRutina()">Cerrar</button>
-                        <button type="button" class="btn btn-dark" onclick="resetEjerciciosRutina()">Vaciar</button>
-                        <button type="button" class="btn btn-success" onclick="agregarEjercicios()"
-                            data-bs-dismiss="modal">Agregar</button>
-                    </div>
-                </form>
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                onclick="resetEjerciciosRutina()">Cerrar</button>
+                            <button type="button" class="btn btn-dark" onclick="resetEjerciciosRutina()">Vaciar</button>
+                            <button type="button" class="btn btn-success" onclick="agregarEjercicios()"
+                                data-bs-dismiss="modal">Agregar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @section('scripts')
@@ -831,7 +871,7 @@
                 var searchTerm = $(this).val().toLowerCase();
                 $('.exercise-item').each(function() {
                     var exerciseName = $(this).find('.card-title').text().toLowerCase();
-                    if (exerciseName.includes(searchTerm)) {
+                    if (exerciseName.startsWith(searchTerm)) {
                         $(this).show();
                     } else {
                         $(this).hide();
