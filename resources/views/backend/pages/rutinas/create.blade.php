@@ -522,7 +522,7 @@
             });
         }
 
-        function agregarEjercicios() {
+        function agregarEjercicios(dia) {
             var selectEjercicios = [];
 
             var dias = {
@@ -539,67 +539,65 @@
                 var name = $(this).data('name');
                 var image = $(this).data('image');
                 var tipo = $(this).data('tipo');
-                var dia = $('#rut_dia').val();
                 selectEjercicios.push({
                     id: id,
                     name: name,
                     image: image,
-                    tipo: tipo,
-                    dia: dia
+                    tipo: tipo
                 });
             });
             console.log(selectEjercicios);
 
-            selectEjercicios.forEach(element => {
-                serCount[ejercicios] = 1
-                $('#rutinas').append(`<div id="ejercicio_${ejercicios}" class="mb-3">
-                                        <hr>
-                                        <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
-                                            <img src="${element.image}" alt=""
-                                                width="75">
-                                            <div class="d-flex align-items-start">
-                                                <h5>${element.name}</h5>
-                                                <span class="badge bg-primary">${dias[element.dia]}</span>
-                                            </div>
-                                            <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.id}">
-                                            <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.dia}">
-                                            <button type="button" class="btn btn-danger" onclick="deleteEjercicio(${ejercicios})">Eliminar</button>
-                                        </div>
-                                        <div id="series_${ejercicios}" class="col-md-12 w-75 m-auto">
-                                            <div id="serie_${series}" class="row">
-                                                <div class="col-md-2">
-                                                    <label for="" class="form-label">Serie </label>
-                                                    <input type="text" class="form-control series_${ejercicios}" name="series[${ejercicios}][serie][]"
-                                                        readonly value="${serCount[ejercicios]}">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="" class="form-label">Peso (kg) </label>
-                                                    <input type="number" class="form-control" name="series[${ejercicios}][peso][]"
-                                                        placeholder="Peso" step="1" min="0" ${element.tipo != 'peso' ? 'disabled="disabled"' : ''}>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label for="" class="form-label">Repeticiones
-                                                    </label>
-                                                    <input type="number" class="form-control" name="series[${ejercicios}][rep][]"
-                                                        placeholder="Repeticiones" step="1" min="1">
-                                                </div>
-                                                <div class="col-md-1 d-flex align-items-center justify-content-around">
-                                                    <button type="button" class="btn btn-outline-danger radius-30"
-                                                        onclick="removeSerie(${series}, ${ejercicios})">
-                                                        <i class='bx bxs-trash'></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mt-3 w-75 m-auto">
-                                            <button type="button" class="btn btn-secondary w-100" onclick="addSerie(${ejercicios}, '${element.tipo}')">
-                                                Agregar serie
-                                            </button>
-                                        </div>
-                                    </div>`);
-                ejercicios++
-                series++
-            });
+            // selectEjercicios.forEach(element => {
+            //     serCount[ejercicios] = 1
+            //     $('#rutinas').append(`<div id="ejercicio_${ejercicios}" class="mb-3">
+        //                             <hr>
+        //                             <div class="col-md-12 mb-3 d-flex justify-content-between align-items-center">
+        //                                 <img src="${element.image}" alt=""
+        //                                     width="75">
+        //                                 <div class="d-flex align-items-start">
+        //                                     <h5>${element.name}</h5>
+        //                                     <span class="badge bg-primary">${dias[element.dia]}</span>
+        //                                 </div>
+        //                                 <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.id}">
+        //                                 <input type="hidden" name="id_ejer[${ejercicios}][]" value="${element.dia}">
+        //                                 <button type="button" class="btn btn-danger" onclick="deleteEjercicio(${ejercicios})">Eliminar</button>
+        //                             </div>
+        //                             <div id="series_${ejercicios}" class="col-md-12 w-75 m-auto">
+        //                                 <div id="serie_${series}" class="row">
+        //                                     <div class="col-md-2">
+        //                                         <label for="" class="form-label">Serie </label>
+        //                                         <input type="text" class="form-control series_${ejercicios}" name="series[${ejercicios}][serie][]"
+        //                                             readonly value="${serCount[ejercicios]}">
+        //                                     </div>
+        //                                     <div class="col-md-4">
+        //                                         <label for="" class="form-label">Peso (kg) </label>
+        //                                         <input type="number" class="form-control" name="series[${ejercicios}][peso][]"
+        //                                             placeholder="Peso" step="1" min="0" ${element.tipo != 'peso' ? 'disabled="disabled"' : ''}>
+        //                                     </div>
+        //                                     <div class="col-md-4">
+        //                                         <label for="" class="form-label">Repeticiones
+        //                                         </label>
+        //                                         <input type="number" class="form-control" name="series[${ejercicios}][rep][]"
+        //                                             placeholder="Repeticiones" step="1" min="1">
+        //                                     </div>
+        //                                     <div class="col-md-1 d-flex align-items-center justify-content-around">
+        //                                         <button type="button" class="btn btn-outline-danger radius-30"
+        //                                             onclick="removeSerie(${series}, ${ejercicios})">
+        //                                             <i class='bx bxs-trash'></i>
+        //                                         </button>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>
+        //                             <div class="col-md-12 mt-3 w-75 m-auto">
+        //                                 <button type="button" class="btn btn-secondary w-100" onclick="addSerie(${ejercicios}, '${element.tipo}')">
+        //                                     Agregar serie
+        //                                 </button>
+        //                             </div>
+        //                         </div>`);
+            //     ejercicios++
+            //     series++
+            // });
             resetEjerciciosRutina()
         }
 

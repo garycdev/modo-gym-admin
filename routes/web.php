@@ -38,6 +38,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('musculos', 'Backend\MusculosController', ['names' => 'admin.musculos']);
     Route::resource('rutinas', 'Backend\RutinasController', ['names' => 'admin.rutinas']);
     Route::get('usuario/rutinas/{usu_id}', 'Backend\RutinasController@usuarioRutinas')->name('admin.usuario.rutinas');
+    Route::post('rutinas/store', 'Backend\RutinasController@storeRutinas')->name('admin.rutinas.storeRutinas');
+    Route::post('rutinas/guardar', 'Backend\RutinasController@guardarRutina')->name('admin.rutinas.guardar');
+    Route::post('rutinas/eliminar', 'Backend\RutinasController@eliminarRutina')->name('admin.rutinas.eliminar');
     // Route::get('usuario/rutinas/{usu_id}/{dia}', 'Backend\RutinasController@usuarioRutinasDia')->name('admin.usuario.rutinas.dia');
 
     Route::resource('blogs', 'Backend\BlogsController', ['names' => 'admin.blogs']);
@@ -86,4 +89,4 @@ Route::get('/auth/callback', 'Backend\Auth\LoginController@callback')->name('log
 Route::get('/android', function () {
     $path = public_path('app/app-release.apk');
     return response()->download($path, 'modo-gym_android.apk');
-});
+})->name('android');

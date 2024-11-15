@@ -140,6 +140,20 @@
                                             class="list-inline-item bg-linkedin text-white border-0 rounded-3"><i
                                                 class="bx bxl-linkedin"></i></a> --}}
                                     </div>
+                                    <div class="login-separater text-center">
+                                        <span>Instala nuestra app</span>
+                                        <hr />
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <a href="{{ route('android') }}" id="down_android" class="mx-1"
+                                            class="rounded-5 border-1 border-black bg-light">
+                                            <img src="{{asset('image/android.png')}}" alt="android" width="40">
+                                        </a>
+                                        <a href="#" id="down_ios" class="mx-1"
+                                            class="rounded-5 border-1 border-black bg-light" title="Proximamente">
+                                            <img src="{{asset('image/ios.png')}}" alt="ios" width="40">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

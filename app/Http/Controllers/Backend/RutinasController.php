@@ -73,10 +73,48 @@ class RutinasController extends Controller
     public function usuarioRutinas($usu_id)
     {
         $usuario = Usuarios::where('usu_id', $usu_id)->first();
+
+        $lunes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 1)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $martes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 2)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $miercoles = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 3)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $jueves = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 4)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $viernes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 5)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $sabado = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 6)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+        $domingo = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 7)
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->get();
+
+        $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
+            ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
+            ->join('musculo', 'ejercicios.mus_id', '=', 'musculo.mus_id')
+            ->where('ejercicios.ejer_estado', '!=', 'ELIMINADO')
+            ->where('equipos.equi_estado', '!=', 'ELIMINADO')
+            ->where('musculo.mus_estado', '!=', 'ELIMINADO')
+            ->get();
+
         $rutinas = Rutinas::where('usu_id', $usu_id)->get();
         $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
 
-        return view('backend.pages.rutinas.rutinas', compact('usuario', 'rutinas', 'musculos'));
+        return view('backend.pages.rutinas.rutinas-col', compact('usuario', 'rutinas', 'musculos', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'ejercicios'));
     }
 
     // public function usuarioRutinasDia($usu_id, $dia)
@@ -99,13 +137,15 @@ class RutinasController extends Controller
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún rutina!');
         }
 
-        $clientes = Usuarios::select('usuarios.*', 'pagos.pago_fecha', 'costos.mes')
-            ->join('pagos', 'usuarios.usu_id', '=', 'pagos.usu_id')
-            ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
-            ->whereRaw('pagos.pago_fecha >= DATE_SUB(CURDATE(), INTERVAL (costos.mes * 30) DAY)')
-            ->where('usuarios.usu_estado', 'ACTIVO')
-            ->orderBy('usuarios.usu_id', 'DESC')
-            ->get();
+        // $clientes = Usuarios::select('usuarios.*', 'pagos.pago_fecha', 'costos.mes')
+        //     ->join('pagos', 'usuarios.usu_id', '=', 'pagos.usu_id')
+        //     ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
+        //     ->whereRaw('pagos.pago_fecha >= DATE_SUB(CURDATE(), INTERVAL (costos.mes * 30) DAY)')
+        //     ->where('usuarios.usu_estado', 'ACTIVO')
+        //     ->orderBy('usuarios.usu_id', 'DESC')
+        //     ->get();
+        $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
+
         // $ejercicios = Ejercicios::where('ejer_estado', 'ACTIVO')->get();
         $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
             ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
@@ -196,6 +236,26 @@ class RutinasController extends Controller
 
         session()->flash('success', '¡¡Se han creado las rutina!!');
         return redirect()->route('admin.usuario.rutinas', $request->usu_id);
+    }
+
+    public function storeRutinas(Request $request)
+    {
+        foreach ($request->rutinas as $rut) {
+            $newRutina = new Rutinas();
+            $newRutina->usu_id = $request->usu_id;
+            $newRutina->rut_grupo = 1;
+            $newRutina->ejer_id = $rut;
+            $newRutina->rut_serie = 0;
+            $newRutina->rut_repeticiones = 0;
+            $newRutina->rut_peso = 0;
+            $newRutina->rut_rid = 0;
+            $newRutina->rut_tiempo = 0;
+            $newRutina->rut_dia = $request->dia;
+            $newRutina->rut_date_ini = date('Y-m-d');
+            $newRutina->rut_date_fin = date('Y-m-d');
+            $newRutina->save();
+        }
+        return true;
     }
 
     /**
@@ -321,5 +381,23 @@ class RutinasController extends Controller
         $rutina->save();
 
         return response()->json(['message' => 'Actualización exitosa.']);
+    }
+
+    public function guardarRutina(Request $request)
+    {
+        $rutina = Rutinas::where('rut_id', $request->id)->first();
+        $rutina->rut_serie = $request->series;
+        $rutina->rut_repeticiones = $request->repeticiones;
+        $rutina->rut_rid = $request->rir;
+        $rutina->save();
+
+        return $rutina;
+    }
+    public function eliminarRutina(Request $request)
+    {
+        $rutina = Rutinas::where('rut_id', $request->id)->first();
+        $rutina->delete();
+
+        return $rutina;
     }
 }
