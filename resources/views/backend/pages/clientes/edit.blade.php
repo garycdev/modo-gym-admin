@@ -60,7 +60,7 @@
                                 enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="bsValidation10" class="form-label required_value">Edad </label>
                                     <input type="number" class="form-control" id="ci" name="ci"
                                         placeholder="CI" value="{{ $cliente->usu_ci }}">
@@ -68,7 +68,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="bsValidation10" class="form-label required_value">Edad </label>
                                     <input type="number" class="form-control" id="edad" name="edad"
                                         placeholder="Edad" value="{{ $cliente->usu_edad }}">
@@ -76,7 +76,15 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
+                                    <label for="bsValidation10" class="form-label required_value">Celular </label>
+                                    <input type="number" class="form-control" id="celular" name="celular"
+                                        placeholder="Celular" value="{{ $cliente->usu_celular }}">
+                                    @error('celular')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2">
                                     <label for="bsValidation10" class="form-label required_value">Huella </label>
                                     <input type="number" class="form-control" id="huella" name="huella"
                                         placeholder="Huella" value="{{ $cliente->usu_huella }}">
@@ -97,7 +105,7 @@
                                     <input type="text" class="form-control" id="apellidos" name="apellidos"
                                         placeholder="Apellidos" value="{{ $cliente->usu_apellidos }}">
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label required_value">Genero </label>
                                     <select id="genero" name="genero" class="form-select">
                                         <option selected disabled value>[GENERO]</option>
@@ -114,7 +122,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label for="bsValidation9" class="form-label required_value">Nivel </label>
                                     <select id="nivel" name="nivel" class="form-select">
                                         <option selected disabled value>[NIVEL]</option>

@@ -16,6 +16,7 @@ class Usuarios extends Model
         'usu_nombre',
         'usu_apellidos',
         'usu_ci',
+        'usu_celular',
         'usu_huella',
         'usu_edad',
         'usu_genero',

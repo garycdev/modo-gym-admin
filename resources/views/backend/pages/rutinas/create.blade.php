@@ -87,8 +87,28 @@
                                                         <span class="fw-bold">Musculo:
                                                         </span>{{ $ejer->musculo->mus_nombre }}
                                                     </p>
-                                                    <span class="align-end badge bg-dark">Nivel
-                                                        {{ $ejer->ejer_nivel }}</span>
+                                                    @switch($ejer->ejer_nivel)
+                                                        @case(1)
+                                                        @case(2)
+                                                            <span class="align-end badge bg-primary">Nivel
+                                                                {{ $ejer->ejer_nivel }}</span>
+                                                        @break
+
+                                                        @case(3)
+                                                            <span class="align-end badge bg-warning">Nivel
+                                                                {{ $ejer->ejer_nivel }}</span>
+                                                        @break
+
+                                                        @case(4)
+                                                        @case(5)
+                                                            <span class="align-end badge bg-danger">Nivel
+                                                                {{ $ejer->ejer_nivel }}</span>
+                                                        @break
+
+                                                        @default
+                                                            <span class="align-end badge bg-dark">Nivel
+                                                                {{ $ejer->ejer_nivel }}</span>
+                                                    @endswitch
                                                 </div>
                                             </label>
                                         </div>
@@ -220,8 +240,8 @@
                                             @endphp
                                             <input type="text" class="form-control" readonly
                                                 value="{{ $nombre }} {{ $apellidos }}">
-                                            <input type="hidden" id="usu_id" name="usu_id" value="{{ $id }}"
-                                                onload="rutinaUser({{ $id }})">
+                                            <input type="hidden" id="usu_id" name="usu_id"
+                                                value="{{ $id }}" onload="rutinaUser({{ $id }})">
                                             @error('usu_id')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror

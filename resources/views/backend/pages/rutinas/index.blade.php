@@ -132,6 +132,19 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="col-md-12 mt-3" style="display:none;" id="defecto">
+                            <label for="bsValidation9" class="form-label">Rutinas predeterminadas <span
+                                    class="text-muted">(Opcional)</span></label>
+                            <select id="def_id" name="def_id" class="form-select def_id" onchange="selectUser()">
+                                <option selected disabled value>[RUTINAS]</option>
+                                @foreach ($rutinas as $def)
+                                    <option value="{{ $def->def_id }}">{{ $def->def_nombre }}</option>
+                                @endforeach
+                            </select>
+                            @error('def_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -182,6 +195,7 @@
 
         function selectUser() {
             $('#btn_rutina_cliente').removeAttr('disabled');
+            $('#defecto').attr('style', 'display: block');
         }
     </script>
 @endsection

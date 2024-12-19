@@ -51,6 +51,7 @@ class ClientesController extends Controller
             'huella' => 'required|numeric',
             // 'ci' => 'required|numeric|unique:usuarios,usu_ci',
             'ci' => 'required|numeric',
+            'celular' => 'nullable|numeric',
             'genero' => 'required',
             'nivel' => 'required',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
@@ -63,6 +64,7 @@ class ClientesController extends Controller
             'huella.required' => 'La huella es requerida',
             'ci.required' => 'El CI es obligatorio',
             'ci.unique' => 'El CI ya existe',
+            'celular.numeric' => 'El numero telefónico debe ser valido',
             'genero.required' => 'El genero es obligatorio',
             'nivel.required' => 'El nivel es obligatorio',
         ]);
@@ -71,6 +73,7 @@ class ClientesController extends Controller
         $newCliente->usu_nombre = $request->nombre;
         $newCliente->usu_apellidos = $request->apellidos;
         $newCliente->usu_ci = $request->ci;
+        $newCliente->usu_celular = $request->celular;
         $newCliente->usu_huella = $request->huella;
         $newCliente->usu_edad = $request->edad;
         $newCliente->usu_genero = $request->genero;
@@ -125,6 +128,7 @@ class ClientesController extends Controller
         }
         $request->validate([
             'ci' => 'required|numeric',
+            'celular' => 'nullable|numeric',
             'nombre' => 'required',
             'edad' => 'required|numeric',
             'huella' => 'required|numeric',
@@ -140,6 +144,7 @@ class ClientesController extends Controller
         $editCliente->usu_nombre = $request->nombre;
         $editCliente->usu_apellidos = $request->apellidos;
         $editCliente->usu_ci = $request->ci;
+        $editCliente->usu_celular = $request->celular;
         $editCliente->usu_huella = $request->huella;
         $editCliente->usu_edad = $request->edad;
         $editCliente->usu_genero = $request->genero;

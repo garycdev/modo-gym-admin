@@ -162,117 +162,7 @@
             <hr />
             <div class="card">
                 <div class="card-body">
-                    <div class="row mx-lg-5 pb-1 d-flex justify-content-center align-items-center alert alert-info">
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <p style="font-size:1.1em;">
-                                <b>CI:</b> {{ $usuario->usu_ci }} <br>
-                                <b>Nombres:</b> {{ $usuario->usu_nombre }} <br>
-                                <b>Apellidos:</b> {{ $usuario->usu_apellidos }} <br>
-                                <b>Edad: </b> {{ $usuario->usu_edad }} años<br>
-                                <b>Genero: </b> {{ $usuario->usu_genero }}
-                            </p>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <p style="font-size:1.1em;">
-                                <b>Plan: </b> {{ count($usuario->costo) > 0 ? $usuario->costo[0]->nombre : '-No tiene-' }}
-                                <br>
-                                <b>Dia: </b> -<span id="text_dia">TODOS</span>- <br>
-                                <b>Musculo: </b> -<span id="text_musculo">TODOS</span>-
-                            </p>
-                        </div>
-                        <div class="col-lg-5 col-md-6 col-12">
-                            <p style="font-size:1.1em;">
-                                {{-- @dd($usuario->formulario) --}}
-                                @if ($usuario->formulario)
-                                    @php
-                                        $form = $usuario->formulario;
-                                    @endphp
-                                    <b>Antecedentes medicos:</b>
-                                    {{ $form->enfermedades ? $form->enfermedades : '-' }}
-                                    <br>
-                                    <b>Medicamentos:</b> {{ $form->medicamentos ? $form->medicamentos : '-' }}
-                                    <br>
-                                    <b>Lesiones:</b> {{ $form->lesion ? $form->lesion : '-' }} <br>
-                                    <b>Objetivo:</b> {{ $form->objetivos ? implode(' y ', $form->objetivos) : '-' }}
-                                    <br>
-                                    <b>Horario: </b> {{ $form->horario ? $form->horario : '-' }} <br>
-                                    <b>Dias: </b> {{ $form->dias_semana ? $form->dias_semana : '-' }} <br>
-                                    <b>Deportes:</b>
-                                    {{ $form->deportes_detalles ? $form->deportes_detalles : '-' }}
-                                @else
-                                    <b>Formulario no llenado</b>
-                                @endif
-                                {{-- <b>Antecedentes medicos:</b>
-                                {{ $usuario->usu_ante_medicos ? $usuario->usu_ante_medicos : '-Ninguno-' }} <br>
-                                <b>Lesiones:</b> {{ $usuario->usu_lesiones ? $usuario->usu_lesiones : '-Ninguno-' }} <br>
-                                <b>Objetivo:</b> {{ $usuario->usu_objetivo ? $usuario->usu_objetivo : '-Ninguno-' }} <br>
-                                <b>Frecuencia: </b> {{ $usuario->usu_frecuencia ? $usuario->usu_frecuencia : '-0-' }}<br>
-                                <b>Horas: </b> {{ $usuario->usu_hora ? $usuario->usu_hora : '-0-' }} <br>
-                                <b>Deportes: </b> {{ $usuario->usu_deportes ? $usuario->usu_deportes : '-Ninguno-' }} --}}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row p-2 d-flex justify-content-end align-items-center">
-                        {{-- <div class="col-lg-2 col-md-3 col-12">
-                            <label for="filter_dia">Filtrar por día</label>
-                            <select name="dia" id="filter_dia" class="form-control">
-                                <option value="" data-dia="TODOS">[TODOS]</option>
-                                <option value="1" data-dia="{{ strtoupper(dias(1)) }}">
-                                    {{ strtoupper(dias(1)) }}
-                                </option>
-                                <option value="2" data-dia="{{ strtoupper(dias(2)) }}">
-                                    {{ strtoupper(dias(2)) }}
-                                </option>
-                                <option value="3" data-dia="{{ strtoupper(dias(3)) }}">
-                                    {{ strtoupper(dias(3)) }}
-                                </option>
-                                <option value="4" data-dia="{{ strtoupper(dias(4)) }}">
-                                    {{ strtoupper(dias(4)) }}
-                                </option>
-                                <option value="5" data-dia="{{ strtoupper(dias(5)) }}">
-                                    {{ strtoupper(dias(5)) }}
-                                </option>
-                                <option value="6" data-dia="{{ strtoupper(dias(6)) }}">
-                                    {{ strtoupper(dias(6)) }}
-                                </option>
-                                <option value="7" data-dia="{{ strtoupper(dias(7)) }}">
-                                    {{ strtoupper(dias(7)) }}
-                                </option>
-                            </select>
-                        </div> --}}
-                        {{-- <div class="col-lg-8 col-md-8 col-12">
-                            <label for="filter_musculo">Filtrar por Músculo</label>
-                            <select name="musculo" id="filter_musculo" class="form-control filter_musculo">
-                                <option value="" data-musculo="TODOS">[TODOS]</option>
-                                @foreach ($musculos as $mus)
-                                    <option value="{{ $mus->mus_id }}" data-musculo="{{ $mus->mus_nombre }}">
-                                        {{ $mus->mus_nombre }} - <span
-                                            style="font-size:10px;">{{ $mus->mus_descripcion }}</span>
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        <p class="col-lg-2 col-md-2 col-12">
-                            @if ($usr->can('rutina.create') && (
-                                count($lunes) == 0 &&
-                                count($martes) == 0 &&
-                                count($miercoles) == 0 &&
-                                count($jueves) == 0 &&
-                                count($viernes) == 0 &&
-                                count($sabado) == 0 &&
-                                count($domingo) == 0
-                            ))
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#modalNuevo">
-                                    Nuevo rutina cliente
-                                </button>
-                            @endif
-                        </p>
-                    </div>
 
-                    <br>
-
-                    <br>
                     @include('backend.layouts.partials.messages')
 
                     <br>
@@ -765,8 +655,28 @@
                                                 <span class="fw-bold">Musculo:
                                                 </span>{{ $ejer->musculo->mus_nombre }}
                                             </p>
-                                            <span class="align-end badge bg-dark">Nivel
-                                                {{ $ejer->ejer_nivel }}</span>
+                                            @switch($ejer->ejer_nivel)
+                                                @case(1)
+                                                @case(2)
+                                                    <span class="align-end badge bg-primary">Nivel
+                                                        {{ $ejer->ejer_nivel }}</span>
+                                                @break
+
+                                                @case(3)
+                                                    <span class="align-end badge bg-warning">Nivel
+                                                        {{ $ejer->ejer_nivel }}</span>
+                                                @break
+
+                                                @case(4)
+                                                @case(5)
+                                                    <span class="align-end badge bg-danger">Nivel
+                                                        {{ $ejer->ejer_nivel }}</span>
+                                                @break
+
+                                                @default
+                                                    <span class="align-end badge bg-dark">Nivel
+                                                        {{ $ejer->ejer_nivel }}</span>
+                                            @endswitch
                                         </div>
                                     </label>
                                 </div>
@@ -784,42 +694,6 @@
             </div>
         </div>
     @endif
-
-    <!-- Modal -->
-    <div class="modal fade" id="modalNuevo" tabindex="-1" aria-labelledby="modalNuevoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" action="{{ route('admin.rutinas.store') }}">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalNuevoLabel">Rutinas prefedifinas</h1>
-                        <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <input type="hidden" name="ejer_id" value="{{ $ejer->ejer_id }}">
-                        @csrf
-                    </div>
-                    <div class="modal-body row">
-                        <input type="hidden" name="edit" value="true">
-                        <input type="hidden" name="usu_id" value="{{ $usuario->usu_id }}">
-                        <div class="col-md-12">
-                            <label for="bsValidation9" class="form-label">Rutinas predeterminadas</label>
-                            <select id="def_id" name="def_id" class="form-select def_id">
-                                <option selected disabled value>[RUTINAS]</option>
-                                @foreach ($rutinasDef as $def)
-                                    <option value="{{ $def->def_id }}">{{ $def->def_nombre }}</option>
-                                @endforeach
-                            </select>
-                            @error('def_id')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btn_rutina_cliente">Agregar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('scripts')
@@ -1004,16 +878,6 @@
 
             $('#ejercicios_rutina input[name="ejercicios[]"]:checked').each(function() {
                 var id = $(this).attr('id');
-                // var name = $(this).data('name');
-                // var image = $(this).data('image');
-                // var tipo = $(this).data('tipo');
-                // selectEjercicios.push({
-                //     id: id,
-                //     name: name,
-                //     image: image,
-                //     tipo: tipo,
-                //     id_usuario: '{{ $usuario->usu_id }}'
-                // });
                 selectEjercicios.push(id)
             });
             console.log(selectEjercicios);
@@ -1021,12 +885,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.rutinas.storeRutinas') }}",
+                url: "{{ route('admin.rutinas-def.store') }}",
                 data: {
                     _token: '{{ csrf_token() }}',
                     dia: dia,
                     rutinas: selectEjercicios,
-                    usu_id: '{{ $usuario->usu_id }}'
+                    def_id: '{{ $defecto->def_id }}'
                 },
                 dataType: "JSON",
                 success: function(response) {

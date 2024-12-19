@@ -22,7 +22,7 @@ class CostosController extends Controller
      */
     public function index()
     {
-        $costos = Costos::all();
+        $costos = Costos::where('estado', 'ACTIVO')->get();
         return view('backend.pages.costos.index', compact('costos'));
     }
 
@@ -125,8 +125,10 @@ class CostosController extends Controller
         }
 
         $costo = Costos::find($id);
-        // $costo->usu_estado = 'ELIMINADO';
-        $costo->delete();
+        $costo->estado = 'ELIMINADO';
+        $costo->save();
+        // $costo->delete();
+
 
         session()->flash('success', '¡¡El costo ha sido eliminado!!');
         return back();

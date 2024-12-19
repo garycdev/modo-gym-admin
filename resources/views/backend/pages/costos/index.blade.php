@@ -57,8 +57,9 @@
                                     <th>Tipo</th>
                                     <th>Periodo</th>
                                     <th>Monto</th>
-                                    <th>Ingreso x dia</th>
-                                    <th>Ingreso x semana</th>
+                                    <th>I/dia</th>
+                                    <th>I/semana</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -85,8 +86,13 @@
                                         </td>
                                         <td><span class="badge bg-dark">{{ $costo->periodo }}</span></td>
                                         <td>{{ $costo->monto }}&nbsp;bs.</td>
-                                        <td><span class="badge bg-primary">{{ $costo->ingreso_dia }}</span></td>
-                                        <td><span class="badge bg-success">{{ $costo->ingreso_semana }}</span></td>
+                                        <td><span class="badge bg-info">{{ $costo->ingreso_dia }}</span></td>
+                                        <td><span class="badge bg-primary">{{ $costo->ingreso_semana }}</span></td>
+                                        <td>
+                                            <span class="badge bg-{{ $costo->estado == 'ACTIVO' ? 'success' : 'danger' }}">
+                                                {{ $costo->estado }}
+                                            </span>
+                                        </td>
                                         <td>
                                             @if (Auth::guard('admin')->user()->can('costo.edit'))
                                                 <a class="btn btn-sm btn-warning"
@@ -122,8 +128,9 @@
                                     <th>Tipo</th>
                                     <th>Periodo</th>
                                     <th>Monto</th>
-                                    <th>Ingreso x dia</th>
-                                    <th>Ingreso x semana</th>
+                                    <th>I/dia</th>
+                                    <th>I/semana</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

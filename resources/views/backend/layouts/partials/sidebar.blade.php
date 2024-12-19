@@ -108,8 +108,9 @@
                      @endif
                      @if ($usr->can('musculo.view'))
                          <li class="{{ Route::is('admin.musculos.index') ? 'mm-active' : '' }}">
-                             <a href="{{ route('admin.musculos.index') }}"><i
-                                     class='bx bx-radio-circle'></i>Musculos</a>
+                             <a href="{{ route('admin.musculos.index') }}"><i class='bx bx-radio-circle'></i>
+                                 Musculos
+                             </a>
                          </li>
                      @endif
 
@@ -122,6 +123,15 @@
                      <div class="parent-icon"><i class='bx bx-reset'></i>
                      </div>
                      <div class="menu-title">Rutinas</div>
+                 </a>
+             </li>
+         @endif
+         @if ($usr->can('rutina.view'))
+             <li class="{{ Route::is('admin.defecto.index') ? 'mm-active' : '' }}">
+                 <a href="{{ route('admin.defecto.index') }}">
+                     <div class="parent-icon"><i class='bx bx-reset'></i>
+                     </div>
+                     <div class="menu-title">Rutinas predefinidas</div>
                  </a>
              </li>
          @endif

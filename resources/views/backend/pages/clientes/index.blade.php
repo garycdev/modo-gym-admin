@@ -57,6 +57,7 @@
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>CI</th>
+                                    <th>Celular</th>
                                     <th>Edad</th>
                                     <th>Huella</th>
                                     <th>Genero</th>
@@ -84,6 +85,7 @@
                                         <td>{{ $cliente->usu_nombre }}</td>
                                         <td>{{ $cliente->usu_apellidos }}</td>
                                         <td>{{ $cliente->usu_ci }}</td>
+                                        <td>{{ $cliente->usu_celular ?? '-' }}</td>
                                         <td>{{ $cliente->usu_edad }}</td>
                                         <td>
                                             <span
@@ -135,7 +137,10 @@
                                     <th>Image</th>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
+                                    <th>CI</th>
+                                    <th>Celular</th>
                                     <th>Edad</th>
+                                    <th>Huella</th>
                                     <th>Genero</th>
                                     <th>Nivel</th>
                                     {{-- <th>Antecedentes medicos</th>
@@ -154,7 +159,7 @@
             </div>
         </div>
     </div>
-{{-- <div class="main-content-inner">
+    {{-- <div class="main-content-inner">
     <div class="row">
         <!-- data table start -->
         <div class="col-12 mt-5">

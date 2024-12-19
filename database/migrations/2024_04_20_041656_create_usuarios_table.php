@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id('usu_id');
             $table->string('usu_nombre')->default('SIN NOMBRE');
             $table->string('usu_apellidos')->nullable();
+            $table->integer('usu_ci');
+            $table->integer('usu_celular')->nullable();
+            $table->string('usu_email')->nullable();
+            $table->boolean('usu_huella')->default(false);
             $table->integer('usu_edad')->default(0);
             $table->enum('usu_genero', ['MASCULINO', 'FEMENINO', 'NO PREFIERO DECIRLO']);
             $table->string('usu_imagen')->nullable();

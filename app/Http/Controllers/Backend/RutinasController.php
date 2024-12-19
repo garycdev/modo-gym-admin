@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Defecto;
 use App\Models\Ejercicios;
 use App\Models\Musculo;
+use App\Models\RutinaDefecto;
 use App\Models\Rutinas;
 use App\Models\Usuarios;
 use Illuminate\Http\Request;
@@ -116,6 +118,7 @@ class RutinasController extends Controller
             $usuarios = Rutinas::join('usuarios', 'usuarios.usu_id', '=', 'rutinas.usu_id')
                 ->select('usuarios.usu_id')
                 ->groupBy('usuarios.usu_id')
+                ->orderBy('rutinas.rut_id', 'ASC')
                 ->get();
 
             // $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
@@ -128,8 +131,9 @@ class RutinasController extends Controller
                 ->whereNotIn('usu_id', $users)
                 ->get();
             $ejer = Rutinas::orderBy('ejer_id', 'DESC')->first();
+            $rutinas = Defecto::where('def_estado', '<>', 'ELIMINADO')->get();
 
-            return view('backend.pages.rutinas.index', compact('usuarios', 'clientes', 'ejer'));
+            return view('backend.pages.rutinas.index', compact('usuarios', 'clientes', 'ejer', 'rutinas'));
         }
     }
 
@@ -190,8 +194,9 @@ class RutinasController extends Controller
 
         $rutinas = Rutinas::where('usu_id', $usu_id)->get();
         $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
+        $rutinasDef = Defecto::where('def_estado', '<>', 'ELIMINADO')->get();
 
-        return view('backend.pages.rutinas.rutinas-col', compact('usuario', 'rutinas', 'musculos', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'ejercicios'));
+        return view('backend.pages.rutinas.rutinas-col', compact('usuario', 'rutinas', 'musculos', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'ejercicios', 'rutinasDef'));
     }
 
     // public function usuarioRutinasDia($usu_id, $dia)
@@ -247,12 +252,16 @@ class RutinasController extends Controller
         }
         // dd($request);
         // die();
-        $request->validate([
-            'usu_id' => 'required',
-            // 'rut_dia' => 'required',
-            // 'fecha_ini' => 'required',
-            // 'fecha_fin' => 'required',
-        ]);
+        if ($request->edit) {
+            $request->validate([
+                'usu_id' => 'required',
+                'def_id' => 'required',
+            ]);
+        } else {
+            $request->validate([
+                'usu_id' => 'required',
+            ]);
+        }
 
         // if (isset($request->anterior)) {
         //     if ($request->anterior == 'on') {
@@ -311,23 +320,51 @@ class RutinasController extends Controller
         //     }
         // }
 
-        $nuevaRutina = new Rutinas();
-        $nuevaRutina->usu_id = $request->usu_id;
-        $nuevaRutina->rut_grupo = 1;
-        $nuevaRutina->ejer_id = $request->ejer_id;
-        $nuevaRutina->rut_serie = 0;
-        $nuevaRutina->rut_repeticiones = 0;
-        $nuevaRutina->rut_peso = 0;
-        $nuevaRutina->rut_rid = 0;
-        $nuevaRutina->rut_tiempo = 0;
-        $nuevaRutina->rut_dia = 1;
-        $nuevaRutina->rut_date_ini = date('Y-m-d');
-        $nuevaRutina->rut_date_fin = date('Y-m-d');
-        $nuevaRutina->rut_estado = 'ELIMINADO';
-        $nuevaRutina->save();
+        if (!$request->def_id) {
+            $nuevaRutina = new Rutinas();
+            $nuevaRutina->usu_id = $request->usu_id;
+            $nuevaRutina->rut_grupo = 1;
+            $nuevaRutina->ejer_id = $request->ejer_id;
+            $nuevaRutina->rut_serie = 0;
+            $nuevaRutina->rut_repeticiones = 0;
+            $nuevaRutina->rut_peso = 0;
+            $nuevaRutina->rut_rid = 0;
+            $nuevaRutina->rut_tiempo = 0;
+            $nuevaRutina->rut_dia = 1;
+            $nuevaRutina->rut_date_ini = date('Y-m-d');
+            $nuevaRutina->rut_date_fin = date('Y-m-d');
+            $nuevaRutina->rut_estado = 'ELIMINADO';
+            $nuevaRutina->save();
 
-        session()->flash('success', '¡¡Se han creado el cliente!!');
-        return redirect()->route('admin.usuario.rutinas', $request->usu_id);
+            session()->flash('success', '¡¡Se han creado el cliente!!');
+            return redirect()->route('admin.usuario.rutinas', $request->usu_id);
+        } else {
+            $defecto = Defecto::find($request->def_id);
+            $rutinas = RutinaDefecto::where('def_id', $defecto->def_id)
+                ->where('rut_estado', 'ACTIVO')
+                ->get();
+
+            // dd($rutinas);
+            foreach ($rutinas as $rut) {
+                $newRutina = new Rutinas();
+                $newRutina->usu_id = $request->usu_id;
+                $newRutina->rut_grupo = 1;
+                $newRutina->ejer_id = $rut->ejer_id;
+                $newRutina->rut_serie = $rut->rut_serie;
+                $newRutina->rut_repeticiones = $rut->rut_repeticiones;
+                $newRutina->rut_peso = 0;
+                $newRutina->rut_rid = $rut->rut_rid;
+                $newRutina->rut_tiempo = 0;
+                $newRutina->rut_dia = $rut->rut_dia;
+                $newRutina->rut_date_ini = date('Y-m-d');
+                $newRutina->rut_date_fin = date('Y-m-d');
+                $newRutina->rut_estado = 'ACTIVO';
+                $newRutina->save();
+            }
+
+            session()->flash('success', '¡¡Se han creado el cliente con la rutina "' . $defecto->def_nombre . '"!!');
+            return redirect()->route('admin.usuario.rutinas', $request->usu_id);
+        }
     }
 
     public function storeRutinas(Request $request)
