@@ -88,6 +88,7 @@
                             <tbody>
                                 @php
                                     $i = 1;
+                                    use Carbon\Carbon;
                                 @endphp
                                 @foreach ($pagos as $pago)
                                     @php
@@ -109,6 +110,8 @@
                                         // Determinar el estilo del badge basado en los días restantes
                                         $badgeClass = $diferenciaDias > 0 ? 'bg-warning text-black' : 'bg-danger'; // Si faltan días, usar warning, si no, danger
 
+                                        $asistencias = 0;
+
                                         // Texto de días restantes para completar el mes
                                         if ($diferenciaDias > 0) {
                                             if ($diferenciaDias >= $pago->costo->mes * 30) {
@@ -118,12 +121,18 @@
                                             }
                                         } elseif ($diferenciaDias == 0) {
                                             $textoFaltante = 'Hoy es el último día';
+                                        } elseif (
+                                            $diferenciaDias >= -30 &&
+                                            $diferenciaDias < 0 &&
+                                            count($pago->cliente->asistencias(abs($diferenciaDias))) > 0
+                                        ) {
+                                            $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
+                                            $asistencias = count($pago->cliente->asistencias(abs($diferenciaDias)));
                                         } else {
-                                            // $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
                                             $textoFaltante = 0;
                                         }
                                     @endphp
-                                    @if ($diferenciaDias >= 0)
+                                    @if ($diferenciaDias >= 0 || ($diferenciaDias >= -30 && $asistencias > 0))
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
@@ -141,6 +150,10 @@
                                             <td>
                                                 <span class="badge {{ $badgeClass }}">
                                                     {{ $textoFaltante }}
+                                                    @if ($asistencias > 0)
+                                                        <br>
+                                                        {{ $asistencias }} asistencias
+                                                    @endif
                                                 </span>
                                             </td>
                                             <td>

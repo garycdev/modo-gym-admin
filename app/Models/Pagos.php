@@ -14,8 +14,16 @@ class Pagos extends Model
     protected $table = 'pagos';
     protected $primaryKey = 'pago_id';
     protected $fillable = [
-        'pago_id', 'usu_id', 'pago_monto', 'costo_id', 'pago_fecha', 'pago_metodo',
-        'pago_estado', 'pago_observaciones', 'creado_en', 'actualizado_en',
+        'pago_id',
+        'usu_id',
+        'pago_monto',
+        'costo_id',
+        'pago_fecha',
+        'pago_metodo',
+        'pago_estado',
+        'pago_observaciones',
+        'creado_en',
+        'actualizado_en',
     ];
     // Especifica el nombre de la columna para updated_at
     const UPDATED_AT = 'actualizado_en';
@@ -25,7 +33,7 @@ class Pagos extends Model
     // Relacion con la tabla de usuarios
     public function cliente()
     {
-        return $this->belongsTo(Usuarios::class, 'usu_id');
+        return $this->belongsTo(Usuarios::class, 'usu_id', 'usu_id');
     }
 
     // Relacion con la tabla de costos

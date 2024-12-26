@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -66,5 +67,15 @@ class Usuarios extends Model
     public function formulario()
     {
         return $this->hasOne(Formulario::class, 'usu_id', 'usu_id');
+    }
+
+    public function asistencias($dias)
+    {
+        return $this->hasMany(Asistencia::class, 'usu_id', 'usu_id')
+            ->where('asistencia.asistencia_tipo', 'ENTRADA')
+            // where between en un rango de la fecha actual menos el parametro dias [fecha-dias, fecha]
+            ->whereBetween('asistencia.asistencia_fecha', [Carbon::now()->subDays($dias)->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
+            ->orderBy('asistencia.asistencia_fecha', 'asc')
+            ->get();
     }
 }

@@ -80,10 +80,10 @@ class UsuarioController extends Controller
             $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 
             // Verificar si se encontró algún pago actual para el usuario
-            if (intval($diferenciaDias) < 0) {
+            if (intval($diferenciaDias) < -30) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'No se encontró un pago actual para este usuario.',
+                    'message' => 'No se encontró ningún pago actual para este usuario.',
                 ], 404);
             } elseif (intval($diferenciaDias) > (30 * $pagos->mes)) {
                 return response()->json([
@@ -94,7 +94,10 @@ class UsuarioController extends Controller
 
             // Construir el mensaje de respuesta
             $mensajeAsistencia = ($asistencia && $asistencia->asistencia_tipo == 'ENTRADA') ? 'Asistencia SALIDA' : 'Asistencia ENTRADA.';
-            if ($diferenciaDias == 0) {
+            if ($diferenciaDias < 0) {
+                $textoDiasFaltantes = "Se pasó $diferenciaDias días.";
+                $messageAsistencia = 'Se pasaron ' . $diferenciaDias . ' días.';
+            } else if ($diferenciaDias == 0) {
                 $textoDiasFaltantes = 'Hoy es el último día.';
                 $messageAsistencia = 'Hoy es el último día.';
             } else {
