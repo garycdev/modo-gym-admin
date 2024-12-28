@@ -79,4 +79,47 @@ class RutinasDefectoController extends Controller
 
         return true;
     }
+
+    public function guardarRutina(Request $request)
+    {
+        if ($request->id) {
+            if ($request->tiempo) {
+                $rutinas = RutinaDefecto::where('def_id', $request->def_id)
+                    ->where('ejer_id', $request->ejer_id)
+                    ->where('rut_dia', $request->dia)
+                    ->get();
+                foreach ($rutinas as $rutina) {
+                    $rutina->rut_tiempo = $request->tiempo;
+                    $rutina->save();
+                }
+            } else {
+                $rutina = RutinaDefecto::where('rd_id', $request->id)->first();
+                $rutina->rut_serie = $request->serie;
+                $rutina->rut_peso = $request->peso ?? 0;
+                $rutina->rut_rid = $request->rir ?? 0;
+                $rutina->rut_repeticiones = $request->repeticiones ?? 1;
+                $rutina->save();
+            }
+        } else {
+            $rutina = new RutinaDefecto();
+            $rutina->def_id = $request->def_id;
+            $rutina->ejer_id = $request->ejer_id;
+            $rutina->rut_serie = intval($request->serie) + 1;
+            $rutina->rut_repeticiones = 1;
+            $rutina->rut_peso = 0;
+            $rutina->rut_rid = 0;
+            $rutina->rut_tiempo = 0;
+            $rutina->rut_dia = $request->dia;
+            $rutina->save();
+        }
+
+        return $rutina;
+    }
+    public function eliminarRutina(Request $request)
+    {
+        $rutina = RutinaDefecto::where('rd_id', $request->id)->first();
+        $rutina->delete();
+
+        return $rutina;
+    }
 }

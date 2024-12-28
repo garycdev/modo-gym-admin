@@ -45,6 +45,8 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('predeterminadas', 'Backend\DefectoController', ['names' => 'admin.defecto']);
     Route::resource('rutinas-def', 'Backend\RutinasDefectoController', ['names' => 'admin.rutinas-def']);
+    Route::post('rutinas-def/guardar', 'Backend\RutinasDefectoController@guardarRutina')->name('admin.rutinas-def.guardar');
+    Route::post('rutinas-def/eliminar', 'Backend\RutinasDefectoController@eliminarRutina')->name('admin.rutinas-def.eliminar');
 
     Route::resource('blogs', 'Backend\BlogsController', ['names' => 'admin.blogs']);
     Route::resource('productos', 'Backend\ProductosController', ['names' => 'admin.productos']);

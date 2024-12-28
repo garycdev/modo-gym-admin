@@ -17,6 +17,7 @@ class RutinaDefecto extends Model
         'rut_serie',
         'rut_repeticiones',
         'rut_rid',
+        'rut_tiempo',
         'rut_estado',
         'created_at',
         'updated_at',

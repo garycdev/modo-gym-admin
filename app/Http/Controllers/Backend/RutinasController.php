@@ -63,43 +63,45 @@ class RutinasController extends Controller
             $lunes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 1)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
+                ->groupBy('rutinas.ejer_id')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
+                ->orderBy('rutinas.rut_serie', 'ASC')
                 ->get();
             $martes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 2)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
             $miercoles = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 3)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
             $jueves = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 4)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
             $viernes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 5)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
             $sabado = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 6)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
             $domingo = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
                 ->where('rutinas.rut_dia', 7)
                 ->where('rutinas.usu_id', $usuario->usu_id)
-                ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+                ->where('rutinas.rut_estado', 'ACTIVO')
                 ->orderBy('ejer.ejer_nivel', 'DESC')
                 ->get();
 
@@ -143,46 +145,110 @@ class RutinasController extends Controller
 
         $lunes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 1)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[1] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 1)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $martes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 2)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[2] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 2)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $miercoles = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 3)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[3] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 3)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $jueves = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 4)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[4] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 4)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $viernes = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 5)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[5] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 5)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $sabado = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 6)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[6] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 6)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
         $domingo = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
             ->where('rutinas.rut_dia', 7)
-            ->where('rutinas.rut_estado', '<>', 'ELIMINADO')
+            ->where('rutinas.rut_estado', 'ACTIVO')
+            ->where('rutinas.usu_id', $usu_id)
+            ->groupBy('rutinas.ejer_id')
+            ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
+            ->get();
+        $dias[7] = Rutinas::join('ejercicios as ejer', 'ejer.ejer_id', '=', 'rutinas.ejer_id')
+            ->where('rutinas.rut_dia', 7)
+            ->where('rutinas.rut_estado', 'ACTIVO')
             ->where('rutinas.usu_id', $usu_id)
             ->orderBy('ejer.ejer_nivel', 'DESC')
+            ->orderBy('rutinas.rut_serie', 'ASC')
             ->get();
+
 
         $ejercicios = Ejercicios::select('ejercicios.*', 'equipos.*', 'musculo.*')
             ->join('equipos', 'ejercicios.equi_id', '=', 'equipos.equi_id')
@@ -196,7 +262,7 @@ class RutinasController extends Controller
         $musculos = Musculo::where('mus_estado', 'ACTIVO')->get();
         $rutinasDef = Defecto::where('def_estado', '<>', 'ELIMINADO')->get();
 
-        return view('backend.pages.rutinas.rutinas-col', compact('usuario', 'rutinas', 'musculos', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'ejercicios', 'rutinasDef'));
+        return view('backend.pages.rutinas.rutinas-col', compact('usuario', 'rutinas', 'musculos', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'dias', 'ejercicios', 'rutinasDef'));
     }
 
     // public function usuarioRutinasDia($usu_id, $dia)
@@ -374,8 +440,8 @@ class RutinasController extends Controller
             $newRutina->usu_id = $request->usu_id;
             $newRutina->rut_grupo = 1;
             $newRutina->ejer_id = $rut;
-            $newRutina->rut_serie = 0;
-            $newRutina->rut_repeticiones = 0;
+            $newRutina->rut_serie = 1;
+            $newRutina->rut_repeticiones = 1;
             $newRutina->rut_peso = 0;
             $newRutina->rut_rid = 0;
             $newRutina->rut_tiempo = 0;
@@ -514,11 +580,39 @@ class RutinasController extends Controller
 
     public function guardarRutina(Request $request)
     {
-        $rutina = Rutinas::where('rut_id', $request->id)->first();
-        $rutina->rut_serie = $request->series;
-        $rutina->rut_repeticiones = $request->repeticiones;
-        $rutina->rut_rid = $request->rir;
-        $rutina->save();
+        if ($request->id) {
+            if ($request->tiempo) {
+                $rutinas = Rutinas::where('usu_id', $request->usu_id)
+                    ->where('ejer_id', $request->ejer_id)
+                    ->where('rut_dia', $request->dia)
+                    ->get();
+                foreach ($rutinas as $rutina) {
+                    $rutina->rut_tiempo = $request->tiempo;
+                    $rutina->save();
+                }
+            } else {
+                $rutina = Rutinas::where('rut_id', $request->id)->first();
+                $rutina->rut_serie = $request->serie;
+                $rutina->rut_peso = $request->peso ?? 0;
+                $rutina->rut_rid = $request->rir ?? 0;
+                $rutina->rut_repeticiones = $request->repeticiones ?? 1;
+                $rutina->save();
+            }
+        } else {
+            $rutina = new Rutinas();
+            $rutina->usu_id = $request->usu_id;
+            $rutina->rut_grupo = 1;
+            $rutina->ejer_id = $request->ejer_id;
+            $rutina->rut_serie = intval($request->serie) + 1;
+            $rutina->rut_repeticiones = 1;
+            $rutina->rut_peso = 0;
+            $rutina->rut_rid = 0;
+            $rutina->rut_tiempo = 0;
+            $rutina->rut_dia = $request->dia;
+            $rutina->rut_date_ini = date('Y-m-d');
+            $rutina->rut_date_fin = date('Y-m-d');
+            $rutina->save();
+        }
 
         return $rutina;
     }
