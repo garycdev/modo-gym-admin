@@ -121,18 +121,19 @@
                                             }
                                         } elseif ($diferenciaDias == 0) {
                                             $textoFaltante = 'Hoy es el último día';
-                                        } elseif (
-                                            $diferenciaDias >= -30 &&
-                                            $diferenciaDias < 0 &&
-                                            count($pago->cliente->asistencias(abs($diferenciaDias))) > 0
-                                        ) {
-                                            $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
-                                            $asistencias = count($pago->cliente->asistencias(abs($diferenciaDias)));
+                                        // } elseif (
+                                        //     $diferenciaDias >= -30 &&
+                                        //     $diferenciaDias < 0 &&
+                                        //     count($pago->cliente->asistencias(abs($diferenciaDias))) > 0
+                                        // ) {
+                                        //     $textoFaltante = 'Se pasaron ' . abs($diferenciaDias) . ' días';
+                                        //     $asistencias = count($pago->cliente->asistencias(abs($diferenciaDias)));
                                         } else {
                                             $textoFaltante = 0;
                                         }
                                     @endphp
-                                    @if ($diferenciaDias >= 0 || ($diferenciaDias >= -30 && $asistencias > 0))
+                                    {{-- @if ($diferenciaDias >= 0 || ($diferenciaDias >= -30 && $asistencias > 0)) --}}
+                                    @if ($diferenciaDias >= 0)
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $pago->cliente->usu_nombre }} {{ $pago->cliente->usu_apellidos }}</td>
