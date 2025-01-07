@@ -68,7 +68,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="bsValidation10" class="form-label required_value">Edad </label>
+                                    <label for="bsValidation10" class="form-label required_value">Celular </label>
                                     <input type="number" class="form-control" id="celular" name="celular"
                                         placeholder="Celular">
                                     @error('celular')

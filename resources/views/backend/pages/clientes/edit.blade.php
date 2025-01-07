@@ -61,7 +61,7 @@
                                 @method('PUT')
                                 @csrf
                                 <div class="col-md-4">
-                                    <label for="bsValidation10" class="form-label required_value">Edad </label>
+                                    <label for="bsValidation10" class="form-label required_value">CI </label>
                                     <input type="number" class="form-control" id="ci" name="ci"
                                         placeholder="CI" value="{{ $cliente->usu_ci }}">
                                     @error('ci')

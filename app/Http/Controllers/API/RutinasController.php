@@ -29,4 +29,10 @@ class RutinasController extends Controller
             ], 404);
         }
     }
+
+    // public function editRutina(Request $request)
+    // {
+    //     $rutina = Rutinas::where('rut_id', $request->rut_id)->first();
+    //     $rutina->
+    // }
 }
