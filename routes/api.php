@@ -33,6 +33,10 @@ Route::middleware('apiCredential')->group(function () {
 Route::get('/', [LoginAppController::class, 'getStatus']);
 Route::post('/login-app', [LoginAppController::class, 'loginApp']);
 Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
-Route::get('/rutinas-app/{id}', [RutinasController::class, 'rutinasApp']);
+
+Route::resource('rutinas-app', RutinasController::class, ['names' => 'app.rutinas']);
+Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
+Route::get('/rutinas-app-user-dia/{id}', [RutinasController::class, 'rutinasUserDia']);
+
 Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
 Route::get('/blogs-app', [BlogsController::class, 'blogsApp']);
