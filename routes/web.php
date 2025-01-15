@@ -92,6 +92,19 @@ Route::get('/auth/redirect', 'Backend\Auth\LoginController@redirect')->name('log
 Route::get('/auth/callback', 'Backend\Auth\LoginController@callback')->name('login.callback');
 
 Route::get('/android', function () {
-    $path = public_path('app/app-release.apk');
-    return response()->download($path, 'modo-gym_android.apk');
+    $path = public_path('app/modo-gym_android.apk');
+    if (file_exists($path)) {
+        return response()->download($path, 'modo-gym_android.apk');
+    }
+
+    return redirect()->back()->with('error', 'Error en la descarga');
 })->name('android');
+
+Route::get('/ios', function () {
+    $path = public_path('app/modo-gym_ios.apk');
+    if (file_exists($path)) {
+        return response()->download($path, 'modo-gym_ios.apk');
+    }
+
+    return redirect()->back()->with('error', 'Error en la descarga');
+})->name('ios');
