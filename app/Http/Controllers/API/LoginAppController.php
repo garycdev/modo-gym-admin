@@ -67,13 +67,12 @@ class LoginAppController extends Controller
                                 'success'    => true,
                                 'message'    => 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!',
                                 'user'       => [
-                                     ...$user->toArray(),
+                                     ...$userNuevo->toArray(),
                                     'datos' => [
-                                         ...$user->datos->toArray(),
-                                        'formulario' => $user->datos->formulario ? $user->datos->formulario->toArray() : false,
+                                         ...$userNuevo->datos->toArray(),
+                                        'formulario' => $userNuevo->datos->formulario ? $userNuevo->datos->formulario->toArray() : false,
                                     ],
                                 ],
-                                'formulario' => 0,
                             ], 200);
                         } else {
                             return response()->json([
