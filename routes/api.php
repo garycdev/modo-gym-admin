@@ -1,14 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-
-use App\Http\Controllers\API\UsuarioController;
+use App\Http\Controllers\API\BlogsController;
+use App\Http\Controllers\API\EjerciciosController;
 use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\RutinasController;
-use App\Http\Controllers\API\EjerciciosController;
-use App\Http\Controllers\API\BlogsController;
+use App\Http\Controllers\API\UsuarioController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,6 +31,7 @@ Route::middleware('apiCredential')->group(function () {
 Route::get('/', [LoginAppController::class, 'getStatus']);
 Route::post('/login-app', [LoginAppController::class, 'loginApp']);
 Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
+Route::put('/password-app/{id}', [LoginAppController::class, 'updatePassword']);
 
 Route::resource('rutinas-app', RutinasController::class, ['names' => 'app.rutinas']);
 Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
