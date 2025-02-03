@@ -35,7 +35,7 @@ Route::put('/password-app/{id}', [LoginAppController::class, 'updatePassword']);
 
 Route::resource('rutinas-app', RutinasController::class, ['names' => 'app.rutinas']);
 Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
-Route::get('/rutinas-app-user-dia/{id}', [RutinasController::class, 'rutinasUserDia']);
+Route::get('/rutinas-app-user-dia/{id}/{dia?}', [RutinasController::class, 'rutinasUserDia']);
 
 Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
 Route::get('/blogs-app', [BlogsController::class, 'blogsApp']);

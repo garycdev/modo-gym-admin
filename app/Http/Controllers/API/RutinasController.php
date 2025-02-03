@@ -35,12 +35,12 @@ class RutinasController extends Controller
             ], 404);
         }
 
-        $serie            = new Rutinas();
-        $serie->usu_id    = $rutina->usu_id;
-        $serie->rut_grupo = 1;
-        $serie->ejer_id   = $rutina->ejer_id;
-        $serie->rut_serie = $rutina->rut_serie + 1;
-        $serie->rut_dia   = $rutina->rut_dia;
+        $serie               = new Rutinas();
+        $serie->usu_id       = $rutina->usu_id;
+        $serie->rut_grupo    = 1;
+        $serie->ejer_id      = $rutina->ejer_id;
+        $serie->rut_serie    = $rutina->rut_serie + 1;
+        $serie->rut_dia      = $rutina->rut_dia;
         $serie->rut_date_ini = date('Y-m-d');
         $serie->rut_date_fin = date('Y-m-d');
         $serie->save();
@@ -126,15 +126,19 @@ class RutinasController extends Controller
         }
     }
 
-    public function rutinasUserDia($id)
+    public function rutinasUserDia($id, $dia = null)
     {
+        if (! $dia) {
+            $dia = date('N');
+        }
+
         $rutinas = DB::table('rutinas as r')
             ->join('ejercicios as e', 'r.ejer_id', '=', 'e.ejer_id')
             ->join('equipos as eq', 'e.equi_id', '=', 'eq.equi_id')
             ->join('musculo as m', 'e.mus_id', '=', 'm.mus_id')
             ->where('r.rut_estado', 'ACTIVO')
             ->where('r.usu_id', $id)
-            ->where('r.rut_dia', date('N'))
+            ->where('r.rut_dia', $dia)
             ->orderBy('r.rut_id', 'ASC')
             ->get();
 
