@@ -113,6 +113,7 @@ class RutinasController extends Controller
             ->join('musculo as m', 'e.mus_id', '=', 'm.mus_id')
             ->where('r.rut_estado', 'ACTIVO')
             ->where('r.usu_id', $id)
+            ->orderBy('r.ejer_id', 'ASC')
             ->orderBy('r.rut_id', 'ASC')
             ->get();
 
