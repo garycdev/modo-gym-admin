@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
@@ -21,7 +20,35 @@ class RutinasController extends Controller
 
     public function store(Request $request)
     {
-        //
+        if (! $request->rut_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se ha proporcionado un ID de ejercicio',
+            ], 400);
+        }
+
+        $rutina = Rutinas::where('rut_id', $request->rut_id)->first();
+        if (! $rutina) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ejercicio no encontrado',
+            ], 404);
+        }
+
+        $serie            = new Rutinas();
+        $serie->usu_id    = $rutina->usu_id;
+        $serie->rut_grupo = 1;
+        $serie->ejer_id   = $rutina->ejer_id;
+        $serie->rut_serie = $rutina->rut_serie + 1;
+        $serie->rut_dia   = $rutina->rut_dia;
+        $serie->rut_date_ini = date('Y-m-d');
+        $serie->rut_date_fin = date('Y-m-d');
+        $serie->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Serie de ejercicio creada correctamente',
+        ]);
     }
 
     public function show(string $id)
@@ -37,8 +64,15 @@ class RutinasController extends Controller
     public function update(Request $request, string $id)
     {
         $rutina = Rutinas::findOrFail($id);
+        if (! $rutina) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ejercicio no encontrado',
+            ], 404);
+        }
+
         $rutina->rut_repeticiones = $request->rut_repeticiones ?? $rutina->rut_repeticiones;
-        $rutina->rut_peso = $request->rut_peso == 0 ? null : $request->rut_peso;
+        $rutina->rut_peso         = $request->rut_peso == 0 ? null : $request->rut_peso;
         $rutina->save();
 
         if (isset($request->rut_tiempo)) {
@@ -48,12 +82,27 @@ class RutinasController extends Controller
                 $re->save();
             }
         }
-        return response()->json($rutina);
+        return response()->json([
+            'success' => true,
+            'message' => 'Ejercicio actualizado correctamente',
+        ]);
     }
 
     public function destroy(string $id)
     {
-        //
+        $rutina = Rutinas::where('rut_id', $id)->first();
+        if (! $rutina) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ejercicio no encontrado',
+            ], 404);
+        }
+        $rutina->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Serie eliminada correctamente',
+        ]);
     }
 
     public function rutinasUser($id)
@@ -72,7 +121,7 @@ class RutinasController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'No hay rutinas registradas'
+                'message' => 'No hay rutinas registradas',
             ], 404);
         }
     }
@@ -94,7 +143,7 @@ class RutinasController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'No hay rutinas registradas'
+                'message' => 'No hay rutinas registradas',
             ], 404);
         }
     }
