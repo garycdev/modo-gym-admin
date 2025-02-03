@@ -38,7 +38,7 @@ class RutinasController extends Controller
     {
         $rutina = Rutinas::findOrFail($id);
         $rutina->rut_repeticiones = $request->rut_repeticiones ?? $rutina->rut_repeticiones;
-        $rutina->rut_peso = $request->rut_peso ? ($request->rut_peso == 0 ? null : $request->rut_peso) : $rutina->rut_peso;
+        $rutina->rut_peso = $request->rut_peso == 0 ? null : $request->rut_peso;
         $rutina->save();
 
         if (isset($request->rut_tiempo)) {
