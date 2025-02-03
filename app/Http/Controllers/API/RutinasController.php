@@ -139,6 +139,7 @@ class RutinasController extends Controller
             ->where('r.rut_estado', 'ACTIVO')
             ->where('r.usu_id', $id)
             ->where('r.rut_dia', $dia)
+            ->orderBy('r.ejer_id', 'ASC')
             ->orderBy('r.rut_id', 'ASC')
             ->get();
 
