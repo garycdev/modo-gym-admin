@@ -60,7 +60,7 @@ class LoginAppController extends Controller
                             $userNuevo = UsuarioLogin::where('usu_id', $user_guest->usu_id)->where('usu_login_username', $user_guest->usu_ci)->first();
                             $userNuevo->assignRole('usuario');
 
-                            Auth::guard('user')->login($userNuevo, $request->remember);
+                            // Auth::guard('user')->login($userNuevo, $request->remember);
 
                             return response()->json([
                                 'success'    => true,
@@ -78,13 +78,14 @@ class LoginAppController extends Controller
                             return response()->json([
                                 'success' => false,
                                 'message' => 'El usuario ya se encuentra registrado, inicie sesión con sus credenciales !',
-                            ], 404);
+                            ], 401);
                         }
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Usuario inexistente',
+                        ], 404);
                     }
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Usuario inexistente',
-                    ], 404);
                 }
             } else {
                 return response()->json([
