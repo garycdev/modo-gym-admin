@@ -3,6 +3,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blogs;
+use App\Models\Rutinas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,6 @@ class BlogsController extends Controller
     public function index()
     {
         $blogs = Blogs::where('blog_estado', '=', 'ACTIVO')
-            ->where('visibilidad', '=', 'public')
             ->orderBy('blog_id', 'DESC')
             ->get();
 
