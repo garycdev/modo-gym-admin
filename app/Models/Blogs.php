@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,11 +8,11 @@ class Blogs extends Model
 {
     use HasFactory;
 
-    protected $table = 'blogs';
+    protected $table      = 'blogs';
     protected $primaryKey = 'blog_id';
-    protected $fillable = [
+    protected $fillable   = [
         'blog_id', 'blog_titulo', 'blog_imagen', 'blog_descripcion',
-        'blog_estado', 'blog_created_at', 'blog_updated_at'
+        'blog_estado', 'tiempo', 'fecha', 'usu_id', 'visibilidad', 'blog_created_at', 'blog_updated_at',
     ];
     // Especifica el nombre de la columna para updated_at
     const UPDATED_AT = 'blog_updated_at';

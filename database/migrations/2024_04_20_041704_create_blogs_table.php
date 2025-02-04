@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('blog_imagen', 250)->nullable();
             $table->text('blog_descripcion')->nullable();
             $table->enum('blog_estado', ['ACTIVO', 'INACTIVO', 'DESACTIVADO', 'ELIMINADO'])->default('ACTIVO');
+            $table->integer('tiempo')->default(0);
+            $table->datetime('fecha')->nullable();
+            $table->unsignedBigInteger('usu_id')->nullable();
+            $table->foreign('usu_id')
+                ->references('usu_id')
+                ->on('usuarios');
             $table->dateTime('blog_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('blog_updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

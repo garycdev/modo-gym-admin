@@ -38,4 +38,5 @@ Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
 Route::get('/rutinas-app-user-dia/{id}/{dia?}', [RutinasController::class, 'rutinasUserDia']);
 
 Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
-Route::get('/blogs-app', [BlogsController::class, 'blogsApp']);
+Route::resource('/blogs-app', BlogsController::class, ['names' => 'app.blogs']);
+Route::get('/blogs-app-user/{id}', [BlogsController::class, 'blogsAppUser']);
