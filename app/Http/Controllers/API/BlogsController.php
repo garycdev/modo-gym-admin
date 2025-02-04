@@ -3,7 +3,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blogs;
-use App\Models\Rutinas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -33,6 +32,21 @@ class BlogsController extends Controller
     }
     public function store(Request $request)
     {
+        if (! empty($request->values) && is_array($request->values)) {
+            foreach ($request->values as $key => $value) {
+                [$id1, $id2] = explode('-', $key);
+
+                $serie         = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
+                $serie->estado = $value;
+                $serie->save();
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ninguna serie completada',
+            ], 400);
+        }
+
         $blog                   = new Blogs();
         $blog->blog_titulo      = $request->titulo;
         $blog->blog_descripcion = $request->descripcion;
@@ -49,15 +63,8 @@ class BlogsController extends Controller
         $blog->fecha       = $fecha->format('d/m/Y H:i:s');
         $blog->usu_id      = $request->usu_id;
         $blog->visibilidad = $request->visibilidad;
+
         $blog->save();
-
-        foreach ($request->values as $key => $value) {
-            [$id1, $id2] = explode('-', $key);
-
-            $serie = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
-            $serie->estado = $value;
-            $serie->save();
-        }
 
         return response()->json([
             'success' => true,
