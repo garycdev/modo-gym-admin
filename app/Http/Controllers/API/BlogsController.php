@@ -32,13 +32,17 @@ class BlogsController extends Controller
     }
     public function store(Request $request)
     {
-        if (! empty($request->values) && is_array($request->values)) {
-            foreach ($request->values as $key => $value) {
-                [$id1, $id2] = explode('-', $key);
+        if (! empty($request->values)) {
+            $values = is_string($request->values) ? json_decode($request->values, true) : $request->values;
 
-                $serie         = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
-                $serie->estado = $value;
-                $serie->save();
+            foreach ($values as $key => $value) {
+                [$id1, $id2] = explode('-', $key); // Separa los IDs
+
+                $serie = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
+                if ($serie) {
+                    $serie->estado = $value;
+                    $serie->save();
+                }
             }
         } else {
             return response()->json([
