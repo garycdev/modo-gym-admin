@@ -38,7 +38,7 @@ class PagosController extends Controller
     public function create()
     {
         $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $costos = Costos::all();
+        $costos = Costos::where('estado', 'ACTIVO')->get();
         return view('backend.pages.pagos.create', compact('clientes', 'costos'));
     }
 
