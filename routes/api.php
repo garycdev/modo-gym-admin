@@ -5,6 +5,7 @@ use App\Http\Controllers\API\EjerciciosController;
 use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\RutinasController;
 use App\Http\Controllers\API\UsuarioController;
+use App\Http\Controllers\API\FormularioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,3 +41,5 @@ Route::get('/rutinas-app-user-dia/{id}/{dia?}', [RutinasController::class, 'ruti
 Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
 Route::resource('/blogs-app', BlogsController::class, ['names' => 'app.blogs']);
 Route::get('/blogs-app-user/{id}', [BlogsController::class, 'blogsAppUser']);
+
+Route::resource('/formulario-app', FormularioController::class, ['names' => 'app.formulario']);
