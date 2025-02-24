@@ -3,6 +3,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Formulario;
+use App\Models\UsuarioLogin;
+use App\Models\Usuarios;
 use Illuminate\Http\Request;
 
 class FormularioController extends Controller
@@ -51,9 +53,23 @@ class FormularioController extends Controller
 
         $formulario->save();
 
+        $user = UsuarioLogin::where('usu_id', $request->usu_id)->first();
+        // $user->formulario = true;
+        $user->usu_login_name = $request->nombres . ' ' . $request->apellidos;
+        if ($request->correo && ! $user->usu_login_email) {
+            $user->usu_login_email = $request->correo;
+        }
+        $user->save();
+
+        $user                = Usuarios::where('usu_id', $request->usu_id)->first();
+        $user->usu_nombre    = $request->nombres;
+        $user->usu_apellidos = $request->apellidos;
+        $user->usu_edad      = $request->edad;
+        $user->save();
+
         return response()->json([
             'success' => true,
-            'message' => 'Formulario guardado exitosamente',
+            'message' => 'Formulario registrado con éxito',
         ], 201);
     }
 
