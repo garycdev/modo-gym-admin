@@ -84,9 +84,19 @@ class BlogsController extends Controller
     }
     public function destroy(string $id)
     {
+        $blog = Blogs::findOrFail($id);
+        if (! $blog) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Blog no encontrado',
+            ], 404);
+        }
+        $blog->blog_estado = 'ELIMINADO';
+        $blog->save();
+
         return response()->json([
             'success' => true,
-            'message' => 'Blog creado con éxito',
+            'message' => 'Blog eliminado con éxito',
             'blog'    => $id,
         ], 200);
     }
