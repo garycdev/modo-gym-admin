@@ -63,8 +63,8 @@ class BlogsController extends Controller
         }
         $blog->tiempo = $request->segundos;
 
-        $fecha             = Carbon::parse($request->fecha);
-        $blog->fecha       = $fecha->format('d/m/Y H:i:s');
+        $fecha             = Carbon::createFromFormat('Y-m-d\TH:i:s.u', $request->fecha);
+        $blog->fecha       = $fecha->format('Y-m-d H:i:s');
         $blog->usu_id      = $request->usu_id;
         $blog->visibilidad = $request->visibilidad;
 
