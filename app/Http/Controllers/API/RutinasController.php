@@ -73,6 +73,7 @@ class RutinasController extends Controller
 
         $rutina->rut_repeticiones = $request->rut_repeticiones ?? $rutina->rut_repeticiones;
         $rutina->rut_peso         = $request->rut_peso == 0 ? null : $request->rut_peso;
+        $rutina->rut_rid         = $request->rut_rid == 0 ? null : $request->rut_rid;
         $rutina->save();
 
         if (isset($request->rut_tiempo)) {
