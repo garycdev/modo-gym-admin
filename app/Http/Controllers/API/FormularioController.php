@@ -76,21 +76,20 @@ class FormularioController extends Controller
         $formulario->deportes_detalles   = $request->input('deportes_detalles');
         $formulario->usu_id              = $request->input('usu_id');
 
-        $formulario->save();
-
         $user = UsuarioLogin::where('usu_id', $request->usu_id)->first();
         // $user->formulario = true;
-        $user->usu_login_name = $request->nombres . ' ' . $request->apellidos;
+        $user->usu_login_name = $request->nombre_completo;
         if ($request->correo && ! $user->usu_login_email) {
             $user->usu_login_email = $request->correo;
         }
         $user->save();
+        $formulario->save();
 
-        $user                = Usuarios::where('usu_id', $request->usu_id)->first();
-        $user->usu_nombre    = $request->nombres;
-        $user->usu_apellidos = $request->apellidos;
-        $user->usu_edad      = $request->edad;
-        $user->save();
+        // $user                = Usuarios::where('usu_id', $request->usu_id)->first();
+        // $user->usu_nombre    = $request->nombres;
+        // $user->usu_apellidos = $request->apellidos;
+        // $user->usu_edad      = $request->edad;
+        // $user->save();
 
         return response()->json([
             'success' => true,
