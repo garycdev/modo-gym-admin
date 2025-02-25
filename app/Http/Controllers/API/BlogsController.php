@@ -32,6 +32,13 @@ class BlogsController extends Controller
     }
     public function store(Request $request)
     {
+        return response()->json([
+            'success' => true,
+            'message' => 'Blog creado con éxito',
+            'blog'    => $request,
+        ], 200);
+        die();
+
         if (! empty($request->values)) {
             $values = is_string($request->values) ? json_decode($request->values, true) : $request->values;
 
@@ -61,13 +68,11 @@ class BlogsController extends Controller
             $image->move($imagePath, $imageName);
             $blog->blog_imagen = 'image/publicidad' . '/' . $imageName;
         }
-        $blog->tiempo = $request->segundos;
-
+        $blog->tiempo      = $request->segundos;
         $fecha             = Carbon::createFromFormat('Y-m-d\TH:i:s.u', $request->fecha);
         $blog->fecha       = $fecha->format('Y-m-d H:i:s');
         $blog->usu_id      = $request->usu_id;
         $blog->visibilidad = $request->visibilidad;
-
         $blog->save();
 
         return response()->json([
