@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
@@ -24,9 +23,9 @@ class PagosController extends Controller
      */
     public function index()
     {
-        $costos = Costos::all();
+        $costos   = Costos::all();
         $usuarios = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $pagos = Pagos::orderBy('pago_observaciones', 'DESC')
+        $pagos    = Pagos::orderBy('pago_observaciones', 'DESC')
             ->orderBy('pago_id', 'DESC')
             ->get();
         return view('backend.pages.pagos.index', compact('costos', 'pagos'));
@@ -38,7 +37,7 @@ class PagosController extends Controller
     public function create()
     {
         $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $costos = Costos::where('estado', 'ACTIVO')->get();
+        $costos   = Costos::where('estado', 'ACTIVO')->get();
         return view('backend.pages.pagos.create', compact('clientes', 'costos'));
     }
 
@@ -47,28 +46,28 @@ class PagosController extends Controller
      */
     public function store(Request $request)
     {
-        if (is_null($this->user) || !$this->user->can('pago.create')) {
+        if (is_null($this->user) || ! $this->user->can('pago.create')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún pago!');
         }
         // dd($request);
         // die();
         $request->validate([
-            'usu_id' => 'required',
-            'monto' => 'required|numeric',
+            'usu_id'   => 'required',
+            'monto'    => 'required|numeric',
             'costo_id' => 'required',
-            'fecha' => 'required',
-            'metodo' => 'required',
-            'estado' => 'required',
+            'fecha'    => 'required',
+            'metodo'   => 'required',
+            'estado'   => 'required',
         ]);
 
-        $newPago = new Pagos();
-        $newPago->usu_id = $request->usu_id;
-        $newPago->pago_monto = $request->monto;
-        $newPago->costo_id = $request->costo_id;
-        $newPago->pago_fecha = $request->fecha;
-        $newPago->pago_metodo = $request->metodo;
+        $newPago                     = new Pagos();
+        $newPago->usu_id             = $request->usu_id;
+        $newPago->pago_monto         = $request->monto;
+        $newPago->costo_id           = $request->costo_id;
+        $newPago->pago_fecha         = $request->fecha;
+        $newPago->pago_metodo        = $request->metodo;
         $newPago->pago_observaciones = $request->observaciones;
-        $newPago->pago_estado = $request->estado;
+        $newPago->pago_estado        = $request->estado;
         $newPago->save();
 
         session()->flash('success', '¡¡Se ha creado el registro!!');
@@ -88,13 +87,13 @@ class PagosController extends Controller
      */
     public function edit(string $id)
     {
-        if (is_null($this->user) || !$this->user->can('pago.edit')) {
+        if (is_null($this->user) || ! $this->user->can('pago.edit')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún registro!');
         }
 
-        $pago = Pagos::find($id);
+        $pago     = Pagos::find($id);
         $clientes = Usuarios::where('usu_estado', 'ACTIVO')->get();
-        $costos = Costos::all();
+        $costos   = Costos::all();
         return view('backend.pages.pagos.edit', compact('pago', 'clientes', 'costos'));
     }
 
@@ -103,26 +102,26 @@ class PagosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if (is_null($this->user) || !$this->user->can('pago.edit')) {
+        if (is_null($this->user) || ! $this->user->can('pago.edit')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún registro!');
         }
         $request->validate([
-            'usu_id' => 'required',
-            'monto' => 'required|numeric',
+            'usu_id'   => 'required',
+            'monto'    => 'required|numeric',
             'costo_id' => 'required',
-            'fecha' => 'required',
-            'metodo' => 'required',
-            'estado' => 'required',
+            'fecha'    => 'required',
+            'metodo'   => 'required',
+            'estado'   => 'required',
         ]);
 
-        $editPago = Pagos::find($id);
-        $editPago->usu_id = $request->usu_id;
-        $editPago->pago_monto = $request->monto;
-        $editPago->costo_id = $request->costo_id;
-        $editPago->pago_fecha = $request->fecha;
-        $editPago->pago_metodo = $request->metodo;
+        $editPago                     = Pagos::find($id);
+        $editPago->usu_id             = $request->usu_id;
+        $editPago->pago_monto         = $request->monto;
+        $editPago->costo_id           = $request->costo_id;
+        $editPago->pago_fecha         = $request->fecha;
+        $editPago->pago_metodo        = $request->metodo;
         $editPago->pago_observaciones = $request->observaciones;
-        $editPago->pago_estado = $request->estado;
+        $editPago->pago_estado        = $request->estado;
         $editPago->save();
 
         session()->flash('success', '¡¡Se ha modificado el registro!!');
@@ -134,7 +133,7 @@ class PagosController extends Controller
      */
     public function destroy(string $id)
     {
-        if (is_null($this->user) || !$this->user->can('pago.delete')) {
+        if (is_null($this->user) || ! $this->user->can('pago.delete')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a eliminar ningún registro!');
         }
         if ($id === 1) {
@@ -145,7 +144,7 @@ class PagosController extends Controller
         $pago = Pagos::find($id);
         // $pago->pago_estado = 'CANCELADO';
         // Guardar los cambios en la base de datos
-        if (!is_null($pago)) {
+        if (! is_null($pago)) {
             $pago->delete();
         }
 

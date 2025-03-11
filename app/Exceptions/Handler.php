@@ -1,8 +1,12 @@
 <?php
-
 namespace App\Exceptions;
 
+// use Illuminate\Auth\AuthenticationException;
+
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+// use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -50,9 +54,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        // if ($exception instanceof AuthenticationException) {
+        //     // Si la solicitud espera un JSON, devolver una respuesta JSON
+        //     if ($request->wantsJson()) {
+        //         return response()->json(['message' => 'No autorizado. Token inválido o no proporcionado.'], 401);
+        //     }
+        // }
+        
         if ($exception instanceof HttpException && $exception->getStatusCode() == 403) {
             return response()->view('errors.403', [], 403);
         }
         return parent::render($request, $exception);
     }
+
+    // protected function unauthenticated($request, AuthenticationException $exception): JsonResponse
+    // {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'No autorizado. Token no válido o no proporcionado.',
+    //     ], 401);
+    // }
 }

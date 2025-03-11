@@ -72,13 +72,14 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <label for="bsValidation9" class="form-label required_value">Costo </label>
                                     <select id="costo_id" name="costo_id" class="form-select select-monto"
                                         onchange="setMonto()">
                                         <option selected disabled value>[COSTO]</option>
                                         @foreach ($costos as $costo)
-                                            <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}">
+                                            <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}"
+                                                data-dias="{{ $costo->mes * 30 }}">
                                                 {{ $costo->monto }}
                                                 [{{ $costo->nombre }} - {{ $costo->periodo }}]
                                             </option>
@@ -88,9 +89,17 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
+                                    <label for="bsValidation9" class="form-label required_value">Dias </label>
+                                    <input type="number" class="form-control" id="dias" name="dias" min="0"
+                                        step="30" placeholder="Dias">
+                                    @error('dias')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
                                     <label for="bsValidation9" class="form-label required_value">Monto </label>
-                                    <input type="number" class="form-control" id="monto" name="monto"
+                                    <input type="number" class="form-control" id="monto" name="monto" min="0"
                                         placeholder="Monto">
                                     @error('monto')
                                         <span class="text-danger">{{ $message }}</span>
@@ -276,6 +285,9 @@
         function setMonto() {
             var monto = $('#costo_id option:selected').attr('data-monto');
             $('#monto').val(monto);
+            $('#monto').attr('step', monto);
+            var dias = $('#costo_id option:selected').attr('data-dias');
+            $('#dias').val(dias);
             // $('#monto').attr('step', monto);
         }
     </script>

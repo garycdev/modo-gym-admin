@@ -1,29 +1,27 @@
 <?php
-
 namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class UsuarioLogin extends User
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $guard_name = 'admin';
 
-    protected $table = 'usuario_login';
+    protected $table      = 'usuario_login';
     protected $primaryKey = 'usu_login_id';
-    protected $fillable = [
+    protected $fillable   = [
         'usu_login_name',
         'usu_login_email',
         'usu_login_username',
         'usu_login_password',
         'google_id',
-        'formulario'
+        'formulario',
     ];
 
     protected $hidden = [

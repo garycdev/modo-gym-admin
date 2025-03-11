@@ -16,6 +16,14 @@ class LoginAppController extends Controller
             'message' => 'Api server running successfully',
         ], 200);
     }
+    public function authApp(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Sesión iniciada',
+            'data'    => $request->user(),
+        ]);
+    }
     public function loginApp(Request $request)
     {
         if ($request->email) {
@@ -27,6 +35,7 @@ class LoginAppController extends Controller
                         return response()->json([
                             'success' => true,
                             'message' => 'Inicio de sesión exitoso',
+                            'token'   => $user->createToken('token-name')->plainTextToken,
                             'user'    => [
                                  ...$user->toArray(),
                                 'datos' => [
@@ -65,6 +74,7 @@ class LoginAppController extends Controller
                             return response()->json([
                                 'success' => true,
                                 'message' => 'Usuario creado ¡¡ Por favor, cambie sus datos y contraseña !!',
+                                'token'   => $userNuevo->createToken('token-name')->plainTextToken,
                                 'user'    => [
                                      ...$userNuevo->toArray(),
                                     'datos' => [
@@ -99,9 +109,17 @@ class LoginAppController extends Controller
             ], 400);
         }
     }
-    public function getProfile($id)
+    public function logoutApp(Request $request)
     {
-        $user = UsuarioLogin::where('usu_id', $id)->first();
+        $request->user()->tokens()->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Sesión cerrada',
+        ]);
+    }
+    public function getProfile(Request $request)
+    {
+        $user = UsuarioLogin::findOrFail($request->user()->usu_login_id);
         if ($user) {
             return response()->json([
                  ...$user->toArray(),

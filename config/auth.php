@@ -13,8 +13,8 @@ return [
     |
      */
 
-    'defaults' => [
-        'guard' => 'web',
+    'defaults'         => [
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
 
@@ -35,31 +35,35 @@ return [
     |
      */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
+    'guards'           => [
+        'web'       => [
+            'driver'   => 'session',
             'provider' => 'users',
         ],
 
-        'api' => [
-            'driver' => 'token',
+        'api'       => [
+            'driver'   => 'token',
             'provider' => 'users',
-            'hash' => false,
+            'hash'     => false,
+        ],
+        'user_api'  => [
+            'driver'   => 'sanctum',
+            'provider' => 'user_login',
         ],
 
-        'admin' => [
-            'driver' => 'session',
+        'admin'     => [
+            'driver'   => 'session',
             'provider' => 'admins',
         ],
 
         'admin_api' => [
-            'driver' => 'token',
+            'driver'   => 'token',
             'provider' => 'admins',
-            'hash' => false,
+            'hash'     => false,
         ],
 
-        'user' => [
-            'driver' => 'session',
+        'user'      => [
+            'driver'   => 'session',
             'provider' => 'user_login',
         ],
     ],
@@ -81,20 +85,20 @@ return [
     |
      */
 
-    'providers' => [
-        'users' => [
+    'providers'        => [
+        'users'      => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model'  => App\User::class,
         ],
 
-        'admins' => [
+        'admins'     => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
+            'model'  => App\Models\Admin::class,
         ],
 
         'user_login' => [
             'driver' => 'eloquent',
-            'model' => App\Models\UsuarioLogin::class,
+            'model'  => App\Models\UsuarioLogin::class,
         ],
     ],
 
@@ -113,17 +117,17 @@ return [
     |
      */
 
-    'passwords' => [
-        'users' => [
+    'passwords'        => [
+        'users'  => [
             'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 60,
             'throttle' => 60,
         ],
         'admins' => [
             'provider' => 'admins',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 60,
             'throttle' => 60,
         ],
     ],

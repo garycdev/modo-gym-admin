@@ -128,8 +128,9 @@ class RutinasController extends Controller
         }
     }
 
-    public function rutinasUserDia($id, $dia = null)
+    public function rutinasUserDia(Request $request, $dia = null)
     {
+        // return $request->user();
         if (! $dia) {
             $dia = date('N');
         }
@@ -139,18 +140,23 @@ class RutinasController extends Controller
             ->join('equipos as eq', 'e.equi_id', '=', 'eq.equi_id')
             ->join('musculo as m', 'e.mus_id', '=', 'm.mus_id')
             ->where('r.rut_estado', 'ACTIVO')
-            ->where('r.usu_id', $id)
+            ->where('r.usu_id', $request->user()->usu_id)
             ->where('r.rut_dia', $dia)
             ->orderBy('r.ejer_id', 'ASC')
             ->orderBy('r.rut_id', 'ASC')
             ->get();
 
         if (count($rutinas) > 0) {
-            return response()->json($rutinas);
+            return response()->json([
+                'success' => true,
+                'message' => 'Rutinas del usuario',
+                'data'    => $rutinas->toArray(),
+            ], 200);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'No hay rutinas registradas',
+                'data'    => [],
             ], 404);
         }
     }

@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\API\BlogsController;
 use App\Http\Controllers\API\EjerciciosController;
+use App\Http\Controllers\API\FormularioController;
 use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\RutinasController;
 use App\Http\Controllers\API\UsuarioController;
-use App\Http\Controllers\API\FormularioController;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,3 +44,12 @@ Route::resource('/blogs-app', BlogsController::class, ['names' => 'app.blogs']);
 Route::get('/blogs-app-user/{id}', [BlogsController::class, 'blogsAppUser']);
 
 Route::resource('/formulario-app', FormularioController::class, ['names' => 'app.formulario']);
+
+Route::middleware(['authApp', 'auth:sanctum'])->group(function () {
+    Route::get('/auth-app', [LoginAppController::class, 'authApp']);
+    Route::get('/profile-app', [LoginAppController::class, 'getProfile']);
+
+    Route::get('/rutinas-app-dia/{dia?}', [RutinasController::class, 'rutinasUserDia']);
+
+    Route::post('/logout-app', [LoginAppController::class, 'logoutApp']);
+});
