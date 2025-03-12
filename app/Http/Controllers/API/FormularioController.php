@@ -31,58 +31,69 @@ class FormularioController extends Controller
     public function store(Request $request)
     {
         // Ningun campo vacio
-        if (empty($request->input('inscrito')) ||
-            empty($request->input('nombre_completo')) ||
-            empty($request->input('fecha_nacimiento')) ||
-            empty($request->input('edad')) ||
-            empty($request->input('telefono')) ||
-            empty($request->input('direccion')) ||
-            empty($request->input('correo')) ||
-            empty($request->input('medicamentos')) ||
-            empty($request->input('enfermedades')) ||
-            empty($request->input('referencia')) ||
-            empty($request->input('entrenamiento')) ||
-            empty($request->input('horario')) ||
-            empty($request->input('dias_semana')) ||
-            empty($request->input('nivel_entrenamiento')) ||
-            empty($request->input('lesion')) ||
-            empty($request->input('objetivos')) ||
-            empty($request->input('deportes_detalles')) ||
-            empty($request->input('usu_id'))) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Todos los campos son obligatorios',
-            ], 400);
-        }
+        // if (empty($request->input('inscrito')) ||
+        //     empty($request->input('nombre_completo')) ||
+        //     empty($request->input('fecha_nacimiento')) ||
+        //     empty($request->input('edad')) ||
+        //     empty($request->input('telefono')) ||
+        //     empty($request->input('direccion')) ||
+        //     empty($request->input('correo')) ||
+        //     empty($request->input('medicamentos')) ||
+        //     empty($request->input('enfermedades')) ||
+        //     empty($request->input('referencia')) ||
+        //     empty($request->input('entrenamiento')) ||
+        //     empty($request->input('horario')) ||
+        //     empty($request->input('dias_semana')) ||
+        //     empty($request->input('nivel_entrenamiento')) ||
+        //     empty($request->input('lesion')) ||
+        //     empty($request->input('objetivos')) ||
+        //     empty($request->input('deportes_detalles')) ||
+        //     empty($request->input('usu_id'))) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Todos los campos son obligatorios',
+        //     ], 400);
+        // }
+
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'posi',
+        //     'data'    => $request->user(),
+        // ]);
 
         $formulario = new Formulario();
 
-        $formulario->inscrito            = $request->input('inscrito');
-        $formulario->nombre_completo     = $request->input('nombre_completo');
-        $formulario->fecha_nacimiento    = $request->input('fecha_nacimiento');
-        $formulario->edad                = $request->input('edad');
-        $formulario->telefono            = $request->input('telefono');
-        $formulario->direccion           = $request->input('direccion');
-        $formulario->correo              = $request->input('correo');
-        $formulario->medicamentos        = $request->input('medicamentos');
-        $formulario->enfermedades        = $request->input('enfermedades');
-        $formulario->referencia          = $request->input('referencia');
-        $formulario->entrenamiento       = $request->input('entrenamiento');
+        $formulario->inscrito         = $request->input('inscrito');
+        $formulario->nombre_completo  = $request->input('nombre_completo');
+        $formulario->fecha_nacimiento = $request->input('fecha_nacimiento');
+        $formulario->edad             = $request->input('edad');
+
+        $formulario->direccion  = $request->input('direccion');
+        $formulario->correo     = $request->input('correo');
+        $formulario->telefono   = $request->input('telefono');
+        $formulario->referencia = $request->input('referencia');
+
+        $formulario->medicamentos  = $request->input('medicamentos');
+        $formulario->enfermedades  = $request->input('enfermedades');
+        $formulario->entrenamiento = $request->input('entrenamiento');
+
         $formulario->horario             = $request->input('horario');
         $formulario->dias_semana         = $request->input('dias_semana');
         $formulario->nivel_entrenamiento = $request->input('nivel_entrenamiento');
         $formulario->lesion              = $request->input('lesion');
         $formulario->objetivos           = $request->input('objetivos');
         $formulario->deportes_detalles   = $request->input('deportes_detalles');
-        $formulario->usu_id              = $request->input('usu_id');
 
-        $user = UsuarioLogin::where('usu_id', $request->usu_id)->first();
-        // $user->formulario = true;
+        $formulario->usu_id = $request->user()->usu_id;
+
+        $user = UsuarioLogin::where('usu_id', $request->user()->usu_id)->first();
+
+        $user->formulario     = true;
         $user->usu_login_name = $request->nombre_completo;
         if ($request->correo && ! $user->usu_login_email) {
             $user->usu_login_email = $request->correo;
         }
-        $user->save();
+        // $user->save();
         $formulario->save();
 
         // $user                = Usuarios::where('usu_id', $request->usu_id)->first();
@@ -94,6 +105,7 @@ class FormularioController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Formulario registrado con éxito',
+            'data'    => $user,
         ], 201);
     }
 

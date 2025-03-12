@@ -18,11 +18,27 @@ class LoginAppController extends Controller
     }
     public function authApp(Request $request)
     {
+        $user = UsuarioLogin::findOrFail($request->user()->usu_login_id);
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario inexistente',
+            ], 404);
+        }
+
         return response()->json([
             'success' => true,
             'message' => 'Sesión iniciada',
-            'data'    => $request->user(),
-        ]);
+            // 'token'   => $user->createToken('token-name')->plainTextToken,
+            'user'    => [
+                 ...$user->toArray(),
+                'datos' => [
+                     ...$user->datos->toArray(),
+                    'formulario' => $user->datos->formulario ? $user->datos->formulario->toArray() : false,
+                ],
+            ],
+        ], 200);
     }
     public function loginApp(Request $request)
     {
@@ -133,33 +149,48 @@ class LoginAppController extends Controller
 
     public function updatePassword(Request $request, string $id)
     {
-        if (! $request->username) {
-            return response()->json([
-                'success' => false,
-                'message' => 'El nombre de usuario es requerido',
-            ], 400);
+        return response()->json([
+            'succes'  => true,
+            'message' => 'update',
+            'data'    => $request->user(),
+        ]);
+        // if (! $request->username) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'El nombre de usuario es requerido',
+        //     ], 400);
+        // }
+        // if (! $request->password) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'La contraseña es requerido',
+        //     ], 400);
+        // }
+        $field = '';
+        $value = '';
+
+        if (isset($request->username)) {
+            $field = 'username';
+
+            if (strlen($request->username) < 4) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El nombre de usuario debe tener al menos 4 caracteres',
+                ], 400);
+            }
         }
-        if (! $request->password) {
-            return response()->json([
-                'success' => false,
-                'message' => 'La contraseña es requerido',
-            ], 400);
+        if (isset($request->password)) {
+            $field = 'password';
+
+            if (strlen($request->password) < 5) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'La contraseña debe tener al menos 5 caracteres',
+                ], 400);
+            }
         }
 
-        if (strlen($request->username) < 4) {
-            return response()->json([
-                'success' => false,
-                'message' => 'El nombre de usuario debe tener al menos 4 caracteres',
-            ], 400);
-        }
-        if (strlen($request->password) < 5) {
-            return response()->json([
-                'success' => false,
-                'message' => 'La contraseña debe tener al menos 5 caracteres',
-            ], 400);
-        }
-
-        $old = UsuarioLogin::where('usu_login_username', $request->username)
+        $old = UsuarioLogin::where('usu_login_username', $request->user()->usu_login_id)
             ->where('usu_id', '<>', $id)
             ->first();
 
