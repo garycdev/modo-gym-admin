@@ -27,7 +27,7 @@ class RutinasController extends Controller
             ], 400);
         }
 
-        $rutina = Rutinas::where('rut_id', $request->rut_id)->first();
+        $rutina = Rutinas::where('rut_id', $request->rut_id)->where('usu_id', $request->user()->usu_id)->first();
         if (! $rutina) {
             return response()->json([
                 'success' => false,
@@ -48,6 +48,7 @@ class RutinasController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Serie de ejercicio creada correctamente',
+            'data'    => $serie,
         ]);
     }
 
@@ -63,7 +64,12 @@ class RutinasController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $rutina = Rutinas::findOrFail($id);
+        $rutina = Rutinas::where('rut_id', $id)->where('usu_id', $request->user()->usu_id)->first();
+
+        // return response()->json([
+        //     'data' => $rutina,
+        // ]);
+
         if (! $rutina) {
             return response()->json([
                 'success' => false,
@@ -86,12 +92,13 @@ class RutinasController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ejercicio actualizado correctamente',
+            'data'    => $rutina,
         ]);
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        $rutina = Rutinas::where('rut_id', $id)->first();
+        $rutina = Rutinas::where('rut_id', $id)->where('usu_id', $request->user()->usu_id)->first();
         if (! $rutina) {
             return response()->json([
                 'success' => false,
@@ -103,6 +110,7 @@ class RutinasController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Serie eliminada correctamente',
+            'data'    => $rutina,
         ]);
     }
 

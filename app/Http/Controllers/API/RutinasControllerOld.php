@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Rutinas;
 use Illuminate\Support\Facades\DB;
 
-class RutinasController extends Controller
+class RutinasControllerOl extends Controller
 {
     public function rutinasApp($id)
     {

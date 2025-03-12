@@ -6,7 +6,6 @@ use App\Http\Controllers\API\FormularioController;
 use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\RutinasController;
 use App\Http\Controllers\API\UsuarioController;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +34,6 @@ Route::post('/login-app', [LoginAppController::class, 'loginApp']);
 Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
 Route::put('/password-app/{id}', [LoginAppController::class, 'updatePassword']);
 
-Route::resource('rutinas-app', RutinasController::class, ['names' => 'app.rutinas']);
 Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
 Route::get('/rutinas-app-user-dia/{id}/{dia?}', [RutinasController::class, 'rutinasUserDia']);
 
@@ -50,6 +48,8 @@ Route::middleware(['authApp', 'auth:sanctum'])->group(function () {
     Route::get('/profile-app', [LoginAppController::class, 'getProfile']);
 
     Route::get('/rutinas-app-dia/{dia?}', [RutinasController::class, 'rutinasUserDia']);
+
+    Route::resource('rutinas-app', RutinasController::class);
 
     Route::post('/logout-app', [LoginAppController::class, 'logoutApp']);
 });
