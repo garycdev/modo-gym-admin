@@ -37,15 +37,16 @@ Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
 Route::get('/rutinas-app-user-dia/{id}/{dia?}', [RutinasController::class, 'rutinasUserDia']);
 
 Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
-Route::resource('/blogs-app', BlogsController::class, ['names' => 'app.blogs']);
-Route::get('/blogs-app-user/{id}', [BlogsController::class, 'blogsAppUser']);
+// Route::get('/blogs-app-user/{id}', [BlogsController::class, 'blogsAppUser']);
 
 Route::middleware(['authApp', 'auth:sanctum'])->group(function () {
     Route::get('/auth-app', [LoginAppController::class, 'authApp']);
     Route::get('/profile-app', [LoginAppController::class, 'getProfile']);
     Route::put('/password-app', [LoginAppController::class, 'updatePassword']);
 
-    Route::get('/rutinas-app-dia/{dia?}', [RutinasController::class, 'rutinasUserDia']);
+    // Route::get('/rutinas-app-dia/{dia?}', [RutinasController::class, 'rutinasUserDia']);
+    Route::resource('/rutinas-app', RutinasController::class);
+    Route::resource('/blogs-app', BlogsController::class);
 
     Route::resource('/rutinas-app', RutinasController::class);
     Route::resource('/formulario-app', FormularioController::class);

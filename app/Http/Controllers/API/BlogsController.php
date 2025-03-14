@@ -9,23 +9,33 @@ use Illuminate\Http\Request;
 
 class BlogsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $blogs = Blogs::where('blog_estado', '=', 'ACTIVO')
+        // ->where('usu_id', '=', $request->user()->usu_id)
             ->orderBy('blog_id', 'DESC')
             ->get();
 
-        return response()->json($blogs, 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Blogs',
+            'data'    => $blogs,
+        ], 200);
     }
-    public function blogsAppUser($id)
+    public function show(Request $request, $id)
     {
         $blogs = Blogs::where('blog_estado', '=', 'ACTIVO')
-            ->where('usu_id', '=', $id)
+            ->where('usu_id', '=', $request->user()->usu_id)
             ->orderBy('blog_id', 'DESC')
             ->get();
 
-        return response()->json($blogs, 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Blogs de usuario ' . $id,
+            'data'    => $blogs,
+        ], 200);
     }
+
     public function create()
     {
         //
