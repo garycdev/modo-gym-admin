@@ -22,6 +22,7 @@ class UsuarioLogin extends User
         'usu_login_password',
         'google_id',
         'formulario',
+        'usu_id',
     ];
 
     protected $hidden = [

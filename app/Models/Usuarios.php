@@ -67,6 +67,7 @@ class Usuarios extends Model
     public function formulario()
     {
         return $this->hasOne(Formulario::class, 'usu_id', 'usu_id');
+        
     }
 
     public function asistencias($dias)

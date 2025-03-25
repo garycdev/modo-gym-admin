@@ -3,16 +3,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blogs;
-use App\Models\Rutinas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BlogsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $blogs = Blogs::where('blog_estado', '=', 'ACTIVO')
-        // ->where('usu_id', '=', $request->user()->usu_id)
+            ->where('visibilidad', '=', 'public')
             ->orderBy('blog_id', 'DESC')
             ->get();
 
@@ -42,24 +41,24 @@ class BlogsController extends Controller
     }
     public function store(Request $request)
     {
-        if (! empty($request->values)) {
-            $values = is_string($request->values) ? json_decode($request->values, true) : $request->values;
+        // if (! empty($request->values)) {
+        //     $values = is_string($request->values) ? json_decode($request->values, true) : $request->values;
 
-            foreach ($values as $key => $value) {
-                [$id1, $id2] = explode('-', $key); // Separa los IDs
+        //     foreach ($values as $key => $value) {
+        //         [$id1, $id2] = explode('-', $key); // Separa los IDs
 
-                $serie = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
-                if ($serie) {
-                    $serie->estado = $value;
-                    $serie->save();
-                }
-            }
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ninguna serie completada',
-            ], 400);
-        }
+        //         $serie = Rutinas::where('rut_id', $id2)->where('ejer_id', $id1)->first();
+        //         if ($serie) {
+        //             $serie->estado = $value;
+        //             $serie->save();
+        //         }
+        //     }
+        // } else {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Ninguna serie completada',
+        //     ], 400);
+        // }
 
         $blog                   = new Blogs();
         $blog->blog_titulo      = $request->titulo;
@@ -74,7 +73,7 @@ class BlogsController extends Controller
         $blog->tiempo      = $request->segundos;
         $fecha             = Carbon::createFromFormat('Y-m-d\TH:i:s.u', $request->fecha)->format('Y-m-d H:i:s');
         $blog->fecha       = $fecha;
-        $blog->usu_id      = $request->usu_id;
+        $blog->usu_id      = $request->user()->usu_id;
         $blog->visibilidad = $request->visibilidad;
         $blog->save();
 
@@ -90,7 +89,21 @@ class BlogsController extends Controller
     }
     public function update(Request $request, string $id)
     {
-        //
+        $blog = Blogs::findOrFail($id);
+        if (! $blog) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Blog no encontrado',
+            ], 404);
+        }
+        $blog->visibilidad = $request->visibilidad ?? $blog->visibilidad;
+        $blog->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Blog actualizado con éxito',
+            'blog'    => $blog,
+        ], 200);
     }
     public function destroy(string $id)
     {
@@ -107,7 +120,7 @@ class BlogsController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Blog eliminado con éxito',
-            'blog'    => $id,
+            'blog'    => $blog,
         ], 200);
     }
 }

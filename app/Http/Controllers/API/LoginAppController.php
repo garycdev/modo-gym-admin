@@ -147,76 +147,84 @@ class LoginAppController extends Controller
         return response()->json($user);
     }
 
-    public function updatePassword(Request $request, string $id)
+    public function updatePassword(Request $request)
     {
-        return response()->json([
-            'succes'  => true,
-            'message' => 'update',
-            'data'    => $request->user(),
-        ]);
-        // if (! $request->username) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'El nombre de usuario es requerido',
-        //     ], 400);
-        // }
-        // if (! $request->password) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'La contraseña es requerido',
-        //     ], 400);
-        // }
-        $field = '';
-        $value = '';
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'update',
+        //     'data'    => $request->user(),
+        // ]);
+        $user = UsuarioLogin::where('usu_login_id', $request->user()->usu_login_id)->first();
 
-        if (isset($request->username)) {
-            $field = 'username';
-
-            if (strlen($request->username) < 4) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'El nombre de usuario debe tener al menos 4 caracteres',
-                ], 400);
-            }
-        }
-        if (isset($request->password)) {
-            $field = 'password';
-
-            if (strlen($request->password) < 5) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'La contraseña debe tener al menos 5 caracteres',
-                ], 400);
-            }
-        }
-
-        $old = UsuarioLogin::where('usu_login_username', $request->user()->usu_login_id)
-            ->where('usu_id', '<>', $id)
-            ->first();
-
-        if ($old) {
+        if (! $user) {
             return response()->json([
                 'success' => false,
-                'message' => 'El nombre de usuario ya existe',
+                'message' => 'Usuario no encontrado',
+            ], 404);
+        }
+
+        if ($request->password < 5) {
+            return response()->json([
+                'success' => false,
+                'message' => 'La contraseña debe tener al menos 5 caracteres',
             ], 400);
         }
 
-        $user = UsuarioLogin::where('usu_id', $id)->first();
-
-        if ($user) {
-            $user->usu_login_username = $request->username ?? $user->usu_login_username;
-            $user->usu_login_password = Hash::make($request->password);
-            $user->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Contraseña actualizada exitosamente',
-            ], 200);
-        }
+        $user->usu_login_password = Hash::make($request->password);
+        $user->save();
 
         return response()->json([
-            'success' => false,
-            'message' => 'Usuario no encontrado',
-        ], 404);
+            'success' => true,
+            'message' => 'Contraseña actualizada correctamente.',
+        ], 200);
+    }
+    public function updateProfile(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'update',
+            'data'    => $request->toArray(),
+        ]);
+
+        $user = UsuarioLogin::where('usu_login_id', $request->user()->usu_login_id)->first();
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado',
+            ], 404);
+        }
+
+        $user->usu_login_name     = $request->name ?? $user->usu_login_name;
+        $user->usu_login_username = $request->username ?? $user->usu_login_username;
+        $user->usu_login_email    = $request->email ?? $user->usu_login_email;
+        if ($user->usu_login_email != $request->email &&
+            $user->google_id != null) {
+            $user->google_id = null;
+        }
+
+        if ($request->hasFile('imagen')) {
+            $datos = Usuarios::findOrFail($user->usu_id);
+            if (! $datos) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Datos del usuario no encontrado, comuniquese con el administrador',
+                ], 400);
+            }
+
+            $image     = $request->file('imagen');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = public_path('image/cliente');
+            $image->move($imagePath, $imageName);
+            $datos->usu_imagen = 'image/cliente' . '/' . $imageName;
+            $datos->save();
+        }
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Datos actualizados correctamente.',
+            'data'    => $user,
+        ], 200);
     }
 }

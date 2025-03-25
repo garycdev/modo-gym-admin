@@ -41,6 +41,7 @@ class RutinasController extends Controller
         $serie->ejer_id      = $rutina->ejer_id;
         $serie->rut_serie    = $rutina->rut_serie + 1;
         $serie->rut_dia      = $rutina->rut_dia;
+        $serie->rut_tiempo   = $rutina->rut_tiempo;
         $serie->rut_date_ini = date('Y-m-d');
         $serie->rut_date_fin = date('Y-m-d');
         $serie->save();
@@ -79,7 +80,7 @@ class RutinasController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'No hay rutinas registradas',
+                'message' => 'No hay ejercicios registrados',
                 'data'    => [],
             ], 404);
         }
@@ -108,6 +109,14 @@ class RutinasController extends Controller
         $rutina->rut_repeticiones = $request->rut_repeticiones ?? $rutina->rut_repeticiones;
         $rutina->rut_peso         = $request->rut_peso ?? $rutina->rut_peso;
         $rutina->rut_rid          = $request->rut_rid ?? $rutina->rut_rid;
+        if (isset($request->estado)) {
+            if ($request->estado == 'true') {
+                $rutina->estado = 1;
+            } else if ($request->estado == 'false') {
+                $rutina->estado = 0;
+            }
+        }
+        // $rutina->estado           = $request->estado ?? $rutina->estado;
         $rutina->save();
 
         if (isset($request->rut_tiempo)) {
@@ -159,7 +168,7 @@ class RutinasController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'No hay rutinas registradas',
+                'message' => 'No hay ejercicios registrados',
             ], 404);
         }
     }

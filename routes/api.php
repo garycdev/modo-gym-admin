@@ -42,6 +42,7 @@ Route::get('/ejercicios-app', [EjerciciosController::class, 'ejerciciosApp']);
 Route::middleware(['authApp', 'auth:sanctum'])->group(function () {
     Route::get('/auth-app', [LoginAppController::class, 'authApp']);
     Route::get('/profile-app', [LoginAppController::class, 'getProfile']);
+    Route::put('/profile-app', [LoginAppController::class, 'updateProfile']);
     Route::put('/password-app', [LoginAppController::class, 'updatePassword']);
 
     // Route::get('/rutinas-app-dia/{dia?}', [RutinasController::class, 'rutinasUserDia']);

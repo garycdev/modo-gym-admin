@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Formulario;
 use App\Models\UsuarioLogin;
-use App\Models\Usuarios;
 use Illuminate\Http\Request;
 
 class FormularioController extends Controller
@@ -83,18 +82,16 @@ class FormularioController extends Controller
         $formulario->lesion              = $request->input('lesion');
         $formulario->objetivos           = $request->input('objetivos');
         $formulario->deportes_detalles   = $request->input('deportes_detalles');
+        $formulario->usu_id              = $request->user()->usu_id;
+        $formulario->save();
 
-        $formulario->usu_id = $request->user()->usu_id;
-
-        $user = UsuarioLogin::where('usu_id', $request->user()->usu_id)->first();
-
-        $user->formulario     = true;
+        $user                 = UsuarioLogin::where('usu_id', $request->user()->usu_id)->first();
+        $user->formulario     = $formulario->id_formulario;
         $user->usu_login_name = $request->nombre_completo;
         if ($request->correo && ! $user->usu_login_email) {
             $user->usu_login_email = $request->correo;
         }
-        // $user->save();
-        $formulario->save();
+        $user->save();
 
         // $user                = Usuarios::where('usu_id', $request->usu_id)->first();
         // $user->usu_nombre    = $request->nombres;
