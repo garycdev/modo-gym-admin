@@ -180,11 +180,11 @@ class LoginAppController extends Controller
     }
     public function updateProfile(Request $request)
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'update',
-            'data'    => $request->toArray(),
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'update',
+        //     'data'    => $request->toArray(),
+        // ]);
 
         $user = UsuarioLogin::where('usu_login_id', $request->user()->usu_login_id)->first();
 
