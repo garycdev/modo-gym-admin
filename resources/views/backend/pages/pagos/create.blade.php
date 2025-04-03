@@ -79,7 +79,7 @@
                                         <option selected disabled value>[COSTO]</option>
                                         @foreach ($costos as $costo)
                                             <option value="{{ $costo->costo_id }}" data-monto="{{ $costo->monto }}"
-                                                data-dias="{{ $costo->mes * 30 }}">
+                                                data-dias="{{ $costo->dias }}">
                                                 {{ $costo->monto }}
                                                 [{{ $costo->nombre }} - {{ $costo->periodo }}]
                                             </option>
@@ -285,7 +285,7 @@
         function setMonto() {
             var monto = $('#costo_id option:selected').attr('data-monto');
             $('#monto').val(monto);
-            $('#monto').attr('step', monto);
+            // $('#monto').attr('step', monto);
             var dias = $('#costo_id option:selected').attr('data-dias');
             $('#dias').val(dias);
             // $('#monto').attr('step', monto);

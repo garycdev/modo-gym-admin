@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
@@ -39,23 +38,25 @@ class CostosController extends Controller
      */
     public function store(Request $request)
     {
-        if (is_null($this->user) || !$this->user->can('cliente.view')) {
+        if (is_null($this->user) || ! $this->user->can('cliente.view')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a crear ningún usuario!');
         }
         // dd($request);
         // die();
         $request->validate([
             'periodo' => 'required',
-            'monto' => 'required|numeric',
+            'monto'   => 'required|numeric',
+            'dias'   => 'required|numeric',
         ]);
 
-        $newCosto = new Costos();
-        $newCosto->nombre = $request->nombre;
-        $newCosto->tipo = $request->tipo;
-        $newCosto->periodo = $request->periodo;
-        $newCosto->monto = $request->monto;
-        $newCosto->mes = $request->meses;
-        $newCosto->ingreso_dia = $request->ingreso_dia;
+        $newCosto                 = new Costos();
+        $newCosto->nombre         = $request->nombre;
+        $newCosto->tipo           = $request->tipo;
+        $newCosto->periodo        = $request->periodo;
+        $newCosto->monto          = $request->monto;
+        $newCosto->mes            = $request->meses;
+        $newCosto->dias           = $request->dias;
+        $newCosto->ingreso_dia    = $request->ingreso_dia;
         $newCosto->ingreso_semana = $request->ingreso_semana;
         $newCosto->save();
 
@@ -76,7 +77,7 @@ class CostosController extends Controller
      */
     public function edit(String $id)
     {
-        if (is_null($this->user) || !$this->user->can('costo.edit')) {
+        if (is_null($this->user) || ! $this->user->can('costo.edit')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún costo!');
         }
 
@@ -89,21 +90,23 @@ class CostosController extends Controller
      */
     public function update(Request $request, String $id)
     {
-        if (is_null($this->user) || !$this->user->can('costo.edit')) {
+        if (is_null($this->user) || ! $this->user->can('costo.edit')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a editar ningún costo!');
         }
         $request->validate([
             'periodo' => 'required',
-            'monto' => 'required|numeric',
+            'monto'   => 'required|numeric',
+            'dias'   => 'required|numeric',
         ]);
 
-        $editCosto = Costos::find($id);
-        $editCosto->nombre = $request->nombre;
-        $editCosto->tipo = $request->tipo;
-        $editCosto->periodo = $request->periodo;
-        $editCosto->monto = $request->monto;
-        $editCosto->mes = $request->meses;
-        $editCosto->ingreso_dia = $request->ingreso_dia;
+        $editCosto                 = Costos::find($id);
+        $editCosto->nombre         = $request->nombre;
+        $editCosto->tipo           = $request->tipo;
+        $editCosto->periodo        = $request->periodo;
+        $editCosto->monto          = $request->monto;
+        $editCosto->mes            = $request->meses;
+        $editCosto->dias           = $request->dias;
+        $editCosto->ingreso_dia    = $request->ingreso_dia;
         $editCosto->ingreso_semana = $request->ingreso_semana;
         $editCosto->save();
 
@@ -116,7 +119,7 @@ class CostosController extends Controller
      */
     public function destroy(String $id)
     {
-        if (is_null($this->user) || !$this->user->can('costo.view')) {
+        if (is_null($this->user) || ! $this->user->can('costo.view')) {
             abort(403, 'Lo siento !! ¡No estás autorizado a eliminar ningún costo!');
         }
         if ($id === 1) {
@@ -124,11 +127,10 @@ class CostosController extends Controller
             return back();
         }
 
-        $costo = Costos::find($id);
+        $costo         = Costos::find($id);
         $costo->estado = 'ELIMINADO';
         $costo->save();
         // $costo->delete();
-
 
         session()->flash('success', '¡¡El costo ha sido eliminado!!');
         return back();
