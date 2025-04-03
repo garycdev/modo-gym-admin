@@ -58,6 +58,7 @@ class PagosController extends Controller
             'fecha'    => 'required',
             'metodo'   => 'required',
             'estado'   => 'required',
+            'dias'     => 'required',
         ]);
 
         $newPago                     = new Pagos();
@@ -68,6 +69,7 @@ class PagosController extends Controller
         $newPago->pago_metodo        = $request->metodo;
         $newPago->pago_observaciones = $request->observaciones;
         $newPago->pago_estado        = $request->estado;
+        $newPago->pago_dias          = $request->dias;
         $newPago->save();
 
         session()->flash('success', '¡¡Se ha creado el registro!!');
@@ -112,6 +114,7 @@ class PagosController extends Controller
             'fecha'    => 'required',
             'metodo'   => 'required',
             'estado'   => 'required',
+            'dias'     => 'required',
         ]);
 
         $editPago                     = Pagos::find($id);
@@ -122,6 +125,7 @@ class PagosController extends Controller
         $editPago->pago_metodo        = $request->metodo;
         $editPago->pago_observaciones = $request->observaciones;
         $editPago->pago_estado        = $request->estado;
+        $editPago->pago_dias          = $request->dias;
         $editPago->save();
 
         session()->flash('success', '¡¡Se ha modificado el registro!!');

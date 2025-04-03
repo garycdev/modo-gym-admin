@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
@@ -19,7 +18,7 @@ class UsuarioController extends Controller
     public function registrar_asistencia(Request $request)
     {
         $ciUsuario = $request->input('usu_ci');
-        $user = Usuarios::where('usu_ci', $ciUsuario)->where('usu_estado', 'ACTIVO')->first();
+        $user      = Usuarios::where('usu_ci', $ciUsuario)->where('usu_estado', 'ACTIVO')->first();
 
         if ($user && $user->usu_huella == true) {
             $asistencia = DB::table('asistencia')
@@ -50,7 +49,7 @@ class UsuarioController extends Controller
                 ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
                 ->where('usuarios.usu_id', $user->usu_id)
                 ->orderBy('pagos.actualizado_en', 'desc')
-                ->select('costos.*', 'pagos.pago_fecha') // Selecciona las columnas que necesites
+                ->select('costos.*', 'pagos.pago_fecha', 'pagos.pago_dias') // Selecciona las columnas que necesites
                 ->first();
 
             // return response()->json([
@@ -58,7 +57,7 @@ class UsuarioController extends Controller
             // ]);
             // die();
 
-            if (!$pagos) {
+            if (! $pagos) {
                 return response()->json([
                     'success' => false,
                     'message' => 'No se encontraron pagos para este usuario.',
@@ -70,13 +69,13 @@ class UsuarioController extends Controller
 
             // Calcular la fecha límite para completar el mes
             $fechaLimite = clone $fechaPago;
-            $fechaLimite->modify('+' . ($pagos->mes * 30) . ' days'); // Sumar el número de meses especificado
+            $fechaLimite->modify('+' . $pagos->pago_dias . ' days'); // Sumar el número de meses especificado
 
-            // Calcular la diferencia en días entre la fecha límite y la fecha actual
-            // $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
+                                    // Calcular la diferencia en días entre la fecha límite y la fecha actual
+                                    // $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
             $fechaActual = today(); // Se usa today() en lugar de now()
 
-            $diff = $fechaActual->diff($fechaLimite);
+            $diff           = $fechaActual->diff($fechaLimite);
             $diferenciaDias = $diff->format('%r%a'); // Obtener la diferencia en días con el signo
 
             // Verificar si se encontró algún pago actual para el usuario
@@ -85,7 +84,7 @@ class UsuarioController extends Controller
                     'success' => false,
                     'message' => 'No se encontró ningún pago actual para este usuario.',
                 ], 404);
-            } elseif (intval($diferenciaDias) > (30 * $pagos->mes)) {
+            } elseif (intval($diferenciaDias) > $pagos->pago_dias) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Aun no inicia su mensualidad. Comienza en fecha ' . $pagos->pago_fecha,
@@ -100,19 +99,19 @@ class UsuarioController extends Controller
             // } else
             if ($diferenciaDias == 0) {
                 $textoDiasFaltantes = 'Hoy es el último día.';
-                $messageAsistencia = 'Hoy es el último día.';
+                $messageAsistencia  = 'Hoy es el último día.';
             } else {
                 $textoDiasFaltantes = "Faltan $diferenciaDias días.";
-                $messageAsistencia = 'Le quedan ' . $diferenciaDias . ' días.';
+                $messageAsistencia  = 'Le quedan ' . $diferenciaDias . ' días.';
             }
 
             // Plan mañanero
             if (strpos(strtolower($pagos->nombre), 'mañan') !== false) {
-                $hora = Carbon::now();
+                $hora       = Carbon::now();
                 $horaInicio = Carbon::createFromTime(6, 0, 0);
-                $horaFin = Carbon::createFromTime(11, 0, 0);
+                $horaFin    = Carbon::createFromTime(11, 0, 0);
 
-                if (!$hora->between($horaInicio, $horaFin)) {
+                if (! $hora->between($horaInicio, $horaFin)) {
                     return response()->json([
                         'success' => false,
                         'message' => $pagos->nombre . '. Solo puede ingresar de ' . $horaInicio->format('H:i') . ' a ' . $horaFin->format('H:i') . ' de la mañana.',
@@ -138,10 +137,10 @@ class UsuarioController extends Controller
                 if ($asistencia->asistencia_tipo === 'SALIDA') {
                     if (count($asistenciasDia) / 2 < $pagos->ingreso_dia) {
                         $nuevaAsistencia = [
-                            'usu_id' => $user->usu_id,
+                            'usu_id'           => $user->usu_id,
                             'asistencia_fecha' => date('Y-m-d'),
-                            'asistencia_hora' => date('H:i:s'),
-                            'asistencia_tipo' => 'ENTRADA',
+                            'asistencia_hora'  => date('H:i:s'),
+                            'asistencia_tipo'  => 'ENTRADA',
                         ];
 
                         DB::table('asistencia')->insert($nuevaAsistencia);
@@ -152,16 +151,16 @@ class UsuarioController extends Controller
                         ], 400);
                     }
                 } else {
-                    $horaEntrada = strtotime($asistencia->asistencia_hora);
-                    $horaActual = time();
+                    $horaEntrada     = strtotime($asistencia->asistencia_hora);
+                    $horaActual      = time();
                     $diferenciaHoras = ($horaActual - $horaEntrada) / 3600;
 
                     if ($diferenciaHoras >= 1) {
                         $nuevaAsistencia = [
-                            'usu_id' => $user->usu_id,
+                            'usu_id'           => $user->usu_id,
                             'asistencia_fecha' => date('Y-m-d'),
-                            'asistencia_hora' => date('H:i:s'),
-                            'asistencia_tipo' => 'SALIDA',
+                            'asistencia_hora'  => date('H:i:s'),
+                            'asistencia_tipo'  => 'SALIDA',
                         ];
 
                         DB::table('asistencia')->insert($nuevaAsistencia);
@@ -175,10 +174,10 @@ class UsuarioController extends Controller
             } else {
                 if (count($asistenciasSemana) < $pagos->ingreso_semana) {
                     $nuevaAsistencia = [
-                        'usu_id' => $user->usu_id,
+                        'usu_id'           => $user->usu_id,
                         'asistencia_fecha' => date('Y-m-d'),
-                        'asistencia_hora' => date('H:i:s'),
-                        'asistencia_tipo' => 'ENTRADA',
+                        'asistencia_hora'  => date('H:i:s'),
+                        'asistencia_tipo'  => 'ENTRADA',
                     ];
 
                     DB::table('asistencia')->insert($nuevaAsistencia);
@@ -192,7 +191,7 @@ class UsuarioController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $mensajeAsistencia . " " . $textoDiasFaltantes,
+                'data'    => $mensajeAsistencia . " " . $textoDiasFaltantes,
                 'message' => $messageAsistencia,
             ], 200);
         } else {
@@ -209,17 +208,17 @@ class UsuarioController extends Controller
         if ($user) {
             return response()->json([
                 'success' => true,
-                'data' => [
-                    'ci' => $user->usu_ci,
-                    'nombre' => $user->usu_nombre,
+                'data'    => [
+                    'ci'       => $user->usu_ci,
+                    'nombre'   => $user->usu_nombre,
                     'apellido' => $user->usu_apellidos,
-                    'huella' => $user->usu_huella,
+                    'huella'   => $user->usu_huella,
                 ],
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => 'Usuario no encontrado',
+                'data'    => 'Usuario no encontrado',
             ], 404);
         }
     }
@@ -227,18 +226,18 @@ class UsuarioController extends Controller
     public function huella(Request $request)
     {
         $ciUsuario = $request->input('usu_ci');
-        $user = Usuarios::where('usu_ci', $ciUsuario)->first();
+        $user      = Usuarios::where('usu_ci', $ciUsuario)->first();
         if ($user) {
             $user->usu_huella = true; // Asigna el nuevo valor al campo usu_huella
-            $user->save(); // Guarda los cambios en la base de datos
+            $user->save();            // Guarda los cambios en la base de datos
             return response()->json([
                 'success' => true,
-                'data' => 'Huella Creado',
+                'data'    => 'Huella Creado',
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => 'Usuario no encontrado',
+                'data'    => 'Usuario no encontrado',
             ], 404);
         }
     }

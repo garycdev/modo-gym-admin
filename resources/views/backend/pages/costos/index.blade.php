@@ -56,6 +56,7 @@
                                     <th>Nombre</th>
                                     <th>Tipo</th>
                                     <th>Periodo</th>
+                                    <th>Dias</th>
                                     <th>Monto</th>
                                     <th>I/dia</th>
                                     <th>I/semana</th>
@@ -84,7 +85,10 @@
                                                 @default
                                             @endswitch
                                         </td>
-                                        <td><span class="badge bg-dark">{{ $costo->periodo }}</span></td>
+                                        <td>
+                                            <span class="badge bg-dark">{{ $costo->periodo }}</span>
+                                        </td>
+                                        <td>{{ $costo->dias }}&nbsp;dias</td>
                                         <td>{{ $costo->monto }}&nbsp;bs.</td>
                                         <td><span class="badge bg-info">{{ $costo->ingreso_dia }}</span></td>
                                         <td><span class="badge bg-primary">{{ $costo->ingreso_semana }}</span></td>

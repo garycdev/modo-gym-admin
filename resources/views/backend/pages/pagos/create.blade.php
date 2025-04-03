@@ -92,7 +92,7 @@
                                 <div class="col-md-2">
                                     <label for="bsValidation9" class="form-label required_value">Dias </label>
                                     <input type="number" class="form-control" id="dias" name="dias" min="0"
-                                        step="30" placeholder="Dias">
+                                        step="any" placeholder="Dias">
                                     @error('dias')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

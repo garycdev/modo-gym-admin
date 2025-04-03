@@ -90,7 +90,7 @@
                                     @enderror
                                 </div>
                                 <div id="form-periodo" style="display:none" class="col-12 g-3 row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="bsValidation9" class="form-label">Tipo </label>
                                         <select id="tipo" name="tipo" class="form-select">
                                             <option selected disabled value>[TIPO]</option>
@@ -98,6 +98,14 @@
                                             <option value="MAQUINAS">SOLO MAQUINAS</option>
                                         </select>
                                         @error('tipo')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="bsValidation9" class="form-label">Dias </label>
+                                        <input type="number" class="form-control" id="dias" name="dias"
+                                            placeholder="Dias" step="any">
+                                        @error('dias')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -112,8 +120,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="bsValidation9" class="form-label">Ingresos por semana </label>
-                                        <input type="number" placeholder="..." id="ingreso_semana" name="ingreso_semana"
-                                            class="form-control">
+                                        <input type="number" placeholder="..." id="ingreso_semana"
+                                            name="ingreso_semana" class="form-control">
                                         <span class="text-primary">Dias hábiles</span>
                                         @error('ingreso_semana')
                                             <span class="text-danger">{{ $message }}</span>
@@ -208,13 +216,17 @@
             console.log(periodo);
             if (periodo) {
                 $('#form-periodo').removeAttr('style')
+                $('#dias').removeAttr('style')
                 const meses = $('#periodo option:selected').data('mes')
                 $('#meses').val(meses)
+                const dias = meses * 30
+                $('#dias').val(dias)
                 $('#ingreso_dia').attr('value', 1)
                 $('#ingreso_semana').attr('value', 7)
             } else {
                 $('#form-periodo').attr('style', 'display:none;')
                 $('#meses').val(0)
+                $('#dias').val(0)
                 $('#ingreso_dia').attr('value', 0)
                 $('#ingreso_semana').attr('value', 0)
                 $('#tipo').val('')

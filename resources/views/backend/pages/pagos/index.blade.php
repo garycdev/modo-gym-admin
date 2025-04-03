@@ -98,7 +98,7 @@
 
                                         // Calcular la fecha límite para completar el mes
                                         $fechaLimite = clone $fechaPago;
-                                        $fechaLimite->modify('+' . $pago->costo->mes * 30 . ' days'); // Sumar el número de meses correspondiente
+                                        $fechaLimite->modify('+' . $pago->pago_dias . ' days'); // Sumar el número de meses correspondiente
 
                                         // Fecha actual sin la hora (00:00:00)
                                         // $fechaActual = new \DateTime(); // Fecha actual sin la hora (00:00:00)
@@ -115,8 +115,8 @@
 
                                         // Texto de días restantes para completar el mes
                                         if ($diferenciaDias > 0) {
-                                            if ($diferenciaDias >= $pago->costo->mes * 30) {
-                                                $textoFaltante = $pago->costo->mes * 30 . ' días';
+                                            if ($diferenciaDias >= $pago->pago_dias) {
+                                                $textoFaltante = $pago->pago_dias . ' días';
                                             } else {
                                                 $textoFaltante = "$diferenciaDias días";
                                             }

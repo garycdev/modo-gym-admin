@@ -75,7 +75,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <label for="bsValidation9" class="form-label required_value">Costo </label>
                                     <select id="costo_id" name="costo_id" class="form-select select-monto"
                                         onchange="setMonto()">
@@ -92,7 +92,15 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-2">
+                                    <label for="bsValidation9" class="form-label required_value">Dias </label>
+                                    <input type="number" class="form-control" id="dias" name="dias" min="0"
+                                        step="any" placeholder="Dias" value="{{ $pago->pago_dias }}">
+                                    @error('dias')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
                                     <label for="bsValidation9" class="form-label required_value">Monto </label>
                                     <input type="number" class="form-control" id="monto" name="monto"
                                         placeholder="Monto" value="{{ $pago->pago_monto }}">
