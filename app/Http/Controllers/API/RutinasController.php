@@ -114,7 +114,7 @@ class RutinasController extends Controller
         if (isset($request->estado)) {
             if ($request->estado == 'true') {
                 $rutina->estado = 1;
-            } else if ($request->estado == 'false') {
+            } else {
                 $rutina->estado = 0;
             }
         }
