@@ -3,6 +3,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blogs;
+use App\Models\Ejercicios;
+use App\Models\Like;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,30 @@ class BlogsController extends Controller
             ->where('visibilidad', '=', 'public')
             ->orderBy('blog_id', 'DESC')
             ->get();
+
+        foreach ($blogs as $key => $blog) {
+            if (! is_null($blog->ejercicios)) {
+                $ejercicios = [];
+
+                $ejerData = $blog->ejercicios;
+                if (is_string($ejerData)) {
+                    $ejerData = json_decode($ejerData, true);
+                }
+
+                if (is_array($ejerData)) {
+                    foreach ($ejerData as $ejer_id) {
+                        $ejercicio = Ejercicios::where('ejer_id', $ejer_id)->first();
+                        if ($ejercicio) {
+                            $ejercicios[] = $ejercicio;
+                        }
+                    }
+                }
+
+                $blogs[$key]['ejercicios'] = $ejercicios;
+            }
+            $likes                = Like::where('blog_id', $blog->blog_id)->get();
+            $blogs[$key]['likes'] = $likes;
+        }
 
         return response()->json([
             'success' => true,
@@ -27,6 +53,30 @@ class BlogsController extends Controller
             ->where('usu_id', '=', $request->user()->usu_id)
             ->orderBy('blog_id', 'DESC')
             ->get();
+
+        foreach ($blogs as $key => $blog) {
+            if (! is_null($blog->ejercicios)) {
+                $ejercicios = [];
+
+                $ejerData = $blog->ejercicios;
+                if (is_string($ejerData)) {
+                    $ejerData = json_decode($ejerData, true);
+                }
+
+                if (is_array($ejerData)) {
+                    foreach ($ejerData as $ejer_id) {
+                        $ejercicio = Ejercicios::where('ejer_id', $ejer_id)->first();
+                        if ($ejercicio) {
+                            $ejercicios[] = $ejercicio;
+                        }
+                    }
+                }
+
+                $blogs[$key]['ejercicios'] = $ejercicios;
+            }
+            $likes                = Like::where('blog_id', $blog->blog_id)->get();
+            $blogs[$key]['likes'] = $likes;
+        }
 
         return response()->json([
             'success' => true,

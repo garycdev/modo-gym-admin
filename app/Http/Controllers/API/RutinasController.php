@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ejercicios;
 use App\Models\Rutinas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +66,7 @@ class RutinasController extends Controller
             ->join('equipos as eq', 'e.equi_id', '=', 'eq.equi_id')
             ->join('musculo as m', 'e.mus_id', '=', 'm.mus_id')
             ->where('r.rut_estado', 'ACTIVO')
+            ->where('r.rut_estado', '<>', 'COMPLETADO')
             ->where('r.usu_id', $request->user()->usu_id)
             ->where('r.rut_dia', $dia)
             ->orderBy('r.ejer_id', 'ASC')
@@ -158,6 +160,7 @@ class RutinasController extends Controller
             ->join('equipos as eq', 'e.equi_id', '=', 'eq.equi_id')
             ->join('musculo as m', 'e.mus_id', '=', 'm.mus_id')
             ->where('r.rut_estado', 'ACTIVO')
+            ->where('r.rut_estado', '<>', 'COMPLETADO')
             ->where('r.usu_id', $id)
             ->orderBy('r.ejer_id', 'ASC')
             ->orderBy('r.rut_id', 'ASC')
@@ -170,6 +173,201 @@ class RutinasController extends Controller
                 'success' => false,
                 'message' => 'No hay ejercicios registrados',
             ], 404);
+        }
+    }
+
+    public function renovarEjercicios(Request $request)
+    {
+        if (! isset($request->option)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ninguna opción seleccionada',
+                'data'    => [],
+            ], 404);
+        }
+
+        $id  = $request->user()->usu_id;
+        $dia = $request->dia;
+
+        switch ($request->option) {
+            case 'vacio':
+                $ejercicios = Ejercicios::whereIn('ejer_nivel', [1, 2])
+                    ->inRandomOrder()
+                    ->limit(3)
+                    ->get();
+
+                foreach ($ejercicios as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Renovar ' . $request->option,
+                    'data'    => [],
+                ], 200);
+                break;
+            case 'dia':
+                $rutinasAI = Rutinas::join('ejercicios as e', 'e.ejer_id', '=', 'rutinas.ejer_id')
+                    ->where('rutinas.usu_id', $id)
+                    ->where('rutinas.rut_dia', $dia)
+                    ->where('rutinas.rut_estado', '<>', 'COMPLETADO')
+                    ->whereIn('e.ejer_nivel', [6, 5, 4, 3])
+                    ->distinct('rutinas.ejer_id')
+                    ->select('rutinas.ejer_id')
+                    ->get();
+                $rutinasBasicas = Rutinas::join('ejercicios as e', 'e.ejer_id', '=', 'rutinas.ejer_id')
+                    ->where('rutinas.usu_id', $id)
+                    ->where('rutinas.rut_dia', $dia)
+                    ->where('rutinas.rut_estado', '<>', 'COMPLETADO')
+                    ->whereIn('e.ejer_nivel', [2, 1])
+                    ->distinct('rutinas.ejer_id')
+                    ->count('rutinas.ejer_id');
+
+                Rutinas::where('usu_id', $id)
+                    ->where('rut_dia', $dia)
+                    ->where('rut_estado', '<>', 'COMPLETADO')
+                    ->update(['rut_estado' => 'COMPLETADO']);
+
+                $basicos = Ejercicios::whereIn('ejer_nivel', [1, 2])
+                    ->inRandomOrder()
+                    ->limit($rutinasBasicas)
+                    ->get();
+                foreach ($basicos as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+                foreach ($rutinasAI as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Renovar ' . $request->option,
+                    'data'    => $rutinasAI,
+                ], 200);
+                break;
+            case 'mantener':
+                // Completar anteriores
+                $rutinas = Rutinas::where('usu_id', $id)
+                    ->where('rut_estado', '<>', 'COMPLETADO')
+                    ->select('rut_id')
+                    ->get();
+
+                $rutinasAIB = Rutinas::join('ejercicios as e', 'e.ejer_id', '=', 'rutinas.ejer_id')
+                    ->where('rutinas.usu_id', $id)
+                    ->where('rutinas.rut_estado', '<>', 'COMPLETADO')
+                    ->whereIn('e.ejer_nivel', [6, 5, 4, 3, 2, 1])
+                    ->selectRaw('DISTINCT rutinas.ejer_id, rutinas.rut_dia')
+                    ->orderBy('rutinas.rut_dia', 'ASC')
+                    ->get();
+                foreach ($rutinasAIB as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $ejer->rut_dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+
+                foreach ($rutinas as $rut) {
+                    Rutinas::where('rut_id', $rut->rut_id)->update(['rut_estado' => 'COMPLETADO']);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Renovar ' . $request->option,
+                    'data'    => $rutinasAIB,
+                ], 200);
+                break;
+            case 'todo':
+                // Completar anteriores
+                $rutinas = Rutinas::where('usu_id', $id)
+                    ->where('rut_estado', '<>', 'COMPLETADO')
+                    ->select('rut_id')
+                    ->get();
+
+                // Ejercicios avanzados (5 y 6) e intermedios (3 y 4)
+                $rutinasAI = Rutinas::join('ejercicios as e', 'e.ejer_id', '=', 'rutinas.ejer_id')
+                    ->where('rutinas.usu_id', $id)
+                    ->where('rutinas.rut_estado', '<>', 'COMPLETADO')
+                    ->whereIn('e.ejer_nivel', [6, 5, 4, 3])
+                    ->selectRaw('DISTINCT rutinas.ejer_id, rutinas.rut_dia')
+                    ->orderBy('rutinas.rut_dia', 'ASC')
+                    ->get();
+                foreach ($rutinasAI as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $ejer->rut_dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+
+                // Ejercicios basicos 1 y 2
+                $rutinasBasicas = Rutinas::join('ejercicios as e', 'e.ejer_id', '=', 'rutinas.ejer_id')
+                    ->where('rutinas.usu_id', $id)
+                    ->where('rutinas.rut_estado', '<>', 'COMPLETADO')
+                    ->whereIn('e.ejer_nivel', [1, 2])
+                    ->selectRaw('DISTINCT rutinas.ejer_id, rutinas.rut_dia')
+                    ->orderBy('rutinas.rut_dia', 'ASC')
+                    ->get();
+                $basicos = Ejercicios::whereIn('ejer_nivel', [1, 2])
+                    ->inRandomOrder()
+                    ->limit(count($rutinasBasicas))
+                    ->get();
+                foreach ($basicos as $ejer) {
+                    $serie               = new Rutinas();
+                    $serie->usu_id       = $id;
+                    $serie->rut_grupo    = 1;
+                    $serie->ejer_id      = $ejer->ejer_id;
+                    $serie->rut_dia      = $dia;
+                    $serie->rut_date_ini = date('Y-m-d');
+                    $serie->rut_date_fin = date('Y-m-d');
+                    $serie->save();
+                }
+
+                foreach ($rutinas as $rut) {
+                    Rutinas::where('rut_id', $rut->rut_id)->update(['rut_estado' => 'COMPLETADO']);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Renovar ' . $request->option,
+                    'data'    => $rutinasAI,
+                ], 200);
+                break;
+                break;
+            default:
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Renovar ' . $request->option,
+                    'data'    => $request->all(),
+                ], 200);
+                break;
         }
     }
 }

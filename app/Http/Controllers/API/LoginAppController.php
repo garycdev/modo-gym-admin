@@ -183,7 +183,8 @@ class LoginAppController extends Controller
         // return response()->json([
         //     'success' => true,
         //     'message' => 'update',
-        //     'data'    => $request->toArray(),
+        //     'data'    => $request->hasFile('imagen'),
+        //     'files'   => $request->files->all(),
         // ]);
 
         $user = UsuarioLogin::where('usu_login_id', $request->user()->usu_login_id)->first();
@@ -204,20 +205,21 @@ class LoginAppController extends Controller
         }
 
         if ($request->hasFile('imagen')) {
-            $datos = Usuarios::findOrFail($user->usu_id);
-            if (! $datos) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Datos del usuario no encontrado, comuniquese con el administrador',
-                ], 400);
-            }
+            // $datos = Usuarios::findOrFail($user->usu_id);
+            // if (! $datos) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Datos del usuario no encontrado, comuniquese con el administrador',
+            //     ], 400);
+            // }
 
             $image     = $request->file('imagen');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $imagePath = public_path('image/cliente');
             $image->move($imagePath, $imageName);
-            $datos->usu_imagen = 'image/cliente' . '/' . $imageName;
-            $datos->save();
+            $user->usu_login_imagen = 'image/cliente' . '/' . $imageName;
+            // $datos->usu_imagen = 'image/cliente' . '/' . $imageName;
+            // $datos->save();
         }
         $user->save();
 

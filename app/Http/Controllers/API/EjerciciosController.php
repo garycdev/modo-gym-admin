@@ -1,15 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Ejercicios;
 use Illuminate\Support\Facades\DB;
 
 class EjerciciosController extends Controller
 {
-    public function ejerciciosApp()
+    public function index()
     {
         $ejercicios = DB::table('ejercicios as e')
             ->join('equipos as eq', 'eq.equi_id', '=', 'e.equi_id')
@@ -17,6 +14,10 @@ class EjerciciosController extends Controller
             ->where('e.ejer_estado', 'ACTIVO')
             ->get();
 
-        return response()->json($ejercicios);
+        return response()->json([
+            'success' => true,
+            'message' => 'Ejercicios',
+            'data'    => $ejercicios,
+        ]);
     }
 }
