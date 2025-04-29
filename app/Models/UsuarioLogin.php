@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use App\Notifications\CustomResetPassword;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -24,6 +25,7 @@ class UsuarioLogin extends User
         'formulario',
         'usu_id',
         'usu_login_imagen',
+        'key_premium',
     ];
 
     protected $hidden = [
@@ -34,6 +36,11 @@ class UsuarioLogin extends User
     const UPDATED_AT = 'usu_login_updated_at';
 
     const CREATED_AT = 'usu_login_created_at';
+
+    public function getEmailForPasswordReset()
+    {
+        return $this->usu_login_email;
+    }
 
     // public static function getpermissionGroups()
     // {

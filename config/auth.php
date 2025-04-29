@@ -118,14 +118,20 @@ return [
      */
 
     'passwords'        => [
-        'users'  => [
+        'users'      => [
             'provider' => 'users',
             'table'    => 'password_resets',
             'expire'   => 60,
             'throttle' => 60,
         ],
-        'admins' => [
+        'admins'     => [
             'provider' => 'admins',
+            'table'    => 'password_resets',
+            'expire'   => 60,
+            'throttle' => 60,
+        ],
+        'user_login' => [
+            'provider' => 'user_login',
             'table'    => 'password_resets',
             'expire'   => 60,
             'throttle' => 60,

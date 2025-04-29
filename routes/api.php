@@ -9,6 +9,7 @@ use App\Http\Controllers\API\LoginAppController;
 use App\Http\Controllers\API\MedidasController;
 use App\Http\Controllers\API\MusculosController;
 use App\Http\Controllers\API\NutricionController;
+use App\Http\Controllers\API\PlanesController;
 use App\Http\Controllers\API\RutinaController;
 use App\Http\Controllers\API\RutinasController;
 use App\Http\Controllers\API\UsuarioController;
@@ -37,6 +38,14 @@ Route::middleware('apiCredential')->group(function () {
 
 Route::get('/', [LoginAppController::class, 'getStatus']);
 Route::post('/login-app', [LoginAppController::class, 'loginApp']);
+
+// Reset password
+Route::post('/forgot-password', [LoginAppController::class, 'forgotPassword']);
+Route::post('/profile-app', [LoginAppController::class, 'registerUser']);
+Route::get('/google-app/{id}', [LoginAppController::class, 'searchGoogleId']);
+Route::get('/email-app/{email}', [LoginAppController::class, 'searchEmail']);
+//
+
 Route::get('/profile-app/{id}', [LoginAppController::class, 'getProfile']);
 
 Route::get('/rutinas-app-user/{id}', [RutinasController::class, 'rutinasUser']);
@@ -63,7 +72,8 @@ Route::middleware(['authApp', 'auth:sanctum'])->group(function () {
     Route::resource('/nutricion-app', NutricionController::class);
     Route::resource('/medidas-app', MedidasController::class);
     Route::resource('/likes-app', LikesController::class);
-    
+    Route::resource('/planes-app', PlanesController::class);
+
     Route::resource('/rutinas-app', RutinasController::class);
     Route::post('/rutinas-renovar-app', [RutinasController::class, 'renovarEjercicios']);
     Route::resource('/formulario-app', FormularioController::class);

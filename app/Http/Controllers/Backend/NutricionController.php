@@ -28,7 +28,25 @@ class NutricionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nutricion                                  = new Nutricion();
+        $nutricion->usu_id                          = $request->usu_id;
+        $nutricion->nombre                          = $request->nombre;
+        $nutricion->edad                            = $request->edad;
+        $nutricion->fecha                           = $request->fecha;
+        $nutricion->antecedentes_medicos_familiares = $request->antecedentes;
+        $nutricion->hijos                           = $request->hijos;
+        $nutricion->ciclo_menstrual                 = $request->ciclo;
+        $nutricion->medicamentos                    = $request->medicamentos;
+        $nutricion->objetivo                        = $request->objetivo;
+        $nutricion->intolerancias_alergias          = $request->intolerancias_alergias;
+        $nutricion->habito                          = $request->habito;
+        $nutricion->alcohol                         = $request->alcohol;
+        $nutricion->tabaco                          = $request->tabaco;
+        $nutricion->actividad_fisica                = $request->fisica;
+        $nutricion->save();
+
+        session()->flash('success', '¡¡Evaluación nutricional agregada!!');
+        return redirect()->back();
     }
 
     /**
@@ -52,7 +70,25 @@ class NutricionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $nutricion                                  = Nutricion::findOrFail($id);
+        $nutricion->usu_id                          = $request->usu_id;
+        $nutricion->nombre                          = $request->nombre;
+        $nutricion->edad                            = $request->edad;
+        $nutricion->fecha                           = $request->fecha;
+        $nutricion->antecedentes_medicos_familiares = $request->antecedentes;
+        $nutricion->hijos                           = $request->hijos;
+        $nutricion->ciclo_menstrual                 = $request->ciclo;
+        $nutricion->medicamentos                    = $request->medicamentos;
+        $nutricion->objetivo                        = $request->objetivo;
+        $nutricion->intolerancias_alergias          = $request->intolerancias_alergias;
+        $nutricion->habito                          = $request->habito;
+        $nutricion->alcohol                         = $request->alcohol;
+        $nutricion->tabaco                          = $request->tabaco;
+        $nutricion->actividad_fisica                = $request->fisica;
+        $nutricion->save();
+
+        session()->flash('success', '¡¡Evaluación nutricional actualizada!!');
+        return redirect()->back();
     }
 
     /**

@@ -53,7 +53,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
+                                    {{-- <th>Image</th> --}}
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>CI</th>
@@ -69,6 +69,7 @@
                                     <th>Hora</th>
                                     <th>Deportes</th> --}}
                                     <th>Estado</th>
+                                    <th>Evaluación</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -79,17 +80,26 @@
                                 @foreach ($clientes as $cliente)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <img src="{{ asset($cliente->usu_imagen) }}" alt="" width="50">
-                                        </td>
+                                        </td> --}}
                                         <td>{{ $cliente->usu_nombre }}</td>
                                         <td>{{ $cliente->usu_apellidos }}</td>
                                         <td>{{ $cliente->usu_ci }}</td>
                                         <td>{{ $cliente->usu_celular ?? '-' }}</td>
                                         <td>{{ $cliente->usu_edad }}</td>
                                         <td>
-                                            <span
-                                                class="badge bg-{{ $cliente->usu_huella == '1' ? 'success' : ($cliente->usu_huella == '0' ? 'danger' : 'dark') }}">{{ $cliente->usu_huella }}</span>
+                                            {{-- <span
+                                                class="badge bg-{{ $cliente->usu_huella == '1' ? 'success' : ($cliente->usu_huella == '0' ? 'danger' : 'dark') }}">{{ $cliente->usu_huella }}</span> --}}
+                                            @if ($cliente->usu_huella == '1')
+                                                <span class="parent-icon badge bg-success">
+                                                    <i class='bx bx-check' style="font-weight:bold;"></i>
+                                                </span>
+                                            @else
+                                                <span class="parent-icon badge bg-danger">
+                                                    <i class='bx bx-x' style="font-weight:bold;"></i>
+                                                </span>
+                                            @endif
                                         </td>
                                         <td>{{ $cliente->usu_genero }}</td>
                                         <td>{{ $cliente->usu_nivel }}</td>
@@ -104,6 +114,19 @@
                                                 class="badge bg-{{ $cliente->usu_estado == 'ACTIVO' ? 'success' : ($cliente->usu_estado == 'INACTIVO' ? 'danger' : 'dark') }}">{{ $cliente->usu_estado }}</span>
                                         </td>
                                         <td>
+                                            <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#nutricion"
+                                                onclick="editNutricion({{ $cliente }}, {{ $cliente->nutricion }})">
+                                                Nutrición
+                                            </button>
+
+                                            <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#medidas"
+                                                onclick="editMedidas({{ $cliente }}, {{ $cliente->medidas }})">
+                                                Medidas
+                                            </button>
+                                        </td>
+                                        <td>
                                             @if (Auth::guard('admin')->user()->can('cliente.edit'))
                                                 <a class="btn btn-sm btn-warning"
                                                     href="{{ route('admin.clientes.edit', $cliente->usu_id) }}">
@@ -112,7 +135,7 @@
                                             @endif
 
                                             @if (Auth::guard('admin')->user()->can('cliente.delete'))
-                                                <a class="btn btn-danger text-white"
+                                                <a class="btn btn-sm btn-danger text-white"
                                                     href="{{ route('admin.clientes.destroy', $cliente->usu_id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $cliente->usu_id }}').submit();">
                                                     <i class='bx bxs-trash'></i>
@@ -134,7 +157,7 @@
                             <tfoot>
                                 <tr>
                                     <th>#</th>
-                                    <th>Image</th>
+                                    {{-- <th>Image</th> --}}
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
                                     <th>CI</th>
@@ -150,12 +173,305 @@
                                     <th>Hora</th>
                                     <th>Deportes</th> --}}
                                     <th>Estado</th>
+                                    <th>Evaluación</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal modal-md fade" id="nutricion" tabindex="-1" aria-labelledby="nutricion_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formNutricion" method="POST">
+                    @csrf()
+                    <input type="hidden" name="nut_id" id="nut_id">
+                    <input type="hidden" name="usu_id" id="n_usu_id">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nutricion_label">Evaluación nutricional del cliente</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label required-value">Nombre</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" name="nombre" id="n_nombre" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Edad</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="edad" id="n_edad" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Fecha</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="date" name="fecha" id="n_fecha" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Antecedentes medicos y familiares</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="antecedentes" id="n_antecedentes" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Hijos</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="hijos" id="n_hijos" class="form-control">
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <label class="form-label">Ciclo menstrual</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="ciclo" id="n_ciclo" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Medicamentos</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="medicamentos" id="n_medicamentos" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Objetivos</label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="objetivo" id="n_objetivo" rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Intolerancias y alergias</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="intolerancias_alergias" id="n_intolerancias_alergias"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Habito intestinal</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="habito" id="n_habito" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Alcohol</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="alcohol" id="n_alcohol" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Tabaco</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="tabaco" id="n_tabaco" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Actividad fisica</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="fisica" id="n_fisica" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal modal-md fade" id="medidas" tabindex="-1" aria-labelledby="medidas_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formMedidas" method="POST">
+                    @csrf()
+                    <input type="hidden" name="med_id" id="med_id">
+                    <input type="hidden" name="usu_id" id="m_usu_id">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nutricion_label">Medidas antropométricas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Peso</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="peso" id="m_peso" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Talla</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="talla" id="m_talla" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">IMC</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="imc" id="m_imc" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">% Grasa</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="grasa" id="m_grasa" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">ICC</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="icc" id="m_icc" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">RCV</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="rcv" id="m_rcv" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Peso ideal</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="peso_ideal" id="m_peso_ideal" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">↑↓ /Mes</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="xmes" id="m_xmes" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-4 d-flex align-items-center">
+                                <label class="form-label">Tiempo estimado</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="tiempo_estimado" id="m_tiempo_estimado"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Brazo</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="brazo" id="m_brazo" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Antebrazo</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="antebrazo" id="m_antebrazo" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Torso</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="torso" id="m_torso" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Cintura es</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="cintura_es" id="m_cintura_es" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Cintura om</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="cintura_om" id="m_cintura_om" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Cadera</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="cadera" id="m_cadera" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Muslo</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="muslo" id="m_muslo" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">Pierna</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="pierna" id="m_pierna" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">PCB</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="pcb" id="m_pcb" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">PCT</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="pct" id="m_pct" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 row">
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">PSE</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="pse" id="m_pse" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <label class="form-label">PSI</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="psi" id="m_psi" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -225,6 +541,9 @@
 
 @section('scripts')
     <script>
+        const nutricionUpdateUrl = "{{ route('admin.nutricion.update', ':id') }}";
+        const medidasUpdateUrl = "{{ route('admin.medidas.update', ':id') }}";
+
         $(document).ready(function() {
             var table = $("#tabla_clientes").DataTable({
                 language: {
@@ -253,5 +572,81 @@
                 buttons: ['copy', 'excel', 'pdf', 'print']
             });
         });
+
+        function editNutricion(user, nutricion) {
+            const form = $('#formNutricion');
+            form.trigger('reset');
+            $('#n_objetivo').html('')
+
+            if (nutricion) {
+                const actionUrl = nutricionUpdateUrl.replace(':id', nutricion.nut_id);
+                form.attr('action', actionUrl);
+                if (!form.find('input[name="_method"]').length) {
+                    form.append('<input type="hidden" name="_method" value="PUT">');
+                }
+
+                $('#n_usu_id').val(nutricion.usu_id);
+                $('#n_nombre').val(nutricion.nombre);
+                $('#n_edad').val(nutricion.edad);
+                $('#n_fecha').val(nutricion.fecha);
+                $('#n_antecedentes').val(nutricion.antecedentes_medicos_familiares);
+                $('#n_hijos').val(nutricion.hijos);
+                $('#n_ciclo').val(nutricion.ciclo_menstrual);
+                $('#n_medicamentos').val(nutricion.medicamentos);
+                $('#n_objetivo').html(nutricion.objetivo);
+                $('#n_intolerancias_alergias').val(nutricion.intolerancias_alergias);
+                $('#n_habito').val(nutricion.habito);
+                $('#n_alcohol').val(nutricion.alcohol);
+                $('#n_tabaco').val(nutricion.tabaco);
+                $('#n_fisica').val(nutricion.actividad_fisica);
+            } else {
+                form.attr('action', "{{ route('admin.nutricion.store') }}");
+                form.find('input[name="_method"]').remove();
+
+                $('#n_usu_id').val(user.usu_id);
+                $('#n_nombre').val(user.usu_nombre + ' ' + user.usu_apellidos);
+                $('#n_edad').val(user.usu_edad);
+            }
+        }
+
+        function editMedidas(user, medidas) {
+            const form = $('#formMedidas');
+            form.trigger('reset');
+
+            if (medidas) {
+                const actionUrl = medidasUpdateUrl.replace(':id', medidas.med_id);
+                form.attr('action', actionUrl);
+                if (!form.find('input[name="_method"]').length) {
+                    form.append('<input type="hidden" name="_method" value="PUT">');
+                }
+
+                $('#m_usu_id').val(medidas.usu_id);
+                $('#m_peso').val(medidas.peso);
+                $('#m_talla').val(medidas.talla);
+                $('#m_imc').val(medidas.imc);
+                $('#m_grasa').val(medidas.grasa);
+                $('#m_icc').val(medidas.icc);
+                $('#m_rcv').val(medidas.rcv);
+                $('#m_peso_ideal').val(medidas.peso_ideal);
+                $('#m_xmes').val(medidas.xmes);
+                $('#m_tiempo_estimado').val(medidas.tiempo_estimado);
+                $('#m_brazo').val(medidas.brazo);
+                $('#m_antebrazo').val(medidas.antebrazo);
+                $('#m_torso').val(medidas.torso);
+                $('#m_cintura_es').val(medidas.cintura_es);
+                $('#m_cintura_om').val(medidas.cintura_om);
+                $('#m_cadera').val(medidas.cadera);
+                $('#m_muslo').val(medidas.muslo);
+                $('#m_pierna').val(medidas.pierna);
+                $('#m_pcb').val(medidas.pcb);
+                $('#m_pct').val(medidas.pct);
+                $('#m_pse').val(medidas.pse);
+                $('#m_psi').val(medidas.psi);
+            } else {
+                form.attr('action', "{{ route('admin.medidas.store') }}");
+                form.find('input[name="_method"]').remove();
+                $('#m_usu_id').val(user.usu_id);
+            }
+        }
     </script>
 @endsection

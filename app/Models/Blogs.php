@@ -15,9 +15,9 @@ class Blogs extends Model
         'blog_estado', 'tiempo', 'fecha', 'usu_id', 'visibilidad', 'blog_created_at', 'blog_updated_at',
     ];
 
-    protected $casts = [
-        'ejercicios' => 'array',
-    ];
+    // protected $casts = [
+    //     'ejercicios' => 'array',
+    // ];
 
     // Especifica el nombre de la columna para updated_at
     const UPDATED_AT = 'blog_updated_at';

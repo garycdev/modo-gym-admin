@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\LoginAppController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,9 @@ Auth::routes();
 
 Route::get('/', 'HomeController@redirectAdmin')->name('index');
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/reset-password', [LoginAppController::class, 'resetPassword']);
+Route::post('/reset-password', [LoginAppController::class, 'postResetPassword'])->name('post_reset_password');
 
 /**
  * Admin routes
@@ -53,6 +57,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('galerias', 'Backend\GaleriasController', ['names' => 'admin.galerias']);
     Route::resource('videos', 'Backend\VideosController', ['names' => 'admin.videos']);
     Route::resource('clientes', 'Backend\ClientesController', ['names' => 'admin.clientes']);
+    Route::resource('nutricion', 'Backend\NutricionController', ['names' => 'admin.nutricion']);
+    Route::resource('medidas', 'Backend\MedidasController', ['names' => 'admin.medidas']);
     Route::resource('costos', 'Backend\CostosController', ['names' => 'admin.costos']);
     Route::resource('pagos', 'Backend\PagosController', ['names' => 'admin.pagos']);
     Route::resource('citas', 'Backend\CitasController', ['names' => 'admin.citas']);

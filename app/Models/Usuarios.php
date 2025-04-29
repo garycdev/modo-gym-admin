@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Carbon\Carbon;
@@ -10,9 +9,9 @@ class Usuarios extends Model
 {
     use HasFactory;
 
-    protected $table = 'usuarios';
+    protected $table      = 'usuarios';
     protected $primaryKey = 'usu_id';
-    protected $fillable = [
+    protected $fillable   = [
         'usu_id',
         'usu_nombre',
         'usu_apellidos',
@@ -37,6 +36,15 @@ class Usuarios extends Model
     // {
     //     return $this->belongsToMany()
     // }
+
+    public function nutricion()
+    {
+        return $this->hasOne(Nutricion::class, 'usu_id', 'usu_id');
+    }
+    public function medidas()
+    {
+        return $this->hasOne(Medidas::class, 'usu_id', 'usu_id');
+    }
 
     public function costo()
     {
@@ -67,14 +75,13 @@ class Usuarios extends Model
     public function formulario()
     {
         return $this->hasOne(Formulario::class, 'usu_id', 'usu_id');
-        
     }
 
     public function asistencias($dias)
     {
         return $this->hasMany(Asistencia::class, 'usu_id', 'usu_id')
             ->where('asistencia.asistencia_tipo', 'ENTRADA')
-            // where between en un rango de la fecha actual menos el parametro dias [fecha-dias, fecha]
+        // where between en un rango de la fecha actual menos el parametro dias [fecha-dias, fecha]
             ->whereBetween('asistencia.asistencia_fecha', [Carbon::now()->subDays($dias)->format('Y-m-d'), Carbon::now()->format('Y-m-d')])
             ->orderBy('asistencia.asistencia_fecha', 'asc')
             ->get();
