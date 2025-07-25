@@ -1,7 +1,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-    Usuarios - Admin Panel
+    Antropometricas - Admin Panel
 @endsection
 
 @section('styles')
@@ -16,7 +16,7 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Usuarios </div>
+                <div class="breadcrumb-title pe-3">Medidas antropometricas </div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -49,9 +49,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nombre</th>
-                                    <th>Email</th>
-                                    <th>Username</th>
-                                    <th>Rol</th>
+                                    <th>Formulario</th>
+                                    <th>Evaluación</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -60,31 +59,153 @@
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $user->usu_login_name }}</td>
-                                        <td>{{ $user->usu_login_email }}</td>
-                                        <td>{{ $user->usu_login_username }}</td>
                                         <td>
-                                            @foreach ($user->roles as $role)
-                                                <div
-                                                    class="badge rounded-pill text-info bg-light-info p-2 text-uppercase px-3">
-                                                    {{ $role->name }}
-                                                </div>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            @if (Auth::guard('admin')->user()->can('user.edit'))
-                                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#updatePassword"
-                                                    onclick="showModal({{ $user->usu_login_id }}, '{{ $user->usu_login_username }}')">
-                                                    <i class='bx bxs-lock'></i>
-                                                    Reestablecer datos
-                                                </button>
+                                            <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#formularioModal{{ $user->usu_login_id }}">
+                                                Ver Formulario
+                                            </button>
 
-                                                <button type="button" class="btn btn-sm btn-danger">
-                                                    <i class='bx bx-mobile-alt'></i>
-                                                    Reestablecer dispositivos (APP)
-                                                </button>
-                                            @endif
+                                            <div class="modal fade" id="formularioModal{{ $user->usu_login_id }}"
+                                                tabindex="-1"
+                                                aria-labelledby="formularioModalLabel{{ $user->usu_login_id }}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="formularioModalLabel{{ $user->usu_login_id }}">Detalles
+                                                                del
+                                                                Formulario</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @if (isset($user->datos->formulario))
+                                                                <div class="table-responsive">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-bordered table-hover">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <th>Inscrito</th>
+                                                                                    <td>{{ $user->datos->formulario->inscrito }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>CI</th>
+                                                                                    <td>{{ $user->datos->usu_ci }}</td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Nombre Completo</th>
+                                                                                    <td>{{ $user->datos->formulario->nombre_completo }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Fecha de Nacimiento</th>
+                                                                                    <td>{{ $user->datos->formulario->fecha_nacimiento }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Edad</th>
+                                                                                    <td>{{ $user->datos->formulario->edad }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Teléfono</th>
+                                                                                    <td>{{ $user->datos->formulario->telefono }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Dirección</th>
+                                                                                    <td>{{ $user->datos->formulario->direccion }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Medicamentos</th>
+                                                                                    <td>{{ $user->datos->formulario->medicamentos }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Correo Electrónico</th>
+                                                                                    <td>{{ $user->datos->formulario->correo }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Enfermedades</th>
+                                                                                    <td>{{ $user->datos->formulario->enfermedades }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Referencia</th>
+                                                                                    <td>{{ $user->datos->formulario->referencia }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Entrenamiento personalizado</th>
+                                                                                    <td>{{ $user->datos->formulario->entrenamiento }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Horario</th>
+                                                                                    <td>{{ $user->datos->formulario->horario }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Días a la Semana</th>
+                                                                                    <td>{{ $user->datos->formulario->dias_semana }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Nivel de Entrenamiento</th>
+                                                                                    <td>{{ $user->datos->formulario->nivel_entrenamiento }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Lesiones</th>
+                                                                                    <td>{{ $user->datos->formulario->lesion }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Objetivos</th>
+                                                                                    <td>{{ implode(', ', $user->datos->formulario->objetivos ?? []) }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <th>Detalles de Deportes</th>
+                                                                                    <td>{{ $user->datos->formulario->deportes_detalles }}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            @else
+                                                                <p>No hay formulario disponible para este usuario.</p>
+                                                            @endif
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            @if (!isset($user->datos->formulario))
+                                                                <button class="btn btn-primary" type="button"
+                                                                    data-bs-toggle="modal" data-bs-target="#formulario"
+                                                                    onclick="showFormulario({{ $user->usu_id }})">
+                                                                    Llenar formulario
+                                                                </button>
+                                                            @endif
+
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#medidas"
+                                                onclick="editMedidas({{ $user->datos }}, {{ isset($user->datos->medidas) ? $user->datos->medidas : null }})">
+                                                Medidas
+                                            </button>
+                                        </td>
+                                        <td></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -94,43 +215,10 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="updatePassword" tabindex="-1" aria-labelledby="updatePasswordLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form method="POST" action="{{ route('admin.users.password') }}" id="formPass">
-                @csrf()
-                <input type="hidden" name="usu_login_id" id="usu_login_id">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="updatePasswordLabel">Reestablecer contraseña</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="username" class="col-form-label">Nombre de usuario</label>
-                            <input type="text" class="form-control" id="username" name="usu_login_username">
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="col-form-label">Nueva contraseña</label>
-                            <input type="password" class="form-control" id="password" name="usu_login_password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="password_confirm" class="col-form-label">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="password_confirm"
-                                name="usu_login_password_confirm">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Actualizar contraseña</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
+    
     <!-- Modal -->
-    <div class="modal modal-lg fade" id="formulario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal modal-lg fade" id="formulario" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -138,7 +226,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formInscripcion" method="POST" class="row" action="{{ route('admin.formulario.store') }}">
+                    <form id="formInscripcion" method="POST" class="row"
+                        action="{{ route('admin.formulario.store') }}">
                         @csrf()
                         <input type="hidden" name="usu_id" id="usu_id">
                         <!-- Pregunta inicial -->

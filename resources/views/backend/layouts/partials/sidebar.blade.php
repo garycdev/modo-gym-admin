@@ -125,16 +125,41 @@
                      <div class="menu-title">Rutinas</div>
                  </a>
              </li>
-         @endif
-         @if ($usr->can('rutina.view'))
-             <li class="{{ Route::is('admin.defecto.index') ? 'mm-active' : '' }}">
-                 <a href="{{ route('admin.defecto.index') }}">
-                     <div class="parent-icon"><i class='bx bx-reset'></i>
+             {{-- <li>
+                 <a href="javascript:;" class="has-arrow">
+                     <div class="parent-icon"><i class='bx bx-dumbbell'></i>
                      </div>
                      <div class="menu-title">Rutinas predefinidas</div>
                  </a>
+                 <ul>
+                     <li class="{{ Route::is('admin.defecto.index') ? 'mm-active' : '' }}">
+                         <a href="{{ route('admin.defecto.index') }}"><i class='bx bx-radio-circle'></i>Mujeres</a>
+                     </li>
+                     <li class="{{ Route::is('admin.defecto.index') ? 'mm-active' : '' }}">
+                         <a href="{{ route('admin.defecto.index') }}"><i class='bx bx-radio-circle'></i>Varones</a>
+                     </li>
+                 </ul>
              </li>
+
+             <li>
+                 <a href="javascript:;" class="has-arrow">
+                     <div class="parent-icon"><i class='bx bx-heart'></i>
+                     </div>
+                     <div class="menu-title">Nutrición</div>
+                 </a>
+                 <ul>
+                     <li class="{{ Route::is('admin.medidas.index') ? 'mm-active' : '' }}">
+                         <a href="{{ route('admin.medidas.index') }}"><i class='bx bx-radio-circle'></i>Medidas
+                             antropometricas</a>
+                     </li>
+                     <li class="{{ Route::is('admin.medidas.index') ? 'mm-active' : '' }}">
+                         <a href="{{ route('admin.medidas.index') }}"><i class='bx bx-radio-circle'></i>Valoracion
+                             nutricional</a>
+                     </li>
+                 </ul>
+             </li> --}}
          @endif
+
          @if ($usr->can('blog.view') || $usr->can('producto.view') || $usr->can('galeria.view') || $usr->can('video.view'))
              <li class="menu-label">Publicidad</li>
          @endif

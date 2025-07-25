@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medidas;
+use App\Models\MedidasDetalle;
+use App\Models\UsuarioLogin;
 use Illuminate\Http\Request;
 
 class MedidasController extends Controller
@@ -12,7 +14,8 @@ class MedidasController extends Controller
      */
     public function index()
     {
-        //
+        $users = UsuarioLogin::all();
+        return view('backend.pages.medidas.index', compact('users'));
     }
 
     /**
@@ -38,22 +41,22 @@ class MedidasController extends Controller
         $medidas->peso_ideal      = $request->peso_ideal;
         $medidas->xmes            = $request->xmes;
         $medidas->tiempo_estimado = $request->tiempo_estimado;
-        $medidas->brazo           = $request->brazo;
-        $medidas->antebrazo       = $request->antebrazo;
-        $medidas->torso           = $request->torso;
-        $medidas->cintura_es      = $request->cintura_es;
-        $medidas->cintura_om      = $request->cintura_om;
-        $medidas->cadera          = $request->cadera;
-        $medidas->muslo           = $request->muslo;
-        $medidas->pierna          = $request->pierna;
-        $medidas->pcb             = $request->pcb;
-        $medidas->pct             = $request->pct;
-        $medidas->pse             = $request->pse;
-        $medidas->psi             = $request->psi;
+        // $medidas->brazo           = $request->brazo;
+        // $medidas->antebrazo       = $request->antebrazo;
+        // $medidas->torso           = $request->torso;
+        // $medidas->cintura_es      = $request->cintura_es;
+        // $medidas->cintura_om      = $request->cintura_om;
+        // $medidas->cadera          = $request->cadera;
+        // $medidas->muslo           = $request->muslo;
+        // $medidas->pierna          = $request->pierna;
+        // $medidas->pcb             = $request->pcb;
+        // $medidas->pct             = $request->pct;
+        // $medidas->pse             = $request->pse;
+        // $medidas->psi             = $request->psi;
         $medidas->save();
 
         session()->flash('success', '¡¡Medidas antropométricas agregadas!!');
-        return redirect()->back();
+        return redirect()->route('admin.medidas.show', $medidas->med_id);
     }
 
     /**
@@ -61,7 +64,30 @@ class MedidasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $medidas   = Medidas::findOrFail($id);
+        $registros = MedidasDetalle::where('med_estado', 'ACTIVO')
+            ->orderByDesc('created_at')
+            ->where('med_id', $id)
+            ->take(10)
+            ->get()
+            ->sortBy('created_at');
+
+        $fechas = $registros->pluck('created_at')->map(function ($fecha) {
+            return \Carbon\Carbon::parse($fecha)->format('d-m-Y');
+        });
+
+        $datos = ['brazo', 'antebrazo', 'torso', 'cintura_es', 'cintura_om', 'cadera', 'muslo', 'pierna', 'pcb', 'pct', 'pse', 'psi'];
+
+        $data = [];
+
+        foreach ($datos as $medida) {
+            foreach ($registros as $registro) {
+                $fecha                 = \Carbon\Carbon::parse($registro->created_at)->format('d-m-Y');
+                $data[$medida][$fecha] = $registro->$medida;
+            }
+        }
+
+        return view('backend.pages.medidas.edit', compact('medidas', 'fechas', 'data'));
     }
 
     /**

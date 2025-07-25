@@ -1,0 +1,28 @@
+meta {
+  name: Registrar asistencia
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://modo-gym.garycdev.com/api/registra-asistencia
+  body: json
+  auth: apikey
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: insomnia/10.0.0
+}
+
+auth:apikey {
+  key: Api-Secret
+  value: SA1c2UCkQ5vMAf9Tc2aOIaTyO+Pg9XUZ/ZFUJBuMVpk=
+  placement: header
+}
+
+body:json {
+  {
+    "usu_ci": 10077835
+  }
+}

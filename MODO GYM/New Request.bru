@@ -1,0 +1,22 @@
+meta {
+  name: New Request
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://toolbox.googleapps.com/apps/dig/lookup
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Content-Type: multipart/form-data
+  User-Agent: insomnia/10.1.1
+}
+
+body:multipart-form {
+  csrfmiddlewaretoken: z9y5WrRnz8lxAgmtlowdipTw9wf7Lf3l3tvch2PjcSDv0S7VX5wjdrlHanhI6aWk
+  domain: _acme-challenge.garycdev.com
+  typ: TXT
+}

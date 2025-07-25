@@ -1,0 +1,26 @@
+meta {
+  name: Rutinas App_1
+  type: http
+  seq: 2
+}
+
+delete {
+  url: http://192.168.0.181:8000/api/likes-app/52
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: insomnia/10.0.0
+}
+
+auth:bearer {
+  token: 26|kv2OUNcRxaneve3ZrNz0QpMIH92spr89co83bmGO7689d50f
+}
+
+body:json {
+  {
+  	"blog_id": 52
+  }
+}

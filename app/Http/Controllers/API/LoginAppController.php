@@ -366,6 +366,9 @@ class LoginAppController extends Controller
         }
         $user->save();
 
+        $userNuevo = UsuarioLogin::where('usu_id', $user->usu_id)->where('usu_login_username', $user->usu_ci)->first();
+        $userNuevo->assignRole('usuario');
+
         return response()->json([
             'success' => true,
             'message' => 'Usuario registrado correctamente.',

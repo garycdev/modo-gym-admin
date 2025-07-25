@@ -1,0 +1,20 @@
+meta {
+  name: Nutricion  App
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://192.168.0.182:8000/api/nutricion-app
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  User-Agent: insomnia/10.0.0
+}
+
+auth:bearer {
+  token: 39|2WpOQLb32il3VLi3T8OO3to0XSRNu5yRASiSwpLm0f774f03
+}

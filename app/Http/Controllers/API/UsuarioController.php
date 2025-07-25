@@ -18,30 +18,29 @@ class UsuarioController extends Controller
     public function registrar_asistencia(Request $request)
     {
         $ciUsuario = $request->input('usu_ci');
-        $user      = Usuarios::where('usu_ci', $ciUsuario)->where('usu_estado', 'ACTIVO')->first();
+        $user      = Usuarios::select('usu_id', 'usu_ci', 'usu_huella')
+            ->where('usu_ci', $ciUsuario)
+            ->where('usu_estado', 'ACTIVO')
+            ->first();
 
         if ($user && $user->usu_huella == true) {
-            $asistencia = DB::table('asistencia')
-                ->where('asistencia.asistencia_fecha', date('Y-m-d'))
-                ->where('asistencia.usu_id', $user->usu_id)
-                ->orderBy('asistencia.asistencia_id', 'desc')
-                ->select('asistencia.*') // Selecciona las columnas que necesites
-                ->first();
-
             $asistenciasDia = DB::table('asistencia')
-                ->where('asistencia.asistencia_fecha', date('Y-m-d'))
+                ->where('asistencia.asistencia_fecha', Carbon::today()->toDateString())
                 ->where('asistencia.usu_id', $user->usu_id)
                 ->orderBy('asistencia.asistencia_id', 'desc')
-                ->select('asistencia.*') // Selecciona las columnas que necesites
+                ->select('asistencia_hora', 'asistencia_tipo') // Selecciona las columnas que necesites, evita *
                 ->get();
 
+            $asistencia = $asistenciasDia->first();
+
             $asistenciasSemana = DB::table('asistencia')
-                ->select('asistencia_fecha')
                 ->whereYear('asistencia_fecha', '=', DB::raw('YEAR(CURDATE())'))
                 ->whereRaw('WEEK(asistencia_fecha, 1) = WEEK(CURDATE(), 1)')
-                ->where('usu_id', '=', $user->usu_id)
-                ->groupBy('asistencia_fecha')
-                ->orderBy('asistencia_id', 'DESC')
+                ->where('usu_id', $user->usu_id)
+                ->select('asistencia_fecha')
+            // ->groupBy('asistencia_fecha')
+            // ->orderBy('asistencia_id', 'DESC')
+                ->distinct()
                 ->get();
 
             $pagos = DB::table('usuarios')
@@ -49,7 +48,8 @@ class UsuarioController extends Controller
                 ->join('costos', 'pagos.costo_id', '=', 'costos.costo_id')
                 ->where('usuarios.usu_id', $user->usu_id)
                 ->orderBy('pagos.actualizado_en', 'desc')
-                ->select('costos.*', 'pagos.pago_fecha', 'pagos.pago_dias') // Selecciona las columnas que necesites
+                ->limit(1)
+                ->select('costos.nombre', 'pagos.pago_fecha', 'pagos.pago_dias', 'costos.ingreso_dia', 'costos.ingreso_semana')
                 ->first();
 
             // return response()->json([
@@ -135,7 +135,7 @@ class UsuarioController extends Controller
             // Determinar el tipo de asistencia
             if ($asistencia) {
                 if ($asistencia->asistencia_tipo === 'SALIDA') {
-                    if (count($asistenciasDia) / 2 < $pagos->ingreso_dia) {
+                    if ($asistenciasDia->count() / 2 < $pagos->ingreso_dia) {
                         $nuevaAsistencia = [
                             'usu_id'           => $user->usu_id,
                             'asistencia_fecha' => date('Y-m-d'),
@@ -172,7 +172,7 @@ class UsuarioController extends Controller
                     }
                 }
             } else {
-                if (count($asistenciasSemana) < $pagos->ingreso_semana) {
+                if ($asistenciasSemana->count() < $pagos->ingreso_semana) {
                     $nuevaAsistencia = [
                         'usu_id'           => $user->usu_id,
                         'asistencia_fecha' => date('Y-m-d'),
